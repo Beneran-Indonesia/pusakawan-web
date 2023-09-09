@@ -1,0 +1,104 @@
+{
+  "project_info": {
+    "project_number": "929850535065",
+    "firebase_url": "https://pusaka-firebase-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "database_url": "https://pusaka-firebase-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "pusaka-firebase",
+    "storage_bucket": "pusaka-firebase.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:929850535065:android:106b2fec33b4c56acedc08",
+        "android_client_info": {
+          "package_name": "com.k2s.pusaka_beneran_indonesia"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "929850535065-bmpb1a05fe15kdstaguujbmkb5nvjfvn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.k2s.pusaka_beneran_indonesia",
+            "certificate_hash": "4376570e447bd62fe6912b95e7d60482573e2519"
+          }
+        },
+        {
+          "client_id": "929850535065-fdq0qhs9h3n2h75lo3f2e2mcpf3h1h37.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.k2s.pusaka_beneran_indonesia",
+            "certificate_hash": "b016c520d36bb3db50f1bdd81c2cbacf991d8cd4"
+          }
+        },
+        {
+          "client_id": "929850535065-hf2l1b7mr165a77pkub10ueaslthskk0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.k2s.pusaka_beneran_indonesia",
+            "certificate_hash": "2c95b272b85c603748832782efa17b3279be699b"
+          }
+        },
+        {
+          "client_id": "929850535065-u1l6akq599skjbifqlupmje71cmuedj4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.k2s.pusaka_beneran_indonesia",
+            "certificate_hash": "980ec573d46452d9cf70dc9e5f128dc830e9f4bb"
+          }
+        },
+        {
+          "client_id": "929850535065-ucbaf1tklpb12ukoeemf1cessoc9tgh0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.k2s.pusaka_beneran_indonesia",
+            "certificate_hash": "5d30f80f7a0ebb92d182c7cbbbf5d431e7936c02"
+          }
+        },
+        {
+          "client_id": "929850535065-uf6r2uau58b6tgcbagibn3ts7na8nh3e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.k2s.pusaka_beneran_indonesia",
+            "certificate_hash": "4243c70e128809b22df017d7c82c5f3b8059f04f"
+          }
+        },
+        {
+          "client_id": "929850535065-vocgp60tiaouo198fnka81hp2p1e4a0f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.k2s.pusaka_beneran_indonesia",
+            "certificate_hash": "2b286eb27b3e219ce1ea3ff2e49cba5f19a243fa"
+          }
+        },
+        {
+          "client_id": "929850535065-med9skmq3259jrh2q9h1s4imgs7vos0t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDVlzTdY-OwKa_WuQdNEo5ygwQxW1gsEfM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "929850535065-med9skmq3259jrh2q9h1s4imgs7vos0t.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "929850535065-m8bec163bd8ilf6oudjepfebc3tu4uv6.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.k2s.pusakaBeneranIndonesia"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

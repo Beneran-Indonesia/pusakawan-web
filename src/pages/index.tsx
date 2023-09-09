@@ -3,6 +3,7 @@ import Image from 'next/image'
 import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
 import ReportIcon from '@mui/icons-material/Report';
+// import { GetServerSideProps } from 'next';
 
 const inter = Inter({ subsets: ['latin'] })
 const taglines: CardProps[] = [
@@ -95,3 +96,4 @@ function Card({ title, description }: CardProps) {
     </div>
   );
 }
+
