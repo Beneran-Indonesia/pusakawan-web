@@ -2,10 +2,9 @@ import type { NextApiRequest, NextApiResponse } from "next"
 import NextAuth from "next-auth"
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
-import axios from 'axios';
+import api from "@/lib/api";
 
 export default async function auth(req: NextApiRequest, res: NextApiResponse) {
-    // const { fullName, userName, email, password, passwordConfirmation, mobile } = req.body;
     // Max age is 2 weeks
     const maxAge = 14 * 24 * 60 * 60;
     return await NextAuth(req, res, {
@@ -25,13 +24,13 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
                     email: { label: "Email", placeholder: "doe@example.com", type: "email" },
                     password: { label: "Password", type: "password" }
                 },
-                async authorize(credentials, req) {
+                async authorize(credentials) {
                     const { email, password } = credentials!;
-                    const conn = await axios.post(process.env.API_URL! + "/auth/login/", {
+                    const conn = await api.post( "/auth/login/", {
                         email, password
                     })
                     if (conn.status === 200) {
-                        axios.defaults.headers.common['Authorization'] = 'Bearer ' + conn.data.tokens.access;
+                        api.defaults.headers.common['Authorization'] = 'Bearer ' + conn.data.tokens.access;
                         return conn.data;
                     }
                     // Return null if can't retrieve user or any error.
@@ -39,14 +38,19 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
                 }
             })
         ],
-        // TODO, make sure to put the access token here.
-        // https://stackoverflow.com/questions/70117661/how-do-i-add-data-to-the-client-api-in-next-auth
         callbacks: {
-            session({ session, token }) {
+            async jwt({ user, token, account }) {
+                if (account?.provider === 'credentials') {
+                    const accessToken = user.tokens.access;
+                    return { ...token, email: user.email, accessToken };
+                }
+                return { ...token, email: user.email }
+            },
+            async session({ session, token }) {
                 // Return a cookie value as part of the session
                 // This is read when `req.query.nextauth.includes("session") && req.method === "GET"`
-
-                return session
+                session = { ...session, ...token };
+                return session;
             }
         }
     })

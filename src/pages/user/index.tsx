@@ -1,10 +1,14 @@
-import axios from 'axios';
+import api from '@/lib/api';
 import type { InferGetServerSidePropsType, GetServerSideProps } from 'next'
+import { signOut } from 'next-auth/react';
 
 export default function UserHome({ userData }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-    
+
     return (
-        <p>{JSON.stringify(userData)}</p>
+        <>
+            <p>{JSON.stringify(userData)}</p>
+            <button onClick={() => signOut()}>Sign out</button>
+        </>
     )
 }
 
@@ -13,10 +17,13 @@ type UserDatas = {
 }
 
 export const getServerSideProps: GetServerSideProps<UserDatas> = async () => {
-    const res = await axios.get(process.env.API_URL + '/user/my-profile');
-    console.log(res);
-    if (res.status === 200) {
-        return { props: { userData: res.data } };
+    try {
+        const res = await api.get(process.env.API_URL + '/user/my-profile');
+        if (res.status === 200) {
+            return { props: { userData: res.data } };
+        }
+    } catch (e) {
+        console.log(e)
     }
     return { props: { userData: "Cannot process your request at the moment." } };
 }
