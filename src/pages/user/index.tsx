@@ -19,10 +19,11 @@ type UserDatas = {
 export const getServerSideProps: GetServerSideProps<UserDatas> = async (ctx) => {
     // TODO: Make this prettier :)
     const session = await getSession(ctx);
+    if (!session) return { props: { userData: "Cannot process your request at the moment." } };
     try {
         const res = await api.get(process.env.API_URL + '/user/my-profile', {
             headers: {
-                "Authorization": "Bearer " + session.accessToken,
+                "Authorization": "Bearer " + session.accessToken!,
             }
         });
         if (res.status === 200) {

@@ -35,7 +35,7 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
                             api.defaults.headers.common['Authorization'] = 'Bearer ' + conn.data.tokens.access;
                             return conn.data;
                         }
-                    } catch (e) {
+                    } catch (e: any) {
                         throw Error(e.response.data.detail);
                         console.log("ERROR AUTH", e);
                     }
