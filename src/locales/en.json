@@ -1,0 +1,26 @@
+{
+    "form": {
+        "text_field": {
+            "error": {
+                "email": "Email is not valid. Please check your spelling.",
+                "required": "This column is required.",
+                "min_length_password": "Password too short. Minimum 8 characters."
+            }
+        }
+    },
+    "login": {
+        "title": "Login",
+        "description": "Have no account? Register <strong>here</strong>.",
+        "remember_me": "Remember me",
+        "forgot_password": "Forgot password?",
+        "or": "Or",
+        "google": "Login with",
+        "to_register": "Create an account",
+        "error": {
+            "server": "Server error. Can not log you in.",
+            "invalid_credentials": "Username or password doesn't match.",
+            "account_disabled": "Account has been disabled, please contact administrator.",
+            "email_not_verified": "Email has not been verified. Please verify your email."
+        }
+    }
+}

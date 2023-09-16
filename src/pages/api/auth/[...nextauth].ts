@@ -19,6 +19,7 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
                 clientSecret: process.env.GOOGLE_CLIENT_SECRET!
             }),
             CredentialsProvider({
+                id: "email",
                 name: 'email',
                 credentials: {
                     email: { label: "Email", placeholder: "doe@example.com", type: "email" },
@@ -26,12 +27,17 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
                 },
                 async authorize(credentials) {
                     const { email, password } = credentials!;
-                    const conn = await api.post( "/auth/login/", {
-                        email, password
-                    })
-                    if (conn.status === 200) {
-                        api.defaults.headers.common['Authorization'] = 'Bearer ' + conn.data.tokens.access;
-                        return conn.data;
+                    try {
+                        const conn = await api.post("/auth/login/", {
+                            email, password
+                        })
+                        if (conn.status === 200) {
+                            api.defaults.headers.common['Authorization'] = 'Bearer ' + conn.data.tokens.access;
+                            return conn.data;
+                        }
+                    } catch (e) {
+                        throw Error(e.response.data.detail);
+                        console.log("ERROR AUTH", e);
                     }
                     // Return null if can't retrieve user or any error.
                     return null;
@@ -40,11 +46,30 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
         ],
         callbacks: {
             async jwt({ user, token, account }) {
-                if (account?.provider === 'credentials') {
+                if (account?.provider === 'email') {
                     const accessToken = user.tokens.access;
-                    return { ...token, email: user.email, accessToken };
+                    api.defaults.headers.common['Authorization'] = 'Bearer ' + accessToken;
+                    console.log(accessToken)
+                    return { ...token, accessToken };
+                } else if (account?.provider === 'google') {
+                    // Gotta use firebase auth ^w^ to get the token and post request.
+                    const { id_token } = account;
+                    try {
+                        const res = await api.post('/google-auth/', {
+                            auth_token: id_token
+                        });
+                        console.log('GOOGLEAUTH', res);
+                        if (res.status === 201) {
+                            const { auth_token } = res.data;
+                            api.defaults.headers.common['Authorization'] = 'Bearer ' + auth_token;
+                            return { ...token, accessToken: auth_token };
+                        }
+                        throw Error(res.data);
+                    } catch (e) {
+                        console.log("ERROR: GOOGLE AUTH.\n", e);
+                    }
                 }
-                return { ...token, email: user.email }
+                return { ...token }
             },
             async session({ session, token }) {
                 // Return a cookie value as part of the session

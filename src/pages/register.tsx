@@ -2,34 +2,37 @@ import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm, SubmitHandler, FieldErrors } from "react-hook-form";
 import { RegisterUserProps } from '@/types/auth';
 import { Input } from '@/components/Form/Input';
 
-function Copyright(props: any) {
-    return (
-        <Typography variant="body2" color="text.secondary" align="center" {...props}>
-            {'Copyright © '}
-            <Link color="inherit" href="https://mui.com/">
-                Your Website
-            </Link>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-        </Typography>
-    );
+type ErrorTypographyProps = {
+    fieldName: keyof RegisterUserProps, errors: FieldErrors<RegisterUserProps>
 }
 
+// function ErrorTypography({ fieldName, errors }: ErrorTypographyProps) {
+//     console.log(fieldName, errors)
+//     if (Object.keys(errors).includes(fieldName)) {
+//         console.log('true')
+//         return (
+//             <Typography color="error">
+//                 {errors[fieldName]?.message}
+//             </Typography>
+//         )
+//     }
+//     return null;
+// }
+
 export default function SignUp() {
-    const { control, handleSubmit, formState: { errors } } = useForm<RegisterUserProps>();
+    const { control, handleSubmit, formState: { errors } } = useForm<RegisterUserProps>({ defaultValues: { email: '', fullName: '', password: '', phoneNumber: '', role: 'Student' } });
     // TODO: Create error handler
-    console.log(errors);
+    // console.log(errors);
     const onSubmit: SubmitHandler<RegisterUserProps> = data => console.log(data);
 
     // const onSubmit: SubmitHandler<RegisterUserProps> = (event: React.FormEvent<HTMLFormElement>) => {
@@ -93,8 +96,8 @@ export default function SignUp() {
                             <Input
                                 name="password"
                                 label="Password"
-                                type="password"
                                 autoComplete="new-password"
+                                type="password"
                                 required
                                 control={control}
                             />
@@ -117,7 +120,6 @@ export default function SignUp() {
                     </Grid>
                 </Box>
             </Box>
-            <Copyright sx={{ mt: 5 }} />
         </Container>
     );
 }

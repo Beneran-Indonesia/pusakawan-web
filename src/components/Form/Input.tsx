@@ -1,31 +1,23 @@
-import { Control, Controller, FieldValues } from "react-hook-form";
 import TextField from "@mui/material/TextField";
-import { RegisterUserProps } from "@/types/auth";
-
-type FormInputProps = {
-    name: keyof RegisterUserProps;
-    label: string;
-    control: Control<RegisterUserProps>;
-    required: boolean;
-    autoComplete?: string;
-    type?: React.HTMLInputTypeAttribute;
-}
+import { Controller } from "react-hook-form";
+import { useTranslations } from 'next-intl';
+import { FormInputProps } from "@/types/form";
+import { formControlRoot } from "@/lib/constants";
 
 export const Input = ({ name, control, label, required, autoComplete, type }: FormInputProps) => {
+    const t = useTranslations('form.text_field.error');
     return (
         <Controller
             name={name}
             control={control}
-            // If password, make min length to be 8.
             rules={{
-                required: required,
-                minLength: name === "password" ? 8 : undefined,
-                pattern: name === 'email' ? new RegExp("^[A-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[A-Z0-9.-]+$") : undefined
+                required: { value: required, message: t('required') },
+                // Enforce this pattern if type is email.
+                pattern: type === 'email' ? { value: /^\S+@\S+\.\S+$/, message: t('email') } : undefined
             }}
             render={({
                 field: { onChange, value },
                 fieldState: { error },
-                formState,
             }) => (
                 <TextField
                     id={name}
@@ -35,10 +27,11 @@ export const Input = ({ name, control, label, required, autoComplete, type }: Fo
                     value={value}
                     label={label}
                     variant="outlined"
-                    required={required}
                     autoComplete={autoComplete}
                     type={type}
                     fullWidth
+                    InputProps={{ sx: formControlRoot }}
+                    // inputProps={{ style: { WebkitBoxShadow: "0 0 0 1000px white inset", color: 'black'} }}
                 />
             )}
         />

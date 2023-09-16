@@ -1,0 +1,26 @@
+{
+    "form": {
+        "text_field": {
+            "error": {
+                "email": "Email tidak valid. Tolong periksa ejaan anda.",
+                "required": "Kolom ini perlu diisi.",
+                "min_length_password": "Password terlalu pendek. Minimum 8 karakter."
+            }
+        }
+    },
+    "login": {
+        "title": "Masuk",
+        "description": "Kalau kamu belum memiliki akun yang terdaftar, kamu bisa mendaftarnya <strong>disini</strong>",
+        "remember_me": "Ingat saya",
+        "forgot_password": "Lupa password?",
+        "or": "Atau",
+        "google": "Masuk dengan",
+        "to_register": "Bikin akun",
+        "error": {
+            "server": "Server error. Tidak bisa memasukkan anda.",
+            "invalid_credentials": "Username atau password tidak cocok.",
+            "account_disabled": "Akun telah di nonaktifkan, tolong kontak administrator.",
+            "email_not_verified": "Email belum di-verify. Tolong periksa email anda."
+        }
+    }
+}

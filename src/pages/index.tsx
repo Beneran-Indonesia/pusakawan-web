@@ -97,3 +97,11 @@ function Card({ title, description }: CardProps) {
   );
 }
 
+
+export function getStaticProps({ locale }: { locale: "en" | "id" }) {
+  return {
+    props: {
+      messages: require(`../locales/${locale}.json`),
+    },
+  };
+}
