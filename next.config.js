@@ -19,6 +19,9 @@ const nextConfig = {
   i18n: {
     locales: ['en', 'id'],
     defaultLocale: 'id'
+  },
+  images: {
+    domains: ["source.unsplash.com"]
   }
 };
 

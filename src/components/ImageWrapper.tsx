@@ -1,7 +1,7 @@
 import Image from "next/image"
 import { CSSProperties } from "react";
 
-type LogoWrapperProps = {
+type ImageWrapperProps = {
     style?: CSSProperties;
     alt: string;
     src: any;
@@ -10,7 +10,7 @@ type LogoWrapperProps = {
     priority?: boolean
 }
 
-function LogoWrapper({ src, alt, style, width, height, priority = false }: LogoWrapperProps) {
+function ImageWrapper({ src, alt, style, width, height, priority = false }: ImageWrapperProps) {
     return (
         <Image
             src={src}
@@ -23,4 +23,4 @@ function LogoWrapper({ src, alt, style, width, height, priority = false }: LogoW
     )
 }
 
-export default LogoWrapper;
+export default ImageWrapper;

@@ -22,5 +22,20 @@
             "account_disabled": "Account has been disabled, please contact administrator.",
             "email_not_verified": "Email has not been verified. Please verify your email."
         }
+    },
+    "header": {
+        "challenge": "Challenge",
+        "course": "Course",
+        "register": "Register",
+        "login": "Login"
+    },
+    "headline": {
+        "title": "Prepare yourself to be a voter in tomorrow's election.",
+        "subtitle": "Learn what you need to know, to determine Indonesia's future leaders in the next 5 years",
+        "button": "See courses"
+    },
+    "footer": {
+        "office_location": "Office address",
+        "contact_us": "Contact us"
     }
 }

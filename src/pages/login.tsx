@@ -1,6 +1,5 @@
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
@@ -13,7 +12,7 @@ import { LoginUserProps, RegisterUserProps } from '@/types/auth';
 import { Control, Controller, SubmitHandler, useForm } from 'react-hook-form';
 import PasswordInput from '@/components/Form/PasswordInput';
 import { useState } from 'react';
-import LogoWrapper from '@/components/LogoWrapper';
+import LogoWrapper from '@/components/ImageWrapper';
 import Link from 'next/link';
 import GoogleSVG from '@tplogos/google.svg';
 import UnsplashLogin from '@images/unsplash_login.png';
@@ -97,14 +96,12 @@ function LoginBox() {
     const router = useRouter();
     const onSubmit: SubmitHandler<LoginUserProps> = async (data) => {
         setLoading(true);
-        const { email, password } = data;
-        // i dont understand why this error here????
+        const { email, password, remember } = data;
         signIn('email', {
             redirect: false,
             email,
             password,
-            // If successfuly login go to profile
-            callbackUrl: '/user'
+            remember,
         })
             .then((dt) => {
                 setLoading(false);
@@ -124,8 +121,11 @@ function LoginBox() {
                     } else if (error.charAt(0) === 'A') {
                         setErrorMessage({ error: true, type: "account_disabled", message: t('error.account_disabled') })
                         return;
+                    } else if (error.charAt(0) === 'E') {
+                        setErrorMessage({ error: true, type: "email_not_verified", message: t('error.email_not_verified') })
+                        return;
                     }
-                    setErrorMessage({ error: true, type: "email_not_verified", message: t('error.email_not_verified') })
+                    setErrorMessage({ error: true, type: 'server', message: t('error.server') })
                     return;
                 }
                 router.push('/user')

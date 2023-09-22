@@ -1,4 +1,5 @@
 import api from '@/lib/api';
+import { createBearerHeader } from '@/lib/utils';
 import type { InferGetServerSidePropsType, GetServerSideProps } from 'next'
 import { getSession, signOut } from 'next-auth/react';
 
@@ -17,14 +18,11 @@ type UserDatas = {
 }
 
 export const getServerSideProps: GetServerSideProps<UserDatas> = async (ctx) => {
-    // TODO: Make this prettier :)
     const session = await getSession(ctx);
-    if (!session) return { props: { userData: "Cannot process your request at the moment." } };
+    if (!session) return { props: { userData: "Cannot process your request at the moment. Session unavailable." } };
     try {
         const res = await api.get(process.env.API_URL + '/user/my-profile', {
-            headers: {
-                "Authorization": "Bearer " + session.accessToken!,
-            }
+            headers: createBearerHeader(session.accessToken)
         });
         if (res.status === 200) {
             return { props: { userData: res.data } };

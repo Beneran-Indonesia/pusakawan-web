@@ -24,6 +24,7 @@ declare module "next-auth" {
             refresh: string;
         }
     }
+
 }
 
 type MonochromePalette = {

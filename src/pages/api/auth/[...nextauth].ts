@@ -4,9 +4,14 @@ import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import api from "@/lib/api";
 
+const getMaxAgeDay = (days: number) => days * 24 * 3600;
+
 export default async function auth(req: NextApiRequest, res: NextApiResponse) {
     // Max age is 2 weeks
-    const maxAge = 14 * 24 * 60 * 60;
+    let maxAge = getMaxAgeDay(14);
+    if (req.body.remember) {
+        maxAge = getMaxAgeDay(1);
+    }
     return await NextAuth(req, res, {
         session: {
             strategy: 'jwt',
@@ -23,7 +28,7 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
                 name: 'email',
                 credentials: {
                     email: { label: "Email", placeholder: "doe@example.com", type: "email" },
-                    password: { label: "Password", type: "password" }
+                    password: { label: "Password", type: "password" },
                 },
                 async authorize(credentials) {
                     const { email, password } = credentials!;
@@ -32,12 +37,11 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
                             email, password
                         })
                         if (conn.status === 200) {
-                            api.defaults.headers.common['Authorization'] = 'Bearer ' + conn.data.tokens.access;
                             return conn.data;
                         }
                     } catch (e: any) {
-                        throw Error(e.response.data.detail);
                         console.log("ERROR AUTH", e);
+                        throw Error(e.response.data.detail);
                     }
                     // Return null if can't retrieve user or any error.
                     return null;
@@ -48,9 +52,7 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
             async jwt({ user, token, account }) {
                 if (account?.provider === 'email') {
                     const accessToken = user.tokens.access;
-                    api.defaults.headers.common['Authorization'] = 'Bearer ' + accessToken;
                     console.log(accessToken)
-                    return { ...token, accessToken };
                 } else if (account?.provider === 'google') {
                     // Gotta use firebase auth ^w^ to get the token and post request.
                     const { id_token } = account;
@@ -61,7 +63,6 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
                         console.log('GOOGLEAUTH', res);
                         if (res.status === 201) {
                             const { auth_token } = res.data;
-                            api.defaults.headers.common['Authorization'] = 'Bearer ' + auth_token;
                             return { ...token, accessToken: auth_token };
                         }
                         throw Error(res.data);

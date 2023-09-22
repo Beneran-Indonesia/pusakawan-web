@@ -22,5 +22,20 @@
             "account_disabled": "Akun telah di nonaktifkan, tolong kontak administrator.",
             "email_not_verified": "Email belum di-verify. Tolong periksa email anda."
         }
+    },
+    "header": {
+        "challenge": "Tantangan",
+        "course": "Pembelajaran",
+        "register": "Daftar",
+        "login": "Masuk"
+    },
+    "headline": {
+        "title": "Siapkan dirimu untuk menjadi pemilih di Pemilu besok.",
+        "subtitle": "Pelajari apa saja yang perlu kamu ketahui, untuk menentukan calon pemimpin Indonesia 5 tahun kedepan",
+        "button": "Lihat pembelajaran"
+    },
+    "footer": {
+        "office_location": "Lokasi kantor",
+        "contact_us": "Kontak kami"
     }
 }

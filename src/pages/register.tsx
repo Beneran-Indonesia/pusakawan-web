@@ -12,23 +12,6 @@ import { useForm, SubmitHandler, FieldErrors } from "react-hook-form";
 import { RegisterUserProps } from '@/types/auth';
 import { Input } from '@/components/Form/Input';
 
-type ErrorTypographyProps = {
-    fieldName: keyof RegisterUserProps, errors: FieldErrors<RegisterUserProps>
-}
-
-// function ErrorTypography({ fieldName, errors }: ErrorTypographyProps) {
-//     console.log(fieldName, errors)
-//     if (Object.keys(errors).includes(fieldName)) {
-//         console.log('true')
-//         return (
-//             <Typography color="error">
-//                 {errors[fieldName]?.message}
-//             </Typography>
-//         )
-//     }
-//     return null;
-// }
-
 export default function SignUp() {
     const { control, handleSubmit, formState: { errors } } = useForm<RegisterUserProps>({ defaultValues: { email: '', fullName: '', password: '', phoneNumber: '', role: 'Student' } });
     // TODO: Create error handler
