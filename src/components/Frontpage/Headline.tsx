@@ -1,6 +1,10 @@
-import { Box, Button, Container, Grid, Typography } from "@mui/material";
+import Box from "@mui/material/Box";
+import Container from "@mui/material/Container";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
+import Grid from "@mui/material/Grid";
 import { useTranslations } from "next-intl";
-import ImageWrapper from "./ImageWrapper";
+import ImageWrapper from "../ImageWrapper";
 import { headlinePictures } from "@/lib/constants";
 import Circle from "@svgs/circle.svg";
 
@@ -21,14 +25,17 @@ function CircleBackground({ top, bottom, left, right, color }: CircleBackgroundP
             width={366}
             height={266}
             // TODO: fix this color
-            style={{ position: 'absolute', top, bottom, left, right, stroke: color }} />
+            style={{ position: 'absolute', top, bottom, left, right, color }} />
     )
 }
 
 export default function Headline() {
     const t = useTranslations('headline');
     return (
-        <div style={{ position: 'relative', zIndex: -2, overflow: 'hidden' }}>
+        // TODO: Hover button doesnt work figure out why
+        <div style={{ position: 'relative', overflow: 'hidden' }}>
+            <CircleBackground left="-93px" bottom="-110px" />
+            <CircleBackground top="-100px" right="-200px" />
             <Grid
                 container
                 component="main"
@@ -38,11 +45,22 @@ export default function Headline() {
                 justifyContent="center"
                 bgcolor="primary.main"
                 height="30rem"
+                // position="absolute"
+                zIndex={2}
             >
-                <CircleBackground left="-93px" bottom="-110px" />
-                <CircleBackground top="-100px" right="-200px" color="#BE454E" />
-                <Container sx={{ display: 'flex', gap: 12, color: 'monochrome.main', alignItems: 'center', width: 'fit-content', }}>
-                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, width: 428 }}>
+                <Container sx={{
+                    display: 'flex', gap: 12,
+                    color: 'monochrome.main', alignItems: 'center', width: 'fit-content',
+                    // zIndex: 1, position: 'fixed'
+                    zIndex: 3
+                }}
+                >
+                    <Box sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: 3,
+                        width: 428
+                    }}>
                         <Typography component="h1" variant="h3" fontWeight={600}>
                             {t('title')}
                         </Typography>

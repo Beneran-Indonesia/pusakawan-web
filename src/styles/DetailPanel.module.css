@@ -1,0 +1,6 @@
+.custom-ul li::marker {
+    color: #AE1622;
+    font-size: 30px;
+}
+
+/* .custom-ul li >  */

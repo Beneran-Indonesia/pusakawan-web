@@ -39,6 +39,9 @@ const themeOptions: ThemeOptions = {
         sizeSmall: {
           height: '2rem',
         },
+        outlined: {
+          color: '#ae1622'
+        }
       }
     },
     // MuiLoad

@@ -1,5 +1,8 @@
 import { CSSProperties } from "react";
 
+function unsplash(id: string) {
+    return `https://source.unsplash.com/${id}`;
+}
 const formControlRoot: CSSProperties = {
     borderRadius: '0.5rem',
     backgroundColor: 'monochrome.main',
@@ -7,8 +10,16 @@ const formControlRoot: CSSProperties = {
 };
 
 const headlinePictures = [
-    "https://source.unsplash.com/fdM9euZW2j4",
+    unsplash('fdM9euZW2j4'),
 ];
+
+const bannerPicture = unsplash('ZqsY740eAOo');
+
+const coursesPictures = [
+    unsplash('WgGJjGN4_ck'),
+    unsplash('joqWSI9u_XM'),
+    unsplash('OJF3lYjC6vg'),
+]
 
 type FooterInformationObject = {
     [key: string]: {
@@ -31,4 +42,6 @@ export {
     formControlRoot,
     headlinePictures,
     footerInformation,
+    bannerPicture,
+    coursesPictures
 };

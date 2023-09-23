@@ -13,13 +13,13 @@ import { Control, Controller, SubmitHandler, useForm } from 'react-hook-form';
 import PasswordInput from '@/components/Form/PasswordInput';
 import { useState } from 'react';
 import LogoWrapper from '@/components/ImageWrapper';
-import Link from 'next/link';
 import GoogleSVG from '@tplogos/google.svg';
 import UnsplashLogin from '@images/unsplash_login.png';
 import Waves from "@svgs/waves.svg";
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import LoadingButton from '@mui/lab/LoadingButton';
+import UnderlinedLink from '@/components/UnderlinedLink';
 
 const LoginContainer = styled(Container)({
     display: 'flex',
@@ -69,16 +69,7 @@ export default function SignIn() {
     );
 }
 
-const UnderlinedLink = styled(Link)({
-    display: "inline-block",
-    paddingBottom: "2px",
-    backgroundImage: "linear-gradient(#000 0 0)",
-    backgroundPosition: "0 100%",
-    backgroundSize: "0% 2px",
-    backgroundRepeat: "no-repeat",
-    transition: "background-size 0.3s, background-position 0s 0.3s",
-    "&:hover": { backgroundPosition: "100% 100%", backgroundSize: "100% 2px" }
-});
+
 
 type APIErrorMessageTypes = {
     error: boolean;

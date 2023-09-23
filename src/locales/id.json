@@ -37,5 +37,37 @@
     "footer": {
         "office_location": "Lokasi kantor",
         "contact_us": "Kontak kami"
+    },
+    "detail_panel": {
+        "title": "Belajar kewarganegaraan yang interaktif",
+        "detail_one": {
+            "title": "Materi yang diberikan mudah untuk dipahami",
+            "detail": "Materi dibawakan dengan cara yang sederhana serta  tidak membosankan."
+        },
+        "detail_two": {
+            "title": "Berlatih pola pikir yang membangun",
+            "detail": "Berlatih cara berpikir seperti problem solving, critical thinking, decision making, dan analytical thinking dengan mengerjakan tantangan yang ada."
+        }
+    },
+    "banner": {
+        "title": "Apakah kamu sudah siap untuk menjadi pemilih ?",
+        "button": "Ikut challenge"
+    },
+    "courses_selection": {
+        "title": "Belajar dari <red>Isu-Isu</red> Sekitar",
+        "cta": "Lihat isu lainnya",
+        "environment": {
+            "title": "Lingkungan",
+            "text": "Pelajari isu yang terkait lingkungan yang menjadi perhatian anak muda saat ini."
+        },
+        "economy": {
+            "title": "Ekonomi",
+            "text": "Pelajari isu ekonomi dan perkembangannya serta dampaknya bagi masyarakat."
+        },
+        "health": {
+            "title": "Kesehatan",
+            "text": "Pelajari isu kesehatan dan perkembangannya di lingkungan masyarakat."
+        },
+        "button": "Pelajari"
     }
 }

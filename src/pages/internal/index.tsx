@@ -1,7 +1,10 @@
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
-import Headline from "@/components/Headline";
+import Headline from "@/components/Frontpage/Headline";
 import Head from "next/head";
+import DetailPanel from "@/components/Frontpage/DetailPanel";
+import Banner from "@/components/Frontpage/Banner";
+import CoursesSection from "@/components/Frontpage/CoursesSection";
 
 export default function InternalIndex() {
     return (
@@ -9,6 +12,9 @@ export default function InternalIndex() {
             <Head><title>Pusakawan</title></Head>
             <Header />
             <Headline />
+            <DetailPanel />
+            <CoursesSection />
+            <Banner />
             <Footer />
         </>
     )
