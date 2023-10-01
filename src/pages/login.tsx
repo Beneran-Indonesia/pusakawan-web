@@ -101,6 +101,7 @@ function LoginBox() {
                     return;
                 }
                 if (dt.error) {
+                    console.log(dt.error)
                     setError("email", { type: "custom", message: "" });
                     setError("password", { type: "custom", message: "" });
                     const error = dt.error;

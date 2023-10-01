@@ -97,6 +97,7 @@
         },
         "form_labels": {
             "full_name": "Nama panjang"
-        }
+        },
+        "snackbar": "Registrasi sukses"
     }
 }

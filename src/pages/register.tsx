@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import LoadingButton from '@mui/lab/LoadingButton';
+import Snackbar from '@mui/material/Snackbar';
 import { useState } from 'react';
 import LogoWrapper from '@/components/ImageWrapper';
 import GoogleSVG from '@tplogos/google.svg';
@@ -66,6 +67,7 @@ function SignupForm() {
     const router = useRouter();
     const { control, handleSubmit, setError } = useForm<RegisterUserProps>({ defaultValues: { email: '', fullName: '', password: '', phoneNumber: '', userName: '', confirmation: '', role: 'Student' } });
     const [loading, setLoading] = useState(false);
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [tcChecked, setTcChecked] = useState(false);
     const [showDoublePassword, setShowDoublePassword] = useState<showDoublePassword>({ main: false, confirmation: false });
     const handleshowDoublePasswordMain = () => setShowDoublePassword({ ...showDoublePassword, main: !showDoublePassword.main });
@@ -85,13 +87,17 @@ function SignupForm() {
             const res = await api.post('/auth/register/', {
                 email, password, username: userName, full_name: fullName, phone_no: phoneNumber, role: 'Student',
             })
-            if (res.status === 200) {
-                router.push('/login');
+            console.log('succeed', res)
+            // const res = { status: 201 }
+            if (res.status === 201) {
+                console.log(res.data);
+                // router.push('/login');
                 return;
             }
-            console.log(res.data);
+            // console.log(res.data);
         } catch (e) {
             const err = e as AxiosError;
+            console.log('err', err);
             if (err.response?.data) {
                 const message = err.response.data;
                 const errorField = Object.keys(message)
@@ -176,6 +182,11 @@ function SignupForm() {
                     <LogoWrapper src={GoogleSVG} alt="Google Logo" style={loading ? { display: 'none' } : undefined} />
                 </span>
             </LoadingButton>
+            <Snackbar
+                open={snackbarOpen}
+                autoHideDuration={3000}
+                onClose={() => setSnackbarOpen(false)}
+                message={t('snackbar')} />
         </Box>
     )
 }

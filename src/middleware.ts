@@ -1,7 +1,6 @@
 import { getToken } from 'next-auth/jwt';
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
-import api from './lib/api';
 
 // This function can be marked `async` if using `await` inside
 export async function middleware(req: NextRequest) {
@@ -14,7 +13,7 @@ export async function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL('/', req.url))
   }
   // Redirect user to /user if user is logged in
-  if (pathname === '/login' && loggedIn) {
+  if ((pathname === '/login' || pathname === '/register') && loggedIn) {
     return NextResponse.redirect(new URL('/user', req.url))
   }
   return NextResponse.next();
