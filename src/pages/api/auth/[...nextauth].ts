@@ -8,9 +8,9 @@ const getMaxAgeDay = (days: number) => days * 24 * 3600;
 
 export default async function auth(req: NextApiRequest, res: NextApiResponse) {
     // Max age is 2 weeks
-    let maxAge = getMaxAgeDay(14);
+    let maxAge = getMaxAgeDay(1);
     if (req.body.remember) {
-        maxAge = getMaxAgeDay(1);
+        maxAge = getMaxAgeDay(14);
     }
     return await NextAuth(req, res, {
         session: {
@@ -52,7 +52,7 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
             async jwt({ user, token, account }) {
                 if (account?.provider === 'email') {
                     const accessToken = user.tokens.access;
-                    console.log(accessToken)
+                    return { ...token, accessToken };
                 } else if (account?.provider === 'google') {
                     // Gotta use firebase auth ^w^ to get the token and post request.
                     const { id_token } = account;

@@ -10,36 +10,38 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { useTranslations } from 'next-intl';
 import { Control, Controller } from "react-hook-form";
 import { RegisterUserProps } from "@/types/auth";
+import { SxProps, Theme } from "@mui/material";
 
 type PasswordInputProps = {
     showPassword: boolean;
     handleClickShowPassword: () => void;
     control: Control<RegisterUserProps>; // | Control<LoginUserProps>;
-
+    formSx?: SxProps<Theme>;
+    confirmation?: boolean;
 }
 
-export default function PasswordInput({ control, showPassword, handleClickShowPassword }: PasswordInputProps) {
+export default function PasswordInput({ control, showPassword, handleClickShowPassword, formSx, confirmation }: PasswordInputProps) {
     const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
     };
-    const t = useTranslations('form.text_field.error');
+    const t = useTranslations('form.text_field');
     return (
         <Controller
-            name="password"
+            name={confirmation ? "confirmation" : "password"}
             control={control}
             // If password, make min length to be 8.
             rules={{
-                required: { value: true, message: t('required') },
-                minLength: { value: 8, message: t('min_length_password') },
+                required: { value: true, message: t('error.required') },
+                minLength: { value: 8, message: t('error.min_length_password') },
             }}
             render={({
                 field: { onChange, value },
                 fieldState: { error },
             }) => (
-                <FormControl variant="outlined" sx={{ mt: 3 }}>
-                    <InputLabel htmlFor="password-input">Password</InputLabel>
+                <FormControl variant="outlined" sx={formSx}>
+                    <InputLabel htmlFor={confirmation ? "password-input-confirmation" : "password-input"}>{confirmation ? t('label.confirmation') : "Password"}</InputLabel>
                     <OutlinedInput
-                        id="password-input"
+                        id={confirmation ? "password-input-confirmation" : "password-input"}
                         type={showPassword ? 'text' : 'password'}
                         autoComplete="current-password"
                         error={!!error}
@@ -57,12 +59,12 @@ export default function PasswordInput({ control, showPassword, handleClickShowPa
                                 </IconButton>
                             </InputAdornment>
                         }
-                        label="Password"
+                        label={confirmation ? t('label.confirmation') : "Password"}
                         onChange={onChange}
                         value={value}
                     />
                     {
-                        !!error && (<FormHelperText error id="password-input-error">
+                        !!error && (<FormHelperText error>
                             {error?.message}
                         </FormHelperText>)
                     }

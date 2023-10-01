@@ -69,8 +69,6 @@ export default function SignIn() {
     );
 }
 
-
-
 type APIErrorMessageTypes = {
     error: boolean;
     type: string;
@@ -160,6 +158,7 @@ function LoginBox() {
                     control={control}
                     handleClickShowPassword={handleClickShowPassword}
                     showPassword={showPassword}
+                    formSx={{ mt: 3 }}
                 />
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3, mt: 1 }}>
                     <CheckboxRememberMe control={control} />

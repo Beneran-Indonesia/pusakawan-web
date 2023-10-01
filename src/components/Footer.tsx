@@ -1,9 +1,11 @@
-import { Box, Typography } from "@mui/material";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
 import PusakawanLogo from "./PusakawanLogo";
 import { useTranslations } from "next-intl";
 import { footerInformation } from "@/lib/constants";
 import PhoneIcon from '@mui/icons-material/Phone';
 import PlaceIcon from '@mui/icons-material/Place';
+import Link from "next/link";
 
 export default function Footer() {
     const t = useTranslations("footer");
@@ -56,7 +58,7 @@ export default function Footer() {
                 </Box>
             </Box>
             <hr />
-            <Typography variant="h5" component="p" my="75px" ml="auto">Copyrights &#169; {currentYear} Beneran Indonesia</Typography>
+            <Typography variant="h5" component="p" my="75px" ml="auto">Copyrights &#169; {currentYear} <Link href='https://beneranindonesia.id/'>Beneran Indonesia</Link></Typography>
         </Box>
     )
 }

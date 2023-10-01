@@ -46,7 +46,6 @@ export default function Home() {
               <Image
                 src="/logo.svg"
                 alt="BENI Logo"
-                className={styles.vercelLogo}
                 width={40}
                 height={24}
                 priority

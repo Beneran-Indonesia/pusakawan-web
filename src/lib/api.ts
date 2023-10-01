@@ -7,6 +7,6 @@ const headers = {
 }
 
 export default axios.create({
-    baseURL: process.env.API_URL,
+    baseURL: "https://api.pusakaapp.id",
     headers
 })

@@ -1,6 +1,7 @@
 import { coursesPictures } from "@/lib/constants";
 import Card from "./Card";
-import { Box, Typography } from "@mui/material";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
 import { useTranslations } from "next-intl";
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import UnderlinedLink from '@/components/UnderlinedLink';

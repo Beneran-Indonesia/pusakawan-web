@@ -1,108 +1,268 @@
 import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import LoadingButton from '@mui/lab/LoadingButton';
+import { useState } from 'react';
+import LogoWrapper from '@/components/ImageWrapper';
+import GoogleSVG from '@tplogos/google.svg';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { useForm, SubmitHandler, FieldErrors } from "react-hook-form";
+import { useForm, SubmitHandler } from "react-hook-form";
 import { RegisterUserProps } from '@/types/auth';
 import { Input } from '@/components/Form/Input';
+import HomeButton from '@/components/HomeButton';
+import { useTranslations } from 'next-intl';
+import { signIn } from 'next-auth/react';
+import PasswordInput from '@/components/Form/PasswordInput';
+import Waves from "@svgs/waves.svg";
+import api from '@/lib/api';
+
+const BoxBackground: React.CSSProperties = {
+    background: "linear-gradient(180deg, #EFD0D3 0%, rgba(239, 208, 211, 0.20) 100%)",
+    backdropFilter: 'blur(5px)',
+};
 
 export default function SignUp() {
-    const { control, handleSubmit, formState: { errors } } = useForm<RegisterUserProps>({ defaultValues: { email: '', fullName: '', password: '', phoneNumber: '', role: 'Student' } });
+    const t = useTranslations('register');
     // TODO: Create error handler
-    // console.log(errors);
-    const onSubmit: SubmitHandler<RegisterUserProps> = data => console.log(data);
-
-    // const onSubmit: SubmitHandler<RegisterUserProps> = (event: React.FormEvent<HTMLFormElement>) => {
-    //     event.preventDefault();
-    //     const data = new FormData(event.currentTarget);
-    //     console.log({
-    //         email: data.get('email'),
-    //         password: data.get('password'),
-    //     });
-    // };
-
     return (
-        <Container component="main" maxWidth="xs">
-            <CssBaseline />
-            <Box
-                sx={{
-                    marginTop: 8,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                }}
-            >
-                <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                    <LockOutlinedIcon />
-                </Avatar>
-                <Typography component="h1" variant="h5">
-                    Sign up
+        <Box
+            sx={{
+                backgroundImage: `url(${Waves.src})`,
+                backgroundRepeat: 'repeat-x',
+                backgroundPosition: 'bottom',
+                pb: 5
+            }}
+        >
+            <HomeButton sx={{ position: 'absolute', top: '3%', left: '15%' }} />
+            <Container component="main" maxWidth="xs" sx={{ mt: 7 }}>
+                <Typography component="h1" variant="h4" fontWeight={500} textTransform="capitalize" mb={3}>
+                    {t('title')}
                 </Typography>
-                <Box component="form" sx={{ mt: 3 }} onSubmit={handleSubmit(onSubmit)}>
-                    {/* noValidate onSubmit={handleSubmit} */}
-                    <Grid container spacing={2}>
-                        <Grid item xs={12}>
-                            <Input
-                                label="Username"
-                                name="userName"
-                                autoComplete="username"
-                                required
-                                control={control}
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Input
-                                name="fullName"
-                                label="Full Name"
-                                autoComplete="name"
-                                required
-                                control={control}
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Input
-                                label="Email Address"
-                                name="email"
-                                autoComplete="email"
-                                type="email"
-                                required
-                                control={control}
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Input
-                                name="password"
-                                label="Password"
-                                autoComplete="new-password"
-                                type="password"
-                                required
-                                control={control}
-                            />
-                        </Grid>
-                    </Grid>
-                    <Button
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        sx={{ mt: 3, mb: 2 }}
-                    >
-                        Sign Up
-                    </Button>
-                    <Grid container justifyContent="flex-end">
-                        <Grid item>
-                            <Link href="#" variant="body2">
-                                Already have an account? Sign in
-                            </Link>
-                        </Grid>
-                    </Grid>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        py: '40px',
+                        px: '20px',
+                        borderRadius: 2,
+                        ...BoxBackground
+                    }}
+                >
+                    <SignupForm />
                 </Box>
-            </Box>
-        </Container>
+            </Container>
+        </Box>
     );
+}
+
+type showDoublePassword = {
+    main: boolean;
+    confirmation: boolean;
+}
+
+function SignupForm() {
+    const t = useTranslations('register');
+    const router = useRouter();
+    const { control, handleSubmit, setError } = useForm<RegisterUserProps>({ defaultValues: { email: '', fullName: '', password: '', phoneNumber: '', userName: '', confirmation: '', role: 'Student' } });
+    const [loading, setLoading] = useState(false);
+    const [tcChecked, setTcChecked] = useState(false);
+    const [showDoublePassword, setShowDoublePassword] = useState<showDoublePassword>({ main: false, confirmation: false });
+    const handleshowDoublePasswordMain = () => setShowDoublePassword({ ...showDoublePassword, main: !showDoublePassword.main });
+    const handleshowDoublePasswordConfirmation = () => setShowDoublePassword({ ...showDoublePassword, confirmation: !showDoublePassword.confirmation });
+    const handleTcChecked = () => setTcChecked(!tcChecked);
+    const onSubmit: SubmitHandler<RegisterUserProps> = async (data) => {
+        setLoading(true);
+        const { email, password, confirmation, fullName, userName, phoneNumber } = data;
+        // if password confirmation isn't like password
+        if (password !== confirmation) {
+            setError("password", { type: "custom", message: t('error.password_not_same_confirmation') })
+            setError("confirmation", { type: "custom", message: t('error.password_not_same_confirmation') })
+            setLoading(false);
+            return;
+        }
+        try {
+            const res = await api.post('/auth/register/', {
+                email, password, username: userName, full_name: fullName, phone_no: phoneNumber, role: 'Student',
+            })
+            if (res.status === 200) {
+                router.push('/login');
+                return;
+            }
+            console.log(res.data);
+        } catch (e) {
+            const err = e as AxiosError;
+            if (err.response?.data) {
+                const message = err.response.data;
+                const errorField = Object.keys(message)
+                console.log('email' in errorField);
+                if (errorField.includes('email')) {
+                    setError('email', { type: 'custom', message: t('error.email') })
+                }
+                if (errorField.includes('username')) {
+                    setError('userName', { type: 'custom', message: t('error.username') })
+                }
+            }
+        }
+        setLoading(false);
+    };
+    return (
+        <Box component="form" onSubmit={handleSubmit(onSubmit)}
+            display="flex" gap={3} flexDirection="column" width="100%"
+        >
+            <Input
+                name="fullName"
+                label={t('form_labels.full_name')}
+                autoComplete="name"
+                required
+                control={control}
+            />
+            <Input
+                label="Username"
+                name="userName"
+                autoComplete="username"
+                required
+                control={control}
+            />
+            <Input
+                label="Email"
+                name="email"
+                autoComplete="email"
+                type="email"
+                required
+                control={control}
+            />
+            <PasswordInput
+                control={control}
+                handleClickShowPassword={handleshowDoublePasswordMain}
+                showPassword={showDoublePassword.main}
+            />
+            <PasswordInput
+                control={control}
+                handleClickShowPassword={handleshowDoublePasswordConfirmation}
+                showPassword={showDoublePassword.confirmation}
+                confirmation={true}
+            />
+            <TelInput control={control} />
+            <TermsAndCondition checked={tcChecked} handleChecked={handleTcChecked} />
+            <LoadingButton
+                // size="large"
+                loading={loading}
+                aria-label={t('google') + ' email and password'}
+                type="submit"
+                fullWidth
+                variant="contained"
+                disabled={!tcChecked}
+            >
+                {t('title')}
+            </LoadingButton>
+            <Typography variant="subtitle2" sx={{ textAlign: 'center' }}>
+                {t('or')}
+            </Typography>
+            <LoadingButton
+                loading={loading}
+                aria-label={t('google') + ' google'}
+                type="button"
+                fullWidth
+                variant="contained"
+                color="monochrome"
+                sx={{ textTransform: 'none', color: 'black' }}
+                // TODO: GOOGLE LOGIN ERROR
+                onClick={() => signIn('google')}
+                disabled={true}
+            >
+                <span style={{ display: 'inline-flex', gap: '0.4rem', alignItems: 'center' }}>
+                    {t('google')}
+                    <LogoWrapper src={GoogleSVG} alt="Google Logo" style={loading ? { display: 'none' } : undefined} />
+                </span>
+            </LoadingButton>
+        </Box>
+    )
+}
+
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+import Modal from '@mui/material/Modal';
+import TelInput from '@/components/Form/TelInput';
+import { useRouter } from 'next/router';
+import { AxiosError, AxiosResponse } from 'axios';
+import { error } from 'console';
+
+type TermsAndConditionProps = {
+    checked: boolean;
+    handleChecked: () => void;
+};
+
+function TermsAndCondition({ checked, handleChecked }: TermsAndConditionProps) {
+    const t = useTranslations('register');
+    const [modalOpen, setModalOpen] = useState(false);
+    const handleClose = () => setModalOpen(false);
+    const handleOpen = () => setModalOpen(true);
+    return (
+        <Box>
+            <FormGroup title={t('approve')}>
+                <FormControlLabel required
+                    control={
+                        <Checkbox checked={checked}
+                            onChange={handleChecked}
+                            inputProps={{ 'aria-label': 'controlled' }}
+                        />
+                    }
+                    label={
+                        <Typography fontWeight={500}>{t('terms_and_condition')}</Typography>
+                    } />
+            </FormGroup>
+            <Box title={t('see') + t('terms_and_condition_link')} aria-label='terms and conditions modal action' onClick={handleOpen}
+                ml="30px" display="flex" flexDirection="row" color="primary.main" alignItems="center" gap={0.5} sx={{ cursor: 'pointer' }}
+            >
+                <Typography sx={{ textDecoration: 'underline' }}
+                    fontWeight={500}
+                >
+                    {t('terms_and_condition_link')}
+                </Typography>
+                <OpenInNewIcon fontSize='small' />
+            </Box>
+            <TermsAndConditionModal open={modalOpen} handleClose={handleClose} />
+        </Box>
+    )
+}
+
+type TermsAndConditionModalProps = {
+    open: boolean;
+    handleClose: () => void;
+};
+
+function TermsAndConditionModal({ open, handleClose }: TermsAndConditionModalProps) {
+    const t = useTranslations('register');
+    return (
+        <Modal
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="terms and condition modal"
+            aria-describedby="read terms and condition"
+        >
+            <Box >
+                <iframe src="./assets/terms-and-condition.html"
+                    style={{
+                        width: '50%', height: "80vh",
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)',
+                        borderRadius: 14
+                    }}
+                />
+            </Box>
+        </Modal>
+    )
+}
+
+export function getStaticProps({ locale }: { locale: "en" | "id" }) {
+    return {
+        props: {
+            messages: require(`../locales/${locale}.json`),
+        },
+    };
 }

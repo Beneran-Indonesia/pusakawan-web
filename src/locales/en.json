@@ -1,11 +1,23 @@
 {
+    "home_button": {
+        "value": "Home",
+        "title": "Go back to home"
+    },
     "form": {
         "text_field": {
+            "label": {
+                "confirmation": "Confirm password"
+            },
             "error": {
                 "email": "Email is not valid. Please check your spelling.",
                 "required": "This column is required.",
-                "min_length_password": "Password too short. Minimum 8 characters."
+                "min_length_password": "Password too short. Minimum 8 characters.",
+                "min_length_phone": "Number too short. Minimum 4 digit.",
+                "max_length_phone": "Number too long. Maximum 12 digit."
             }
+        },
+        "phone": {
+            "title": "Insert phone number"
         }
     },
     "login": {
@@ -69,5 +81,22 @@
             "text": "Pelajari isu kesehatan dan perkembangannya di lingkungan masyarakat."
         },
         "button": "Pelajari"
+    },
+    "register": {
+        "title": "Account register",
+        "google": "Register with",
+        "or": "or",
+        "terms_and_condition": "I have read and agree to the applicable terms",
+        "terms_and_condition_link": "Pusakawan's terms and conditions",
+        "see": "See ",
+        "approve": "I agree",
+        "error": {
+            "password_not_same_confirmation": "Password is not the same",
+            "email": "This email has been registered",
+            "username": "This username has been registered"
+        },
+        "form_labels": {
+            "full_name": "Full name"
+        }
     }
 }

@@ -20,6 +20,7 @@ type UserDatas = {
 export const getServerSideProps: GetServerSideProps<UserDatas> = async (ctx) => {
     const session = await getSession(ctx);
     if (!session) return { props: { userData: "Cannot process your request at the moment. Session unavailable." } };
+    console.log(session);
     try {
         const res = await api.get(process.env.API_URL + '/user/my-profile', {
             headers: createBearerHeader(session.accessToken)
