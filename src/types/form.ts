@@ -1,5 +1,5 @@
 import { Control } from "react-hook-form";
-import { LoginUserProps, RegisterUserProps } from "./auth";
+import { RegisterUserProps } from "./auth";
 
 type FormInputProps = {
     name: keyof RegisterUserProps;

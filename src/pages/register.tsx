@@ -24,36 +24,40 @@ const BoxBackground: React.CSSProperties = {
 
 export default function SignUp() {
     const t = useTranslations('register');
-    // TODO: Create error handler
     return (
-        <Box
-            sx={{
-                backgroundImage: `url(${Waves.src})`,
-                backgroundRepeat: 'repeat-x',
-                backgroundPosition: 'bottom',
-                pb: 5
-            }}
-        >
-            <HomeButton sx={{ position: 'absolute', top: '3%', left: '15%' }} />
-            <Container component="main" maxWidth="xs" sx={{ mt: 7 }}>
-                <Typography component="h1" variant="h4" fontWeight={500} textTransform="capitalize" mb={3}>
-                    {t('title')}
-                </Typography>
-                <Box
-                    sx={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        py: '40px',
-                        px: '20px',
-                        borderRadius: 2,
-                        ...BoxBackground
-                    }}
-                >
-                    <SignupForm />
-                </Box>
-            </Container>
-        </Box>
+        <>
+            <Head>
+                <title>Register to Pusakawan</title>
+            </Head>
+            <Box
+                sx={{
+                    backgroundImage: `url(${Waves.src})`,
+                    backgroundRepeat: 'repeat-x',
+                    backgroundPosition: 'bottom',
+                    pb: 5
+                }}
+            >
+                <HomeButton sx={{ position: 'absolute', top: '3%', left: '15%' }} />
+                <Container component="main" maxWidth="xs" sx={{ mt: 7 }}>
+                    <Typography component="h1" variant="h4" fontWeight={500} textTransform="capitalize" mb={3}>
+                        {t('title')}
+                    </Typography>
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            py: '40px',
+                            px: '20px',
+                            borderRadius: 2,
+                            ...BoxBackground
+                        }}
+                    >
+                        <SignupForm />
+                    </Box>
+                </Container>
+            </Box>
+        </>
     );
 }
 
@@ -67,7 +71,7 @@ function SignupForm() {
     const router = useRouter();
     const { control, handleSubmit, setError } = useForm<RegisterUserProps>({ defaultValues: { email: '', fullName: '', password: '', phoneNumber: '', userName: '', confirmation: '', role: 'Student' } });
     const [loading, setLoading] = useState(false);
-    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [snackbarOpen, setSnackbarOpen] = useState<false | string>(false);
     const [tcChecked, setTcChecked] = useState(false);
     const [showDoublePassword, setShowDoublePassword] = useState<showDoublePassword>({ main: false, confirmation: false });
     const handleshowDoublePasswordMain = () => setShowDoublePassword({ ...showDoublePassword, main: !showDoublePassword.main });
@@ -90,6 +94,7 @@ function SignupForm() {
             console.log('succeed', res)
             // const res = { status: 201 }
             if (res.status === 201) {
+                setSnackbarOpen('snackbar.succeed');
                 console.log(res.data);
                 // router.push('/login');
                 return;
@@ -109,6 +114,7 @@ function SignupForm() {
                     setError('userName', { type: 'custom', message: t('error.username') })
                 }
             }
+            setSnackbarOpen('snackbar.failed');
         }
         setLoading(false);
     };
@@ -183,10 +189,10 @@ function SignupForm() {
                 </span>
             </LoadingButton>
             <Snackbar
-                open={snackbarOpen}
-                autoHideDuration={3000}
+                open={typeof snackbarOpen === 'string'}
+                // autoHideDuration={3000}
                 onClose={() => setSnackbarOpen(false)}
-                message={t('snackbar')} />
+                message={t(snackbarOpen)} />
         </Box>
     )
 }
@@ -198,8 +204,8 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import Modal from '@mui/material/Modal';
 import TelInput from '@/components/Form/TelInput';
 import { useRouter } from 'next/router';
-import { AxiosError, AxiosResponse } from 'axios';
-import { error } from 'console';
+import { AxiosError } from 'axios';
+import Head from 'next/head';
 
 type TermsAndConditionProps = {
     checked: boolean;

@@ -98,6 +98,9 @@
         "form_labels": {
             "full_name": "Full name"
         },
-        "snackbar": "Register successful"
+        "snackbar": {
+            "succeed": "Register successful",
+            "failed": "Server error occured. Please contact administrator."
+        }
     }
 }

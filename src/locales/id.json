@@ -98,6 +98,9 @@
         "form_labels": {
             "full_name": "Nama panjang"
         },
-        "snackbar": "Registrasi sukses"
+        "snackbar": {
+            "succeed": "Registrasi sukses",
+            "failed": "Terjadi error di server. Tolong kontak administrator."
+        }
     }
 }

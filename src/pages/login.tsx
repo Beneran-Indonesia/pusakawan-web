@@ -20,6 +20,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import LoadingButton from '@mui/lab/LoadingButton';
 import UnderlinedLink from '@/components/UnderlinedLink';
+import { signUpWithGoogle } from '@/lib/firebase';
 
 const LoginContainer = styled(Container)({
     display: 'flex',
@@ -194,8 +195,9 @@ function LoginBox() {
                         color="monochrome"
                         sx={{ textTransform: 'none', color: 'black' }}
                         // TODO: GOOGLE LOGIN ERROR
-                        onClick={() => signIn('google')}
-                        disabled={true}
+                        // onClick={() => signIn('google')}
+                        onClick={() => signUpWithGoogle()}
+                    // disabled={true}
                     >
                         <span style={{ display: 'inline-flex', gap: '0.4rem', alignItems: 'center' }}>
                             {t('google')}
