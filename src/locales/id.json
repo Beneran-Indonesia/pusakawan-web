@@ -25,6 +25,7 @@
         "description": "Kalau kamu belum memiliki akun yang terdaftar, kamu bisa mendaftarnya <strong>disini</strong>",
         "remember_me": "Ingat saya",
         "forgot_password": "Lupa password?",
+        "change_password": "Ganti password",
         "or": "Atau",
         "google": "Masuk dengan",
         "to_register": "Bikin akun",
@@ -100,6 +101,14 @@
         },
         "snackbar": {
             "succeed": "Registrasi sukses",
+            "failed": "Terjadi error di server. Tolong kontak administrator."
+        }
+    },
+    "reset-password": {
+        "button": "Ubah password",
+        "title": "Ganti password",
+        "snackbar": {
+            "succeed": "Permintaan ganti password telah terkirim. Check email kamu ya!",
             "failed": "Terjadi error di server. Tolong kontak administrator."
         }
     }

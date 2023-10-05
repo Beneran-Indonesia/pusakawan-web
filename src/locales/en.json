@@ -25,6 +25,7 @@
         "description": "Have no account? Register <strong>here</strong>.",
         "remember_me": "Remember me",
         "forgot_password": "Forgot password?",
+        "change_password": "Change password",
         "or": "Or",
         "google": "Login with",
         "to_register": "Create an account",
@@ -100,6 +101,14 @@
         },
         "snackbar": {
             "succeed": "Register successful",
+            "failed": "Server error occured. Please contact administrator."
+        }
+    },
+    "reset-password": {
+        "button": "Reset password",
+        "title": "Change password",
+        "snackbar": {
+            "succeed": "Reset password request was sent. Please check your email!",
             "failed": "Server error occured. Please contact administrator."
         }
     }

@@ -12,7 +12,6 @@ import { RegisterUserProps } from '@/types/auth';
 import { Input } from '@/components/Form/Input';
 import HomeButton from '@/components/HomeButton';
 import { useTranslations } from 'next-intl';
-import { signIn } from 'next-auth/react';
 import PasswordInput from '@/components/Form/PasswordInput';
 import Waves from "@svgs/waves.svg";
 import api from '@/lib/api';
@@ -24,6 +23,7 @@ const BoxBackground: React.CSSProperties = {
 
 export default function SignUp() {
     const t = useTranslations('register');
+    const [snackbarOpen, setSnackbarOpen] = useState<false | string>(false);
     return (
         <>
             <Head>
@@ -53,10 +53,15 @@ export default function SignUp() {
                             ...BoxBackground
                         }}
                     >
-                        <SignupForm />
+                        <SignupForm setSnackbarOpen={setSnackbarOpen} />
                     </Box>
                 </Container>
             </Box>
+            <Snackbar
+                open={typeof snackbarOpen === 'string'}
+                // autoHideDuration={3000}
+                onClose={() => setSnackbarOpen(false)}
+                message={t(snackbarOpen)} />
         </>
     );
 }
@@ -66,12 +71,15 @@ type showDoublePassword = {
     confirmation: boolean;
 }
 
-function SignupForm() {
+type SignupFormProps = {
+    setSnackbarOpen: React.Dispatch<React.SetStateAction<string | false>>;
+};
+
+function SignupForm({ setSnackbarOpen }: SignupFormProps) {
     const t = useTranslations('register');
     const router = useRouter();
     const { control, handleSubmit, setError } = useForm<RegisterUserProps>({ defaultValues: { email: '', fullName: '', password: '', phoneNumber: '', userName: '', confirmation: '', role: 'Student' } });
     const [loading, setLoading] = useState(false);
-    const [snackbarOpen, setSnackbarOpen] = useState<false | string>(false);
     const [tcChecked, setTcChecked] = useState(false);
     const [showDoublePassword, setShowDoublePassword] = useState<showDoublePassword>({ main: false, confirmation: false });
     const handleshowDoublePasswordMain = () => setShowDoublePassword({ ...showDoublePassword, main: !showDoublePassword.main });
@@ -91,12 +99,9 @@ function SignupForm() {
             const res = await api.post('/auth/register/', {
                 email, password, username: userName, full_name: fullName, phone_no: phoneNumber, role: 'Student',
             })
-            console.log('succeed', res)
-            // const res = { status: 201 }
             if (res.status === 201) {
                 setSnackbarOpen('snackbar.succeed');
-                console.log(res.data);
-                // router.push('/login');
+                router.push('/login');
                 return;
             }
             // console.log(res.data);
@@ -179,20 +184,14 @@ function SignupForm() {
                 variant="contained"
                 color="monochrome"
                 sx={{ textTransform: 'none', color: 'black' }}
-                // TODO: GOOGLE LOGIN ERROR
-                onClick={() => signIn('google')}
-                disabled={true}
+                onClick={async() => await signUpWithGoogle()}
+                disabled={!tcChecked}
             >
                 <span style={{ display: 'inline-flex', gap: '0.4rem', alignItems: 'center' }}>
                     {t('google')}
                     <LogoWrapper src={GoogleSVG} alt="Google Logo" style={loading ? { display: 'none' } : undefined} />
                 </span>
             </LoadingButton>
-            <Snackbar
-                open={typeof snackbarOpen === 'string'}
-                // autoHideDuration={3000}
-                onClose={() => setSnackbarOpen(false)}
-                message={t(snackbarOpen)} />
         </Box>
     )
 }
@@ -206,6 +205,7 @@ import TelInput from '@/components/Form/TelInput';
 import { useRouter } from 'next/router';
 import { AxiosError } from 'axios';
 import Head from 'next/head';
+import { signUpWithGoogle } from '@/lib/firebase';
 
 type TermsAndConditionProps = {
     checked: boolean;
@@ -252,7 +252,6 @@ type TermsAndConditionModalProps = {
 };
 
 function TermsAndConditionModal({ open, handleClose }: TermsAndConditionModalProps) {
-    const t = useTranslations('register');
     return (
         <Modal
             open={open}

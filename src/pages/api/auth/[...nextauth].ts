@@ -1,39 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next"
-import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import api from "@/lib/api";
-import NextAuth from "next-auth"
-import { FirestoreAdapter } from "@auth/firebase-adapter"
-import { cert } from "firebase-admin/app";
-import { firebaseAuth, app } from "@/lib/firebase";
-// import { } from "firebase/app";
-import { signInWithCustomToken, signInWithPopup } from "firebase/auth";
-
-
-import * as admin from 'firebase-admin'
-const { privateKey } = JSON.parse(process.env.FIREBASE_PRIVATE_KEY!);
-
-// if (!admin.apps.length) {
-//     admin.initializeApp({
-//         credential: admin.credential.cert({
-//             projectId: process.env.FIREBASE_PROJECT_ID,
-//             clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-//             privateKey,
-//         }),
-//     })
-// }
-
-// const config = {
-//     apiKey: process.env.FIRESTORE_API_KEY,
-//     authDomain: process.env.FIRESTORE_AUTH_DOMAIN,
-//     databaseURL: process.env.FIRESTORE_DATABASE_URL,
-//     projectId: process.env.FIRESTORE_PROJECT_ID,
-//     storageBucket: process.env.FIRESTORE_STORAGE_BUCKET,
-//     messagingSenderId: process.env.FIRESTORE_MESSAGING_SENDER_ID
-// };
-
-// firebaseAdmin.initializeApp(config).auth().id
-
+import NextAuth from "next-auth";
 
 const getMaxAgeDay = (days: number) => days * 24 * 3600;
 
@@ -49,20 +17,7 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
             maxAge
         },
         secret: process.env.NEXTAUTH_SECRET,
-        // adapter: FirestoreAdapter({
-
-        //     name: "firebase",
-        //     credential: cert({
-        //         projectId: process.env.FIREBASE_PROJECT_ID,
-        //         clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-        //         privateKey,
-        //     },)
-        // }),
         providers: [
-            GoogleProvider({
-                clientId: process.env.GOOGLE_CLIENT_ID!,
-                clientSecret: process.env.GOOGLE_CLIENT_SECRET!
-            }),
             CredentialsProvider({
                 id: "firebase",
                 name: "firebase",
@@ -75,11 +30,11 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
                         const res = await api.post('/google-auth/', {
                             auth_token: accessToken
                         });
-                        if (res.status === 201) {
-                            return res.data;
+                        if (res.status === 200) {
+                            return res.data.data;
                         }
                     } catch (e) {
-                        console.log('err')
+                        console.log('firebase err', e)
                     }
                     return null;
                 }
@@ -110,41 +65,10 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
             })
         ],
         callbacks: {
-            async jwt({ user, token, account, profile, session, trigger }) {
+            async jwt({ user, token }) {
                 // console.log(user, token, account, profile, session, trigger)
-                if (account?.provider === 'email') {
-                    const accessToken = user.tokens.access;
-                    return { ...token, accessToken };
-                } else if (account?.provider === 'google') {
-                    try {
-                        if (token && token.email) {
-                            // Gotta use firebase auth ^w^ to get the token and post request.
-                            const uid = (await admin.auth().getUserByEmail(token.email)).uid;
-                            const customToken = await admin.auth().createCustomToken(uid);
-                            const user = await signInWithCustomToken(firebaseAuth, customToken);
-                            console.log('sign in user', user);
-                            // const firebaseToken = await admin.auth()
-                            // firebaseAuth.
-                            const firebaseToken = ''
-                            // return null
-
-
-                            // console.log(firebaseToken);
-                            const res = await api.post('/google-auth/', {
-                                auth_token: firebaseToken
-                            });
-                            console.log('GOOGLEAUTH', res);
-                            if (res.status === 201) {
-                                const { auth_token } = res.data;
-                                return { ...token, accessToken: auth_token };
-                            }
-                            throw Error(res.data);
-                        }
-                    } catch (e) {
-                        console.log("ERROR: GOOGLE AUTH.\n", e);
-                    }
-                }
-                return { ...token }
+                const accessToken = user.tokens.access;
+                return { ...token, accessToken };
             },
             async session({ session, token }) {
                 // Return a cookie value as part of the session

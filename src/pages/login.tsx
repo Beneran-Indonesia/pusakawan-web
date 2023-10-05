@@ -21,6 +21,7 @@ import { useRouter } from 'next/router';
 import LoadingButton from '@mui/lab/LoadingButton';
 import UnderlinedLink from '@/components/UnderlinedLink';
 import { signUpWithGoogle } from '@/lib/firebase';
+import Link from 'next/link';
 
 const LoginContainer = styled(Container)({
     display: 'flex',
@@ -164,9 +165,11 @@ function LoginBox() {
                 />
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3, mt: 1 }}>
                     <CheckboxRememberMe control={control} />
-                    <Typography variant='caption' sx={{ textDecoration: 'underline' }}>
-                        {t('forgot_password')}
-                    </Typography>
+                    <Link href="/reset-password" title={t('change_password')}>
+                        <Typography variant='caption' sx={{ textDecoration: 'underline' }}>
+                            {t('forgot_password')}
+                        </Typography>
+                    </Link>
                 </Box>
                 {/* The buttons have 1rem gap in each */}
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }} aria-label='action buttons'>
@@ -194,9 +197,14 @@ function LoginBox() {
                         variant="contained"
                         color="monochrome"
                         sx={{ textTransform: 'none', color: 'black' }}
-                        // TODO: GOOGLE LOGIN ERROR
-                        // onClick={() => signIn('google')}
-                        onClick={() => signUpWithGoogle()}
+                        onClick={async () => {
+                            const accessToken = await signUpWithGoogle();
+                            if (!accessToken) {
+                                setErrorMessage({ error: true, type: 'server', message: t('error.server') });
+                                return;
+                            }
+                            await signIn('firebase', { accessToken });
+                        }}
                     // disabled={true}
                     >
                         <span style={{ display: 'inline-flex', gap: '0.4rem', alignItems: 'center' }}>
