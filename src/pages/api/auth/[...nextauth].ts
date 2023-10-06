@@ -31,10 +31,11 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
                             auth_token: accessToken
                         });
                         if (res.status === 200) {
-                            return res.data.data;
+                            return res.data;
                         }
-                    } catch (e) {
-                        console.log('firebase err', e)
+                    } catch (e: any) {
+                        console.error('ERROR FIREBASE NEXTAUTH', e)
+                        throw Error(e.response.data.detail);
                     }
                     return null;
                 }
@@ -56,7 +57,7 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
                             return conn.data;
                         }
                     } catch (e: any) {
-                        console.log("ERROR AUTH", e);
+                        console.error("ERROR EMAIL NEXTAUTH", e);
                         throw Error(e.response.data.detail);
                     }
                     // Return null if can't retrieve user or any error.
@@ -66,9 +67,11 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
         ],
         callbacks: {
             async jwt({ user, token }) {
-                // console.log(user, token, account, profile, session, trigger)
-                const accessToken = user.tokens.access;
-                return { ...token, accessToken };
+                if (user?.tokens) {
+                    const accessToken = user.tokens.access;
+                    return { ...token, accessToken };
+                }
+                return token;
             },
             async session({ session, token }) {
                 // Return a cookie value as part of the session

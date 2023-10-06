@@ -3,8 +3,6 @@ import Box from '@mui/material/Box';
 import LoadingButton from '@mui/lab/LoadingButton';
 import Snackbar from '@mui/material/Snackbar';
 import { useState } from 'react';
-import LogoWrapper from '@/components/ImageWrapper';
-import GoogleSVG from '@tplogos/google.svg';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { useForm, SubmitHandler } from "react-hook-form";
@@ -12,7 +10,6 @@ import { RegisterUserProps } from '@/types/auth';
 import { Input } from '@/components/Form/Input';
 import HomeButton from '@/components/HomeButton';
 import { useTranslations } from 'next-intl';
-import PasswordInput from '@/components/Form/PasswordInput';
 import Waves from "@svgs/waves.svg";
 import api from '@/lib/api';
 import Head from 'next/head';
@@ -76,18 +73,17 @@ type ForgotPasswordFormProps = {
 function ForgotPasswordForm({ setSnackbarOpen }: ForgotPasswordFormProps) {
     const t = useTranslations('reset-password');
     const [loading, setLoading] = useState(false);
-    const { control, handleSubmit, setError } = useForm<RegisterUserProps>({ defaultValues: { email: '', fullName: '', password: '', phoneNumber: '', userName: '', confirmation: '', role: 'Student' } });
+    const { control, handleSubmit } = useForm<RegisterUserProps>({ defaultValues: { email: '', fullName: '', password: '', phoneNumber: '', userName: '', confirmation: '', role: 'Student' } });
     const onSubmit: SubmitHandler<RegisterUserProps> = async (data) => {
         setLoading(true);
         const { email } = data;
         try {
             const res = await api.post('/auth/forget-password', { email })
-            console.log(res);
             if (res.status === 200) {
                 setSnackbarOpen('snackbar.succeed');
             }
         } catch (e) {
-            console.log("FORGOT PASSWORD ERROR:", e)
+            console.error("FORGOT PASSWORD CLIENT ERROR:", e)
             setSnackbarOpen('snackbar.failed');
         }
         setLoading(false);

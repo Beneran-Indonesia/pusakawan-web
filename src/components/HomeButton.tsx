@@ -1,5 +1,7 @@
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import { Box, SxProps, Theme, Typography } from '@mui/material';
+import { SxProps, Theme } from '@mui/material';
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 

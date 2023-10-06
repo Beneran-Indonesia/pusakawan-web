@@ -22,6 +22,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import UnderlinedLink from '@/components/UnderlinedLink';
 import { signUpWithGoogle } from '@/lib/firebase';
 import Link from 'next/link';
+import HomeButton from '@/components/HomeButton';
 
 const LoginContainer = styled(Container)({
     display: 'flex',
@@ -43,6 +44,7 @@ export default function SignIn() {
             <Head>
                 <title>Login to Pusakawan</title>
             </Head>
+            {/* Background div with waves and such */}
             <Grid
                 container
                 component="main"
@@ -57,6 +59,8 @@ export default function SignIn() {
                     backgroundPosition: 'bottom'
                 }}
             >
+                <HomeButton sx={{ position: 'absolute', left: '15%', top: '8%', zIndex: 1 }} />
+                {/* Flex: Unsplash image & LoginForm */}
                 <LoginContainer>
                     <LogoWrapper
                         alt="Unsplash image"
@@ -80,11 +84,14 @@ type APIErrorMessageTypes = {
 function LoginBox() {
     // This is supposed to be login but i am not good in typescript yet to know how to change this.
     const { control, handleSubmit, setError } = useForm<RegisterUserProps>({ defaultValues: { email: '', password: '', remember: false } });
+    // States
     const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState<APIErrorMessageTypes>({ error: false, type: '', message: '' });
+    // Others
     const t = useTranslations('login');
     const router = useRouter();
+    // Submit
     const onSubmit: SubmitHandler<LoginUserProps> = async (data) => {
         setLoading(true);
         const { email, password, remember } = data;
@@ -96,6 +103,7 @@ function LoginBox() {
         })
             .then((dt) => {
                 setLoading(false);
+                // If for some reason it fails send server error
                 if (dt === undefined) {
                     setError("email", { type: "custom", message: "" })
                     setError("password", { type: "custom", message: "" })
@@ -103,9 +111,9 @@ function LoginBox() {
                     return;
                 }
                 if (dt.error) {
-                    console.log(dt.error)
                     setError("email", { type: "custom", message: "" });
                     setError("password", { type: "custom", message: "" });
+                    // Create custom messages according to return error message
                     const error = dt.error;
                     if (error.charAt(0) === 'I') {
                         setErrorMessage({ error: true, type: "invalid_credentials", message: t('error.invalid_credentials') })
@@ -117,13 +125,52 @@ function LoginBox() {
                         setErrorMessage({ error: true, type: "email_not_verified", message: t('error.email_not_verified') })
                         return;
                     }
+                    // Else it's server error
                     setErrorMessage({ error: true, type: 'server', message: t('error.server') })
                     return;
                 }
+                // If no error then go to user
                 router.push('/user')
             })
-            .catch((e) => console.log(e));
+            .catch((e) => console.error("EMAIL CREDENTIAL CLIENT ERROR:", e));
     };
+
+    const firebaseAuth = async () => {
+        setLoading(true);
+        // Get accessToken
+        const accessToken = await signUpWithGoogle();
+        // If no accessToken return error
+        if (!accessToken) {
+            setErrorMessage({ error: true, type: 'server', message: t('error.server') });
+            return;
+        }
+        signIn('firebase', { redirect: false, accessToken })
+            .then((dt) => {
+                setLoading(false);
+                if (dt === undefined) {
+                    setError("email", { type: "custom", message: "" })
+                    setError("password", { type: "custom", message: "" })
+                    setErrorMessage({ error: true, type: 'server', message: t('error.server') })
+                    return;
+                }
+                if (dt.error) {
+                    setError("email", { type: "custom", message: "" });
+                    setError("password", { type: "custom", message: "" });
+                    // Should only have 1 result: Credentials exist with email so i have to login using email
+                    const error = dt.error;
+                    if (error.charAt(0) === 'P') {
+                        setErrorMessage({ error: true, type: "credentials_exists", message: t('error.credentials_exists') })
+                        return;
+                    }
+                    setErrorMessage({ error: true, type: 'server', message: t('error.server') })
+                    return;
+                }
+                // If succeeds go to /user
+                router.push('/user')
+            })
+            .catch((e) => console.error("FIREBASE AUTH CREDENTIAL CLIENT ERROR:", e));
+    };
+
     const handleClickShowPassword = () => setShowPassword(!showPassword);
 
     return (
@@ -197,14 +244,7 @@ function LoginBox() {
                         variant="contained"
                         color="monochrome"
                         sx={{ textTransform: 'none', color: 'black' }}
-                        onClick={async () => {
-                            const accessToken = await signUpWithGoogle();
-                            if (!accessToken) {
-                                setErrorMessage({ error: true, type: 'server', message: t('error.server') });
-                                return;
-                            }
-                            await signIn('firebase', { accessToken });
-                        }}
+                        onClick={firebaseAuth}
                     // disabled={true}
                     >
                         <span style={{ display: 'inline-flex', gap: '0.4rem', alignItems: 'center' }}>

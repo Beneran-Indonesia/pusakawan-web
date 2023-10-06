@@ -15,6 +15,7 @@ import { useTranslations } from 'next-intl';
 import PasswordInput from '@/components/Form/PasswordInput';
 import Waves from "@svgs/waves.svg";
 import api from '@/lib/api';
+import UnderlinedLink from '@/components/UnderlinedLink';
 
 const BoxBackground: React.CSSProperties = {
     background: "linear-gradient(180deg, #EFD0D3 0%, rgba(239, 208, 211, 0.20) 100%)",
@@ -39,8 +40,13 @@ export default function SignUp() {
             >
                 <HomeButton sx={{ position: 'absolute', top: '3%', left: '15%' }} />
                 <Container component="main" maxWidth="xs" sx={{ mt: 7 }}>
-                    <Typography component="h1" variant="h4" fontWeight={500} textTransform="capitalize" mb={3}>
+                    <Typography component="h1" variant="h4" fontWeight={500} textTransform="capitalize">
                         {t('title')}
+                    </Typography>
+                    <Typography component="h4" variant="h6" mb={2}>
+                        {t.rich('description', {
+                            strong: (chunks) => <UnderlinedLink href="/login" title={t('to_login')}><strong>{chunks}</strong></UnderlinedLink>
+                        })}
                     </Typography>
                     <Box
                         sx={{
@@ -79,9 +85,11 @@ function SignupForm({ setSnackbarOpen }: SignupFormProps) {
     const t = useTranslations('register');
     const router = useRouter();
     const { control, handleSubmit, setError } = useForm<RegisterUserProps>({ defaultValues: { email: '', fullName: '', password: '', phoneNumber: '', userName: '', confirmation: '', role: 'Student' } });
+    // States
     const [loading, setLoading] = useState(false);
     const [tcChecked, setTcChecked] = useState(false);
     const [showDoublePassword, setShowDoublePassword] = useState<showDoublePassword>({ main: false, confirmation: false });
+    // Fns
     const handleshowDoublePasswordMain = () => setShowDoublePassword({ ...showDoublePassword, main: !showDoublePassword.main });
     const handleshowDoublePasswordConfirmation = () => setShowDoublePassword({ ...showDoublePassword, confirmation: !showDoublePassword.confirmation });
     const handleTcChecked = () => setTcChecked(!tcChecked);
@@ -104,14 +112,12 @@ function SignupForm({ setSnackbarOpen }: SignupFormProps) {
                 router.push('/login');
                 return;
             }
-            // console.log(res.data);
         } catch (e) {
             const err = e as AxiosError;
-            console.log('err', err);
+            console.error('REGISTER CLIENT ERROR:', err);
             if (err.response?.data) {
                 const message = err.response.data;
                 const errorField = Object.keys(message)
-                console.log('email' in errorField);
                 if (errorField.includes('email')) {
                     setError('email', { type: 'custom', message: t('error.email') })
                 }
@@ -123,6 +129,39 @@ function SignupForm({ setSnackbarOpen }: SignupFormProps) {
         }
         setLoading(false);
     };
+
+    const registerWithGoogle = async () => {
+        setLoading(true);
+        const accessToken = await signUpWithGoogle();
+        if (!accessToken) {
+            setSnackbarOpen('snackbar.failed');
+            return;
+        }
+        signIn('firebase', { redirect: false, accessToken })
+            .then((dt) => {
+                setLoading(false);
+                if (dt === undefined) {
+                    setError("email", { type: "custom", message: "" })
+                    setError("password", { type: "custom", message: "" })
+                    setSnackbarOpen('snackbar.failed');
+                    return;
+                }
+                if (dt.error) {
+                    setError("email", { type: "custom", message: "" });
+                    setError("password", { type: "custom", message: "" });
+                    const error = dt.error;
+                    if (error.charAt(0) === 'P') {
+                        setSnackbarOpen('snackbar.credentials_exists');
+                        return;
+                    }
+                    setSnackbarOpen('snackbar.failed');
+                    return;
+                }
+                router.push('/user')
+            })
+            .catch((e) => console.error("FIREBASE REGISTER CLIENT ERROR:", e));
+    };
+
     return (
         <Box component="form" onSubmit={handleSubmit(onSubmit)}
             display="flex" gap={3} flexDirection="column" width="100%"
@@ -184,7 +223,7 @@ function SignupForm({ setSnackbarOpen }: SignupFormProps) {
                 variant="contained"
                 color="monochrome"
                 sx={{ textTransform: 'none', color: 'black' }}
-                onClick={async() => await signUpWithGoogle()}
+                onClick={registerWithGoogle}
                 disabled={!tcChecked}
             >
                 <span style={{ display: 'inline-flex', gap: '0.4rem', alignItems: 'center' }}>
@@ -206,6 +245,7 @@ import { useRouter } from 'next/router';
 import { AxiosError } from 'axios';
 import Head from 'next/head';
 import { signUpWithGoogle } from '@/lib/firebase';
+import { signIn } from 'next-auth/react';
 
 type TermsAndConditionProps = {
     checked: boolean;
@@ -251,6 +291,7 @@ type TermsAndConditionModalProps = {
     handleClose: () => void;
 };
 
+// Modal to show the T&C
 function TermsAndConditionModal({ open, handleClose }: TermsAndConditionModalProps) {
     return (
         <Modal

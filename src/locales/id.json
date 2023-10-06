@@ -33,7 +33,8 @@
             "server": "Server error. Tidak bisa memasukkan anda.",
             "invalid_credentials": "Username atau password tidak cocok.",
             "account_disabled": "Akun telah di nonaktifkan, tolong kontak administrator.",
-            "email_not_verified": "Email belum di-verify. Tolong periksa email anda."
+            "email_not_verified": "Email belum di-verify. Tolong periksa email anda.",
+            "credentials_exists": "Tolong gunakan email dan password untuk masuk."
         }
     },
     "header": {
@@ -85,6 +86,8 @@
     },
     "register": {
         "title": "Daftar akun",
+        "description" : "Sudah punya akun? Masuk <strong>disini</strong>.",
+        "to_login": "Login ke akun anda",
         "google": "Daftar dengan",
         "or": "Atau",
         "terms_and_condition": "Saya sudah membaca dan menyetujui ketentuan yang berlaku",
@@ -101,7 +104,8 @@
         },
         "snackbar": {
             "succeed": "Registrasi sukses",
-            "failed": "Terjadi error di server. Tolong kontak administrator."
+            "failed": "Terjadi error di server. Tolong kontak administrator.",
+            "credentials_exists": "Anda sudah mempunyai akun. Tolong gunakan email dan password untuk masuk."
         }
     },
     "reset-password": {

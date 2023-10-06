@@ -28,7 +28,7 @@ export const getServerSideProps: GetServerSideProps<UserDatas> = async (ctx) => 
             return { props: { userData: res.data } };
         }
     } catch (e) {
-        console.log("GET PROFILE ERROR", e)
+        console.error("GET PROFILE ERROR", e)
     }
     return { props: { userData: "Cannot process your request at the moment." } };
 }

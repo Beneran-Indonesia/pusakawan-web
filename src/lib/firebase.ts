@@ -19,15 +19,12 @@ const firebaseAuth = getAuth(app);
 
 const signUpWithGoogle = () => signInWithPopup(firebaseAuth, provider)
     .then((result) => {
-        console.log('result', result)
-        // The signed-in user info.
+        // Return the ID Token to be processed on API.
         const user = result.user.getIdToken();
         return user;
-        // ...
     }).catch((error) => {
-        console.log("signUpWithGoogle error", error)
+        console.error("signUpWithGoogle ERROR:", error)
         return null
-        // ...
     });
 
 
