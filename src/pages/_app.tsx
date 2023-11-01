@@ -6,6 +6,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import createEmotionCache from '@/theme/createEmotionCache';
 import { theme } from '@/theme/theme';
 import { CssBaseline } from '@mui/material';
+import Wrapper from '@/components/Wrapper';
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -22,7 +23,9 @@ export default function MyApp(props: MyAppProps) {
       <ThemeProvider theme={theme}>
         <NextIntlClientProvider messages={pageProps.messages}>
           <CssBaseline />
+          <Wrapper>
             <Component {...pageProps} />
+          </Wrapper>
         </NextIntlClientProvider>
       </ThemeProvider>
     </CacheProvider>

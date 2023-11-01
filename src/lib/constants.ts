@@ -36,12 +36,20 @@ const footerInformation: FooterInformationObject = {
         href: "https://wa.me/6281385432211",
         value: "+62 813-8543-2211"
     },
-}
+};
+
+const mockClass = {
+    s3Url: "https://pusaka-api-bucket-dev.s3.ap-southeast-1.amazonaws.com/media/Understanding+Your+Health+Care+Benefits/index.html",
+    title: "Rendahnya daya saing",
+    category: "Perekonomian",
+    description: "Bagian ini merupakan deskripsi dari program yang dibuat di backoffice, sehingga hasilnya tergantung dari pembuat program itu sendiri."
+};
 
 export {
     formControlRoot,
     headlinePictures,
     footerInformation,
     bannerPicture,
-    coursesPictures
+    coursesPictures,
+    mockClass
 };

@@ -3,6 +3,14 @@
         "value": "Beranda",
         "title": "Kembali ke beranda"
     },
+    "class": {
+        "overview": {
+            "button": "Mulai belajar",
+            "description": "Deskripsi program",
+            "materials": "Material yang perlu dipelajari",
+            "assignment": "Tugas"
+        }
+    },
     "form": {
         "text_field": {
             "label": {
@@ -38,6 +46,7 @@
         }
     },
     "header": {
+        "pusakawan": "Kembali ke Pusakawan",
         "challenge": "Tantangan",
         "course": "Pembelajaran",
         "register": "Daftar",
@@ -114,6 +123,14 @@
         "snackbar": {
             "succeed": "Permintaan ganti password telah terkirim. Check email kamu ya!",
             "failed": "Terjadi error di server. Tolong kontak administrator."
+        }
+    },
+    "account": {
+        "account_information": "Informasi Akun",
+        "tab": {
+            "profile": "Profil",
+            "class": "Kelas",
+            "log_out": "Keluar"
         }
     }
 }

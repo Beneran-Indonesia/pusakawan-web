@@ -3,6 +3,14 @@
         "value": "Home",
         "title": "Go back to home"
     },
+    "class": {
+        "overview": {
+            "button": "Start learning",
+            "description": "Program description",
+            "materials": "Need to be learnt materials",
+            "assignment": "Assignment"
+        }
+    },
     "form": {
         "text_field": {
             "label": {
@@ -38,6 +46,7 @@
         }
     },
     "header": {
+        "pusakawan": "Back to Pusakawan",
         "challenge": "Challenge",
         "course": "Course",
         "register": "Register",
@@ -86,7 +95,7 @@
     },
     "register": {
         "title": "Account register",
-        "description" : "Already have an account? Login <strong>here</strong>.",
+        "description": "Already have an account? Login <strong>here</strong>.",
         "to_login": "Login to your account",
         "google": "Register with",
         "or": "or",
@@ -114,6 +123,14 @@
         "snackbar": {
             "succeed": "Reset password request was sent. Please check your email!",
             "failed": "Server error occured. Please contact administrator."
+        }
+    },
+    "account": {
+        "account_information": "Account Information",
+        "tab": {
+            "profile": "Profile",
+            "class": "Class",
+            "log_out": "Log out"
         }
     }
 }
