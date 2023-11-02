@@ -73,7 +73,7 @@ type ForgotPasswordFormProps = {
 function ForgotPasswordForm({ setSnackbarOpen }: ForgotPasswordFormProps) {
     const t = useTranslations('reset-password');
     const [loading, setLoading] = useState(false);
-    const { control, handleSubmit } = useForm<RegisterUserProps>({ defaultValues: { email: '', fullName: '', password: '', phoneNumber: '', userName: '', confirmation: '', role: 'Student' } });
+    const { control, handleSubmit } = useForm<RegisterUserProps>({ defaultValues: { email: '', full_name: '', password: '', phone_no: '', username: '', confirmation: '', role: 'Student' } });
     const onSubmit: SubmitHandler<RegisterUserProps> = async (data) => {
         setLoading(true);
         const { email } = data;

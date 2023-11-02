@@ -3,35 +3,106 @@ import { createBearerHeader } from '@/lib/utils';
 import type { InferGetServerSidePropsType, GetServerSideProps } from 'next'
 import { getSession, signOut } from 'next-auth/react';
 import Container from '@mui/material/Container';
-import { Typography } from '@mui/material';
+import Typography from '@mui/material/Typography';
 import { useTranslations } from 'next-intl';
-import VerticalTabs from '@/components/ProfileVerticalTab';
+import { useState } from 'react';
+import Box from '@mui/material/Box';
+import TabPanel from '@/components/Tabs/TabPanel';
+import TabWrapper from '@/components/Tabs/Wrapper';
+import EditProfile from '@/components/ProfileForm';
+import { ProfileInput } from '@/types/form';
 
-export default function UserHome({ userData }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+export default function UserHome({ userData, tabNumber }: InferGetServerSidePropsType<typeof getServerSideProps>) {
     const t = useTranslations('account');
+
+    const [currentTabNumber, setCurrentTabNumber] = useState(tabNumber ? tabNumber[0] : 0);
+    const [currentClassTabNumber, setCurrentClassTabNumber] = useState(tabNumber ? tabNumber[1] ?? 0 : 0);
+
+    const handleChangeVerticalTab = (e: React.SyntheticEvent, newValue: number) => {
+        setCurrentTabNumber(newValue);
+    };
+
+    const handleChangeHorizontalTab = (e: React.SyntheticEvent, newValue: number) => {
+        setCurrentClassTabNumber(newValue);
+    };
+
     return (
         <Container maxWidth="lg" sx={{ mt: 5 }}>
-            <Typography component="h4" variant='h4' fontWeight={500}>{t('account_information')}</Typography>
-            <VerticalTabs />
+            <Typography component="h4" variant='h4' fontWeight={500} mb={5}>{t('account_information')}</Typography>
+            {/* Content */}
+            <TabWrapper vertical
+                currentTabNumber={currentTabNumber}
+                handleChange={handleChangeVerticalTab}
+                labels={[t('vertical_tab.profile'), t('vertical_tab.class')]}
+            >
+                <Box ml={5} width="100%">
+                    {/* Profile panel */}
+                    <TabPanel value={currentTabNumber} index={0}>
+                        {
+                            typeof userData === 'string'
+                                ? null
+                                : <EditProfile userDefaultValue={userData} />
+                        }
+                    </TabPanel>
+                    {/* Class panel */}
+                    <TabPanel value={currentTabNumber} index={1}>
+                        <TabWrapper vertical={false}
+                            currentTabNumber={currentClassTabNumber}
+                            handleChange={handleChangeHorizontalTab}
+                            labels={[t('horizontal_tab.on_going'), t('horizontal_tab.finished')]}
+                        >
+                            <TabPanel value={currentClassTabNumber} index={0}>
+                                <EmptyTab />
+                            </TabPanel>
+                            <TabPanel value={currentClassTabNumber} index={1}>
+                                <EmptyTab />
+                            </TabPanel>
+                        </TabWrapper>
+                    </TabPanel>
+                </Box>
+            </TabWrapper>
             <p>{JSON.stringify(userData)}</p>
-            <button onClick={() => signOut()}>Sign out</button>
         </Container>
     )
 }
 
+const EmptyTab = () => {
+    const t = useTranslations('account.horizontal_tab');
+    return (
+        <Box maxHeight={250} p={10} textAlign="center">
+            <Typography>{t('empty')}</Typography>
+        </Box>
+    )
+}
+
+
 type UserDatas = {
-    userData: string;
+    userData: string | ProfileInput;
+    tabNumber?: number[];
 }
 
 export const getServerSideProps: GetServerSideProps<UserDatas> = async (ctx) => {
+    // Basically: 0 index of array in which 0 is 'profile' tab.
+    let tabNumber = [0];
     const session = await getSession(ctx);
+    const { query } = ctx;
+    // Expected data: '/user?class=finished' or '/user?class=on-going' or '/user'.
+    const classTab = query?.class;
+    // 1 is 'class' tab. In which second index is finished: 1, on-going: 0.
+    if (classTab) {
+        if (classTab === 'finished') {
+            tabNumber = [1, 1];
+        } else {
+            tabNumber = [1, 0];
+        }
+    }
     if (!session) return { props: { userData: "Cannot process your request at the moment. Session unavailable." } };
     try {
         const res = await api.get(process.env.API_URL + '/user/my-profile', {
             headers: createBearerHeader(session.accessToken)
         });
         if (res.status === 200) {
-            return { props: { userData: res.data, messages: require(`../../locales/${ctx.locale}.json`), } };
+            return { props: { userData: res.data, messages: require(`../../locales/${ctx.locale}.json`), tabNumber, } };
         }
     } catch (e) {
         console.error("GET PROFILE ERROR", e)

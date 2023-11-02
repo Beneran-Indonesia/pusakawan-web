@@ -84,7 +84,7 @@ type SignupFormProps = {
 function SignupForm({ setSnackbarOpen }: SignupFormProps) {
     const t = useTranslations('register');
     const router = useRouter();
-    const { control, handleSubmit, setError } = useForm<RegisterUserProps>({ defaultValues: { email: '', fullName: '', password: '', phoneNumber: '', userName: '', confirmation: '', role: 'Student' } });
+    const { control, handleSubmit, setError } = useForm<RegisterUserProps>({ defaultValues: { email: '', full_name: '', password: '', phone_no: '', username: '', confirmation: '', role: 'Student' } });
     // States
     const [loading, setLoading] = useState(false);
     const [tcChecked, setTcChecked] = useState(false);

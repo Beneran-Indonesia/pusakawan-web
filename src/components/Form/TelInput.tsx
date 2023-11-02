@@ -3,9 +3,10 @@ import { Control, Controller } from "react-hook-form";
 import { MuiTelInput } from 'mui-tel-input'
 import { formControlRoot } from "@/lib/constants";
 import { useTranslations } from 'next-intl';
+import { ProfileInput } from "@/types/form";
 
 type TelInputProps = {
-    control: Control<RegisterUserProps>;
+    control: Control<RegisterUserProps> | Control<ProfileInput>; // | Control<LoginUserProps>;
 }
 
 export default function TelInput({ control }: TelInputProps) {
@@ -13,7 +14,7 @@ export default function TelInput({ control }: TelInputProps) {
     const t2 = useTranslations('form.phone');
     return (
         <Controller
-            name="phoneNumber"
+            name="phone_no"
             control={control}
             rules={{
                 required: { value: true, message: t('required') },
@@ -35,6 +36,7 @@ export default function TelInput({ control }: TelInputProps) {
                     title={t2('title')}
                     placeholder="8xx xxxx xxxx"
                     flagSize="small"
+                    style={{ width: '100%'}}
                 />
             )}
         />

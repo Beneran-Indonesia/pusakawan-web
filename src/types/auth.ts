@@ -1,15 +1,15 @@
 
 type LoginUserProps = {
-email: string;
+    email: string;
     password: string;
     remember: boolean,
     role: 'Student';
 };
 
 type RegisterUserProps = LoginUserProps & {
-    fullName: string;
-    userName: string;
-    phoneNumber: string;
+    full_name: string;
+    username: string;
+    phone_no: string;
     confirmation: string;
 };
 

@@ -127,10 +127,15 @@
     },
     "account": {
         "account_information": "Informasi Akun",
-        "tab": {
+        "vertical_tab": {
             "profile": "Profil",
             "class": "Kelas",
             "log_out": "Keluar"
+        },
+        "horizontal_tab": {
+            "on_going": "Sedang Berlangsung",
+            "finished": "Selesai",
+            "empty": "Kosong disini..."
         }
     }
 }

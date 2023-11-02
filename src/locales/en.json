@@ -127,10 +127,15 @@
     },
     "account": {
         "account_information": "Account Information",
-        "tab": {
+        "vertical_tab": {
             "profile": "Profile",
             "class": "Class",
             "log_out": "Log out"
+        },
+        "horizontal_tab": {
+            "on_going": "On going",
+            "finished": "Finished",
+            "empty": "Empty here..."
         }
     }
 }
