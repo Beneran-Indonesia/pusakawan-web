@@ -95,7 +95,7 @@ function SignupForm({ setSnackbarOpen }: SignupFormProps) {
     const handleTcChecked = () => setTcChecked(!tcChecked);
     const onSubmit: SubmitHandler<RegisterUserProps> = async (data) => {
         setLoading(true);
-        const { email, password, confirmation, fullName, userName, phoneNumber } = data;
+        const { email, password, confirmation, full_name, username, phone_no } = data;
         // if password confirmation isn't like password
         if (password !== confirmation) {
             setError("password", { type: "custom", message: t('error.password_not_same_confirmation') })
@@ -105,7 +105,7 @@ function SignupForm({ setSnackbarOpen }: SignupFormProps) {
         }
         try {
             const res = await api.post('/auth/register/', {
-                email, password, username: userName, full_name: fullName, phone_no: phoneNumber, role: 'Student',
+                email, password, username, full_name, phone_no, role: 'Student',
             })
             if (res.status === 201) {
                 setSnackbarOpen('snackbar.succeed');
@@ -122,7 +122,7 @@ function SignupForm({ setSnackbarOpen }: SignupFormProps) {
                     setError('email', { type: 'custom', message: t('error.email') })
                 }
                 if (errorField.includes('username')) {
-                    setError('userName', { type: 'custom', message: t('error.username') })
+                    setError('username', { type: 'custom', message: t('error.username') })
                 }
             }
             setSnackbarOpen('snackbar.failed');
@@ -167,7 +167,7 @@ function SignupForm({ setSnackbarOpen }: SignupFormProps) {
             display="flex" gap={3} flexDirection="column" width="100%"
         >
             <Input
-                name="fullName"
+                name="full_name"
                 label={t('form_labels.full_name')}
                 autoComplete="name"
                 required
@@ -175,7 +175,7 @@ function SignupForm({ setSnackbarOpen }: SignupFormProps) {
             />
             <Input
                 label="Username"
-                name="userName"
+                name="username"
                 autoComplete="username"
                 required
                 control={control}

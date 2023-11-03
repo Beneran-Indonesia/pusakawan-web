@@ -6,7 +6,7 @@ import { useTranslations } from 'next-intl';
 import { ProfileInput } from "@/types/form";
 
 type TelInputProps = {
-    control: Control<RegisterUserProps> | Control<ProfileInput>; // | Control<LoginUserProps>;
+    control: Control<RegisterUserProps>; // | Control<LoginUserProps>;
 }
 
 export default function TelInput({ control }: TelInputProps) {
@@ -15,7 +15,8 @@ export default function TelInput({ control }: TelInputProps) {
     return (
         <Controller
             name="phone_no"
-            control={control}
+            // Once again, fucking workaround.
+            control={control as unknown as Control<RegisterUserProps>}
             rules={{
                 required: { value: true, message: t('required') },
                 minLength: { value: 4, message: t('min_length_phone') },

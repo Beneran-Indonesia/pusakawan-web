@@ -1,7 +1,7 @@
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import { Input } from "./Form/Input";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { Control, SubmitHandler, useForm } from "react-hook-form";
 import { ProfileInput } from "@/types/form";
 import TelInput from "./Form/TelInput";
 import EditIcon from '@mui/icons-material/EditOutlined';
@@ -13,6 +13,7 @@ import RowRadio from "./Form/RowRadio";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { useState } from 'react';
 import { createBearerHeader } from '@/lib/utils';
+import { RegisterUserProps } from '@/types/auth';
 
 type EditProfileProps = {
     accessToken: string;
@@ -55,7 +56,8 @@ export default function EditProfile({ setSnackbar, userData, accessToken }: Edit
             <EditAvatar src={userData.profile_picture} />
             <Input name="full_name" control={control} label="Nama" required />
             <Input name="username" control={control} label="Username" required />
-            <TelInput control={control} />
+            {/* FUCKING TYPESCRIPT!!!!!!!!!!! */}
+            <TelInput control={control as unknown as Control<RegisterUserProps>} />
             <Input name="email" control={control} label="Email" required />
             {/* Jurusan Kuliah */}
 
@@ -68,7 +70,7 @@ export default function EditProfile({ setSnackbar, userData, accessToken }: Edit
                 label={t('religion')}
                 control={control}
                 pickedItem={getValues('religion')}
-                onOpen={() => ({ status: 200, message: religions.map((dt) => ({ id: dt, name: dt })) })}
+                onOpen={() => ({ status: 200, message: religions.map((dt) => ({ id: dt, name: dt, title: '' })) })}
             />
             {/* Profesi */}
 
@@ -110,7 +112,7 @@ export default function EditProfile({ setSnackbar, userData, accessToken }: Edit
                     // Have to filter data according to user's province.
                     const res = await getEditProfileFields(`/address/city-district/`, accessToken)();
                     if (res.status !== 200 || !userProvince) return res;
-                    const provinces = res.message.filter((dt) => dt.state_province === userProvince);
+                    const provinces = res.message.filter((dt: { state_province: string; }) => dt.state_province === userProvince);
                     return { status: 200, message: provinces };
                 }}
             />

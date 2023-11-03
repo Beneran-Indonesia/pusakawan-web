@@ -4,7 +4,7 @@ import { RegisterUserProps } from "./auth";
 type FormInputProps = {
     name: keyof RegisterUserProps & keyof ProfileInput;
     label: string;
-    control: Control<ProfileInput> // | Control<ProfileInput>; // | Control<LoginUserProps>;
+    control: Control<ProfileInput> | Control<RegisterUserProps> // | Control<ProfileInput>; // | Control<LoginUserProps>;
     required: boolean;
     autoComplete?: string;
     type?: React.HTMLInputTypeAttribute;
@@ -26,12 +26,15 @@ type ProfileInput = DropdownProfileInput & {
     email: string;
     gender: 'FEMALE' | 'MALE';
     major: string;
+    profile_picture: string;
+    accessToken: string;
 }
 
 type ExpectedJSON = {
     id: number;
     name: string;
     country: string;
+    title: string;
     province?: string;
 }
 
@@ -40,8 +43,11 @@ type DropdownProps = {
     control: Control<ProfileInput>
     label: string;
     pickedItem: string;
-    onOpen?: () => Promise<{ status: number, message: ExpectedJSON[] }>;
+    // Dude. I fucking give up.
+    onOpen?: () => Promise<{ status: number, message: ExpectedJSON[] }> | { status: number, message: { id: string, name: string; title: string; }[]};
 }
+
+
 
 export type {
     FormInputProps,
