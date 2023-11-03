@@ -152,7 +152,9 @@
                 "male": "Laki-laki",
                 "female": "Perempuan"
             },
-            "button": "Edit Profil"
+            "button": "Edit Profil",
+            "edit_failed": "Gangguan server, edit profil gagal. Maaf!",
+            "edit_succeed": "Profil anda berhasil diedit."
         }
     }
 }

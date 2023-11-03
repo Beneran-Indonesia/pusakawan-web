@@ -17,9 +17,10 @@ import { createBearerHeader } from '@/lib/utils';
 type EditProfileProps = {
     accessToken: string;
     userData: ProfileInput & { profile_picture: string; };
+    setSnackbar: (open: boolean, success: boolean, message: string) => void;
 }
 
-export default function EditProfile({ userData, accessToken }: EditProfileProps) {
+export default function EditProfile({ setSnackbar, userData, accessToken }: EditProfileProps) {
     const t = useTranslations('account.edit_profile');
     const [editLoading, setEditLoading] = useState(false);
     const { control, handleSubmit, getValues, formState: { isDirty, dirtyFields } } = useForm<ProfileInput>({ defaultValues: { ...userData, profession: '', major: '' } });
@@ -27,16 +28,23 @@ export default function EditProfile({ userData, accessToken }: EditProfileProps)
         setEditLoading(true);
         // If wanna be faster can put as a constant (below)
         const dirtyKeys = Object.keys(dirtyFields) as (keyof ProfileInput)[];
-        const dirtyData = {} as {[key: string]: string};
-        dirtyKeys.forEach((dt, idx) => dirtyData[dirtyKeys[idx]] = data[dirtyKeys[idx]]);
-        
-        // const dirtyData = [...Array(dirtyKeys.length)].map((_, idx) => ( { [dirtyKeys[idx]] :data[dirtyKeys[idx]]} ));
-        const res = await api.patch('/user/edit-profile/', {
-            ...dirtyData,
-            // data,
-        }, { headers: { ...createBearerHeader(accessToken)} })
-        setEditLoading(false);
-        console.log(res.data)
+        const dirtyData = new FormData();
+        dirtyKeys.forEach((_, idx) => dirtyData.append(dirtyKeys[idx], data[dirtyKeys[idx]]));
+        try {
+            const res = await api.patch('/user/edit-profile/', {
+                dirtyData,
+                // This was a fucking nightmare.. form data was used instead of fucking JSON........ should've known cuz we 
+                // can patch headers and profile pictures
+            }, { headers: { ...createBearerHeader(accessToken), "Content-Type": "multipart/form-data" } })
+            setEditLoading(false);
+            if (res.status === 200) {
+                setSnackbar(true, true, t("edit_succeed"))
+                return;
+            }
+        } catch (e) {
+            console.error("PROFILE FORM ERROR: ", e)
+        }
+        setSnackbar(true, false, t("edit_failed"))
     };
     return (
         <Box component="form" onSubmit={handleSubmit(onSubmit)}

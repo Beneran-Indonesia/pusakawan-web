@@ -11,12 +11,14 @@ import TabPanel from '@/components/Tabs/TabPanel';
 import TabWrapper from '@/components/Tabs/Wrapper';
 import EditProfile from '@/components/ProfileForm';
 import { ProfileInput } from '@/types/form';
+import { Alert, Snackbar } from '@mui/material';
 
 export default function UserHome({ userData, tabNumber }: InferGetServerSidePropsType<typeof getServerSideProps>) {
     const t = useTranslations('account');
 
     const [currentTabNumber, setCurrentTabNumber] = useState(tabNumber ? tabNumber[0] : 0);
     const [currentClassTabNumber, setCurrentClassTabNumber] = useState(tabNumber ? tabNumber[1] ?? 0 : 0);
+    const [snackbarOpen, setSnackbarOpen] = useState({ open: false, success: false, message: "" });
 
     const handleChangeVerticalTab = (e: React.SyntheticEvent, newValue: number) => {
         setCurrentTabNumber(newValue);
@@ -26,8 +28,16 @@ export default function UserHome({ userData, tabNumber }: InferGetServerSideProp
         setCurrentClassTabNumber(newValue);
     };
 
+    const handleSnackbar = (open: boolean, success: boolean, message: string) => setSnackbarOpen({ open, success, message });
+    const handleSnackbarClose = () => setSnackbarOpen({ ...snackbarOpen, open: false })
+
     return (
         <Container maxWidth="lg" sx={{ mt: 5 }}>
+            <Snackbar open={snackbarOpen.open} autoHideDuration={6000} onClose={handleSnackbarClose}>
+                <Alert onClose={handleSnackbarClose} severity={snackbarOpen.success? "success" : "error"} sx={{ width: '100%' }}>
+                    {snackbarOpen.message}
+                </Alert>
+            </Snackbar>
             <Typography component="h4" variant='h4' fontWeight={500} mb={5}>{t('account_information')}</Typography>
             {/* Content */}
             <TabWrapper vertical
@@ -43,6 +53,7 @@ export default function UserHome({ userData, tabNumber }: InferGetServerSideProp
                                 ? null
                                 : <EditProfile userData={userData}
                                     accessToken={userData.accessToken}
+                                    setSnackbar={handleSnackbar}
                                 />
                         }
                     </TabPanel>

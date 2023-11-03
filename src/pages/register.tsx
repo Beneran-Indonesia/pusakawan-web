@@ -30,6 +30,11 @@ export default function SignUp() {
             <Head>
                 <title>Register to Pusakawan</title>
             </Head>
+            <Snackbar
+                open={typeof snackbarOpen === 'string'}
+                // autoHideDuration={3000}
+                onClose={() => setSnackbarOpen(false)}
+                message={t(snackbarOpen)} />
             <Box
                 sx={{
                     backgroundImage: `url(${Waves.src})`,
@@ -63,11 +68,6 @@ export default function SignUp() {
                     </Box>
                 </Container>
             </Box>
-            <Snackbar
-                open={typeof snackbarOpen === 'string'}
-                // autoHideDuration={3000}
-                onClose={() => setSnackbarOpen(false)}
-                message={t(snackbarOpen)} />
         </>
     );
 }
