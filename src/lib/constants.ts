@@ -1,12 +1,13 @@
 import { CSSProperties } from "react";
 
-function unsplash(id: string) {
-    return `https://source.unsplash.com/${id}`;
-}
 const formControlRoot: CSSProperties = {
     borderRadius: '0.5rem',
     backgroundColor: 'monochrome.main',
     color: 'black'
+};
+
+function unsplash(id: string) {
+    return `https://source.unsplash.com/${id}`;
 };
 
 const headlinePictures = [
@@ -19,14 +20,26 @@ const coursesPictures = [
     unsplash('WgGJjGN4_ck'),
     unsplash('joqWSI9u_XM'),
     unsplash('OJF3lYjC6vg'),
-]
+];
+
+const religions = [
+    'Buddha',
+    'Hindu',
+    'Islam',
+    'Katolik',
+    'Kristen',
+    'Kong Hu Cu',
+    'Penghayat Kepercayaan',
+    'Lainnya',
+];
 
 type FooterInformationObject = {
     [key: string]: {
         href: string;
         value: string;
     }
-}
+};
+
 const footerInformation: FooterInformationObject = {
     office: {
         href: "https://maps.app.goo.gl/q5ukmMxaRno5uw7d8",
@@ -51,5 +64,6 @@ export {
     footerInformation,
     bannerPicture,
     coursesPictures,
-    mockClass
+    mockClass,
+    religions,
 };

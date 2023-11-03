@@ -136,6 +136,23 @@
             "on_going": "Sedang Berlangsung",
             "finished": "Selesai",
             "empty": "Kosong disini..."
+        },
+        "edit_profile": {
+            "name": "Nama",
+            "email": "Email",
+            "username": "Username",
+            "phone": "Nomor telfon",
+            "province": "Provinsi",
+            "island": "Pulau",
+            "religion": "Agama",
+            "city": "Kota asal",
+            "ethnicity": "Etnis",
+            "gender": {
+                "title": "Jenis Kelamin",
+                "male": "Laki-laki",
+                "female": "Perempuan"
+            },
+            "button": "Edit Profil"
         }
     }
 }

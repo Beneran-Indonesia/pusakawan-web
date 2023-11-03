@@ -1,7 +1,7 @@
 import api from '@/lib/api';
 import { createBearerHeader } from '@/lib/utils';
 import type { InferGetServerSidePropsType, GetServerSideProps } from 'next'
-import { getSession, signOut } from 'next-auth/react';
+import { getSession } from 'next-auth/react';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import { useTranslations } from 'next-intl';
@@ -41,7 +41,9 @@ export default function UserHome({ userData, tabNumber }: InferGetServerSideProp
                         {
                             typeof userData === 'string'
                                 ? null
-                                : <EditProfile userDefaultValue={userData} />
+                                : <EditProfile userData={userData}
+                                    accessToken={userData.accessToken}
+                                />
                         }
                     </TabPanel>
                     {/* Class panel */}
@@ -75,7 +77,6 @@ const EmptyTab = () => {
     )
 }
 
-
 type UserDatas = {
     userData: string | ProfileInput;
     tabNumber?: number[];
@@ -101,8 +102,9 @@ export const getServerSideProps: GetServerSideProps<UserDatas> = async (ctx) => 
         const res = await api.get(process.env.API_URL + '/user/my-profile', {
             headers: createBearerHeader(session.accessToken)
         });
+        // Only 1 country in database: {id: 1, name: 'Indonesia'}.
         if (res.status === 200) {
-            return { props: { userData: res.data, messages: require(`../../locales/${ctx.locale}.json`), tabNumber, } };
+            return { props: { userData: { ...res.data, accessToken: session.accessToken }, messages: require(`../../locales/${ctx.locale}.json`), tabNumber, } };
         }
     } catch (e) {
         console.error("GET PROFILE ERROR", e)

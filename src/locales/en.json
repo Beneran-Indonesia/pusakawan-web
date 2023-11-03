@@ -136,6 +136,23 @@
             "on_going": "On going",
             "finished": "Finished",
             "empty": "Empty here..."
+        },
+        "edit_profile": {
+            "name": "Name",
+            "email": "Email",
+            "username": "Username",
+            "phone": "Phone number",
+            "province": "Province",
+            "island": "Island",
+            "city": "City district",
+            "religion": "Religion",
+            "ethnicity": "Ethnicity",
+            "gender": {
+                "title": "Gender",
+                "male": "Male",
+                "female": "Female"
+            },
+            "button": "Edit Profile"
         }
     }
 }
