@@ -8,7 +8,7 @@ import { signIn } from 'next-auth/react';
 import { styled } from '@mui/material/styles';
 import { useTranslations } from 'next-intl';
 import { Input } from '@/components/Form/Input';
-import { LoginUserProps, RegisterUserProps } from '@/types/auth';
+import { LoginUserProps } from '@/types/auth';
 import { Control, Controller, SubmitHandler, useForm } from 'react-hook-form';
 import PasswordInput from '@/components/Form/PasswordInput';
 import { useState } from 'react';
@@ -83,7 +83,7 @@ type APIErrorMessageTypes = {
 
 function LoginBox() {
     // This is supposed to be login but i am not good in typescript yet to know how to change this.
-    const { control, handleSubmit, setError } = useForm<RegisterUserProps>({ defaultValues: { email: '', password: '', remember: false } });
+    const { control, handleSubmit, setError } = useForm<LoginUserProps>({ defaultValues: { email: '', password: '', remember: false } });
     // States
     const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -205,6 +205,7 @@ function LoginBox() {
                     autoComplete="email"
                 />
                 <PasswordInput
+                    name="password"
                     control={control}
                     handleClickShowPassword={handleClickShowPassword}
                     showPassword={showPassword}
@@ -259,7 +260,7 @@ function LoginBox() {
 }
 
 type CheckboxRememberMeProps = {
-    control: Control<RegisterUserProps>;
+    control: Control<LoginUserProps>;
 }
 
 function CheckboxRememberMe({ control }: CheckboxRememberMeProps) {
@@ -280,10 +281,10 @@ function CheckboxRememberMe({ control }: CheckboxRememberMeProps) {
     )
 }
 
-export function getStaticProps({ locale }: { locale: "en" | "id" }) {
+export async function getStaticProps({ locale }: { locale: "en" | "id" }) {
     return {
         props: {
-            messages: require(`../locales/${locale}.json`),
+            messages: (await import(`../locales/${locale}.json`)).default,
         },
     };
 }

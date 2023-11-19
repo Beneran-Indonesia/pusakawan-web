@@ -1,24 +1,18 @@
-import { RegisterUserProps } from "@/types/auth";
-import { Control, Controller } from "react-hook-form";
+import { Controller, FieldValues } from "react-hook-form";
 import { MuiTelInput } from 'mui-tel-input'
 import { formControlRoot } from "@/lib/constants";
 import { useTranslations } from 'next-intl';
-import { ProfileInput } from "@/types/form";
+import { TelInputProps } from "@/types/form";
 
-type TelInputProps = {
-    control: Control<RegisterUserProps>; // | Control<LoginUserProps>;
-}
-
-export default function TelInput({ control }: TelInputProps) {
+export default function TelInput<T extends FieldValues>({ name, control, required }: TelInputProps<T>) {
     const t = useTranslations('form.text_field.error');
     const t2 = useTranslations('form.phone');
     return (
         <Controller
-            name="phone_no"
-            // Once again, fucking workaround.
-            control={control as unknown as Control<RegisterUserProps>}
+            name={name}
+            control={control}
             rules={{
-                required: { value: true, message: t('required') },
+                required: { value: required, message: t('required') },
                 minLength: { value: 4, message: t('min_length_phone') },
                 maxLength: { value: 19, message: t('max_length_phone')}
             }}

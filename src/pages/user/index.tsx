@@ -12,6 +12,9 @@ import TabWrapper from '@/components/Tabs/Wrapper';
 import EditProfile from '@/components/ProfileForm';
 import { ProfileInput } from '@/types/form';
 import { Alert, Snackbar } from '@mui/material';
+import Head from 'next/head';
+import { mockUserClass } from "@/lib/constants";
+import ProfileClassCard from '@/components/Card/Profile';
 
 export default function UserHome({ userData, tabNumber }: InferGetServerSidePropsType<typeof getServerSideProps>) {
     const t = useTranslations('account');
@@ -19,6 +22,8 @@ export default function UserHome({ userData, tabNumber }: InferGetServerSideProp
     const [currentTabNumber, setCurrentTabNumber] = useState(tabNumber ? tabNumber[0] : 0);
     const [currentClassTabNumber, setCurrentClassTabNumber] = useState(tabNumber ? tabNumber[1] ?? 0 : 0);
     const [snackbarOpen, setSnackbarOpen] = useState({ open: false, success: false, message: "" });
+
+    const error = typeof userData === 'string';
 
     const handleChangeVerticalTab = (e: React.SyntheticEvent, newValue: number) => {
         setCurrentTabNumber(newValue);
@@ -32,50 +37,64 @@ export default function UserHome({ userData, tabNumber }: InferGetServerSideProp
     const handleSnackbarClose = () => setSnackbarOpen({ ...snackbarOpen, open: false })
 
     return (
-        <Container maxWidth="lg" sx={{ mt: 5 }}>
-            <Snackbar open={snackbarOpen.open} autoHideDuration={6000} onClose={handleSnackbarClose}>
-                <Alert onClose={handleSnackbarClose} severity={snackbarOpen.success? "success" : "error"} sx={{ width: '100%' }}>
-                    {snackbarOpen.message}
-                </Alert>
-            </Snackbar>
-            <Typography component="h4" variant='h4' fontWeight={500} mb={5}>{t('account_information')}</Typography>
-            {/* Content */}
-            <TabWrapper vertical
-                currentTabNumber={currentTabNumber}
-                handleChange={handleChangeVerticalTab}
-                labels={[t('vertical_tab.profile'), t('vertical_tab.class')]}
-            >
-                <Box ml={5} width="100%">
-                    {/* Profile panel */}
-                    <TabPanel value={currentTabNumber} index={0}>
-                        {
-                            typeof userData === 'string'
-                                ? null
-                                : <EditProfile userData={userData}
-                                    accessToken={userData.accessToken}
-                                    setSnackbar={handleSnackbar}
-                                />
-                        }
-                    </TabPanel>
-                    {/* Class panel */}
-                    <TabPanel value={currentTabNumber} index={1}>
-                        <TabWrapper vertical={false}
-                            currentTabNumber={currentClassTabNumber}
-                            handleChange={handleChangeHorizontalTab}
-                            labels={[t('horizontal_tab.on_going'), t('horizontal_tab.finished')]}
-                        >
-                            <TabPanel value={currentClassTabNumber} index={0}>
-                                <EmptyTab />
-                            </TabPanel>
-                            <TabPanel value={currentClassTabNumber} index={1}>
-                                <EmptyTab />
-                            </TabPanel>
-                        </TabWrapper>
-                    </TabPanel>
-                </Box>
-            </TabWrapper>
-            <p>{JSON.stringify(userData)}</p>
-        </Container>
+        <>
+            <Head>
+                <title>Profile</title>
+            </Head>
+            <Container maxWidth="lg" sx={{ mt: 5, overflow: 'hidden' }}>
+                <Snackbar open={snackbarOpen.open} autoHideDuration={6000} onClose={handleSnackbarClose}>
+                    <Alert onClose={handleSnackbarClose} severity={snackbarOpen.success ? "success" : "error"} sx={{ width: '100%' }}>
+                        {snackbarOpen.message}
+                    </Alert>
+                </Snackbar>
+                <Typography component="h4" variant='h4' fontWeight={500} mb={5}>
+                    {
+                        currentTabNumber === 0
+                            ? t('account_information')
+                            : t('class_information')
+                    }
+                </Typography>
+                {/* Content */}
+                <TabWrapper vertical
+                    currentTabNumber={currentTabNumber}
+                    handleChange={handleChangeVerticalTab}
+                    labels={[t('vertical_tab.profile'), t('vertical_tab.class')]}
+                >
+                    <Box ml={5} width="100%">
+                        {/* Profile panel */}
+                        <TabPanel value={currentTabNumber} index={0}>
+                            {
+                                error
+                                    ? null
+                                    : <EditProfile userData={userData}
+                                        accessToken={userData.accessToken}
+                                        setSnackbar={handleSnackbar}
+                                    />
+                            }
+                        </TabPanel>
+                        {/* Class panel */}
+                        <TabPanel value={currentTabNumber} index={1}>
+                            <TabWrapper vertical={false}
+                                currentTabNumber={currentClassTabNumber}
+                                handleChange={handleChangeHorizontalTab}
+                                labels={[t('horizontal_tab.on_going'), t('horizontal_tab.finished')]}
+                            >
+                                <TabPanel value={currentClassTabNumber} index={0}>
+                                    {/* <EmptyTab /> */}
+                                    <ProfileClassCard src={mockUserClass[0].img}
+                                        status={mockUserClass[0].status}
+                                        title={mockUserClass[0].title} />
+                                </TabPanel>
+                                <TabPanel value={currentClassTabNumber} index={1}>
+                                    <EmptyTab />
+                                </TabPanel>
+                            </TabWrapper>
+                        </TabPanel>
+                    </Box>
+                </TabWrapper>
+                <p>{JSON.stringify(userData)}</p>
+            </Container>
+        </>
     )
 }
 
@@ -115,7 +134,7 @@ export const getServerSideProps: GetServerSideProps<UserDatas> = async (ctx) => 
         });
         // Only 1 country in database: {id: 1, name: 'Indonesia'}.
         if (res.status === 200) {
-            return { props: { userData: { ...res.data, accessToken: session.accessToken }, messages: require(`../../locales/${ctx.locale}.json`), tabNumber, } };
+            return { props: { userData: { ...res.data, accessToken: session.accessToken }, messages: (await import(`../../locales/${ctx.locale}.json`)).default, tabNumber, } };
         }
     } catch (e) {
         console.error("GET PROFILE ERROR", e)

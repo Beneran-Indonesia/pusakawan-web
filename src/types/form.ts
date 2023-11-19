@@ -1,13 +1,33 @@
-import { Control } from "react-hook-form";
-import { RegisterUserProps } from "./auth";
+import { Control, FieldPath, FieldValues } from "react-hook-form";
+import { SxProps, Theme } from "@mui/material";
 
-type FormInputProps = {
-    name: keyof RegisterUserProps & keyof ProfileInput;
-    label: string;
-    control: Control<ProfileInput> | Control<RegisterUserProps> // | Control<ProfileInput>; // | Control<LoginUserProps>;
-    required: boolean;
+interface FormProps<T extends FieldValues> {
+    name: FieldPath<T>;
+    control: Control<T>; //  Control<ProfileInput> | Control<RegisterUserProps> // | Control<ProfileInput>; // | Control<LoginUserProps>;
+}
+
+interface FormInputProps<T extends FieldValues> extends FormProps<T> {
     autoComplete?: string;
     type?: React.HTMLInputTypeAttribute;
+    required: boolean;
+    label: string;
+    rules?: { [key: string]: { value: string | number; message: string; }}[]
+}
+
+interface PasswordInputProps<T extends FieldValues> extends FormProps<T> {
+    showPassword: boolean;
+    handleClickShowPassword: () => void;
+    formSx?: SxProps<Theme>;
+}
+
+interface TelInputProps<T extends FieldValues> extends FormProps<T> {
+    required: boolean;
+}
+
+enum UserCategory {
+    MAHASISWA = 'MAHASISWA',
+    SISWA = 'SISWA',
+    PROFESSIONAL = 'PROFESSIONAL'
 }
 
 type DropdownProfileInput = {
@@ -16,10 +36,22 @@ type DropdownProfileInput = {
     city: string;
     island: string;
     ethnicity: string;
-    profession: string;
+    user_category: 'MAHASISWA' | 'SISWA' | 'PROFESSIONAL';
+    // 
+    grade: string | null;
+
 }
 
-type ProfileInput = DropdownProfileInput & {
+type InputProfileInput = {
+    bio: string | null;
+    institution: string | null;
+    year: number | null;
+    major: string | null;
+    graduated: string | null;
+    work: string | null;
+}
+
+type ProfileInput = InputProfileInput & DropdownProfileInput & {
     full_name: string;
     username: string;
     phone_no: string;
@@ -31,10 +63,10 @@ type ProfileInput = DropdownProfileInput & {
 }
 
 type ExpectedJSON = {
-    id: number;
+    id: string;
     name: string;
-    country: string;
-    title: string;
+    country?: string;
+    title?: string;
     province?: string;
 }
 
@@ -44,14 +76,14 @@ type DropdownProps = {
     label: string;
     pickedItem: string;
     // Dude. I fucking give up.
-    onOpen?: () => Promise<{ status: number, message: ExpectedJSON[] }> | { status: number, message: { id: string, name: string; title: string; }[]};
+    onOpen?: () => Promise<{ status: number, message: ExpectedJSON[] }> | { status: number, message: { id: string, name: string; title: string; }[] };
 }
-
-
 
 export type {
     FormInputProps,
     ProfileInput,
     DropdownProps,
-    DropdownProfileInput
+    DropdownProfileInput,
+    PasswordInputProps,
+    TelInputProps
 };

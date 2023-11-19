@@ -5,14 +5,17 @@ import Select from '@mui/material/Select';
 import { useState } from 'react';
 import { Controller } from 'react-hook-form';
 import { DropdownProps } from '@/types/form';
+import { useTranslations } from 'next-intl';
 
-export default function Dropdown({ name, control, pickedItem, label, onOpen }: DropdownProps) {
-    // Placeholder with id 999 because no way they have an id of 999 lmao and by theory if nothing changes then it won't be submitted.
-    const [items, setItems] = useState<{id: number | string; value: string;}[]>([{ id: pickedItem as unknown as number, value: pickedItem }]);
+export default function
+    Dropdown({ name, control, pickedItem, label, onOpen }: DropdownProps) {
+    const t = useTranslations('form.text_field.error');
+    const [items, setItems] = useState<{ id: number | string; value: string; }[]>([{ id: pickedItem, value: pickedItem }]);
     return (
         <Controller
             name={name}
             control={control}
+            rules={{ required: { value: true, message: t('required') } }}
             render={({
                 field: { onChange, value },
             }) => (
@@ -29,11 +32,10 @@ export default function Dropdown({ name, control, pickedItem, label, onOpen }: D
                             // Assuming datas is an array of string
                             const datas = await onOpen();
                             if (name === 'ethnicity') {
-                                setItems(datas.message.map((dt) => ({ id: dt.id, value: dt.title })));
+                                setItems(datas.message.map((dt) => ({ id: dt.id, value: dt.title! })));
                                 return;
                             }
                             setItems(datas.message.map((dt) => ({ id: dt.id, value: dt.name })));
-                            // const cities = datas.message.map((dt) => )
                         } : undefined}
                     >
                         {

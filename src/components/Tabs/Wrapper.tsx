@@ -4,6 +4,7 @@ import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import { signOut } from 'next-auth/react';
+import { useTranslations } from 'next-intl';
 
 function a11yProps(index: number) {
     return {
@@ -22,6 +23,7 @@ type VerticalTabProps = {
 }
 
 export default function TabWrapper({ vertical, labels, currentTabNumber, handleChange, children, ariaLabel }: VerticalTabProps) {
+    const t = useTranslations();
     return (
         <Box
             sx={vertical ? { display: 'flex' } : undefined}
@@ -36,14 +38,14 @@ export default function TabWrapper({ vertical, labels, currentTabNumber, handleC
             >
                 {
                     labels.map((label) =>
-                        <Tab label={label} key={'vertical tab' + label}
+                        <Tab label={label} key={`vertical tab ${label}`}
                             sx={!vertical ? { mr: 10, } : undefined}
                             {...a11yProps}
                         />)
                 }
                 {
                     vertical
-                        ? <Button variant='contained' sx={{ mt: 3 }} fullWidth onClick={() => signOut()}>Sign out</Button>
+                        ? <Button variant='contained' sx={{ mt: 3 }} fullWidth onClick={() => signOut()}>{t('log_out')}</Button>
                         : null
                 }
             </Tabs>

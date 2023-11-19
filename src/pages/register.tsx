@@ -192,14 +192,15 @@ function SignupForm({ setSnackbarOpen }: SignupFormProps) {
                 control={control}
                 handleClickShowPassword={handleshowDoublePasswordMain}
                 showPassword={showDoublePassword.main}
+                name="password"
             />
             <PasswordInput
                 control={control}
                 handleClickShowPassword={handleshowDoublePasswordConfirmation}
                 showPassword={showDoublePassword.confirmation}
-                confirmation={true}
+                name="confirmation"
             />
-            <TelInput control={control} />
+            <TelInput name="phone_no" required control={control} />
             <TermsAndCondition checked={tcChecked} handleChecked={handleTcChecked} />
             <LoadingButton
                 // size="large"
@@ -316,10 +317,10 @@ function TermsAndConditionModal({ open, handleClose }: TermsAndConditionModalPro
     )
 }
 
-export function getStaticProps({ locale }: { locale: "en" | "id" }) {
+export async function getStaticProps({ locale }: { locale: "en" | "id" }) {
     return {
-        props: {
-            messages: require(`../locales/${locale}.json`),
-        },
+      props: {
+        messages: (await import(`../locales/${locale}.json`)).default,
+      },
     };
-}
+  }

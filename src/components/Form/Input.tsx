@@ -1,18 +1,18 @@
 import TextField from "@mui/material/TextField";
-import { Control, Controller } from "react-hook-form";
+import { Controller, FieldValues } from "react-hook-form";
 import { useTranslations } from 'next-intl';
 import { FormInputProps } from "@/types/form";
 import { formControlRoot } from "@/lib/constants";
-import { RegisterUserProps } from "@/types/auth";
 
-export const Input = ({ name, control, label, required, autoComplete, type }: FormInputProps) => {
+function Input<T extends FieldValues> ({ name, control, label, required=true, autoComplete, type, rules }: FormInputProps<T>) {
     const t = useTranslations('form.text_field.error');
     return (
         <Controller
             name={name}
             // Fucking work around
-            control={control as unknown as Control<RegisterUserProps>}
+            control={control}
             rules={{
+                ...rules,
                 required: { value: required, message: t('required') },
                 // Enforce this pattern if type is email.
                 pattern: type === 'email' ? { value: /^\S+@\S+\.\S+$/, message: t('email') } : undefined
@@ -39,3 +39,5 @@ export const Input = ({ name, control, label, required, autoComplete, type }: Fo
         />
     );
 };
+
+export { Input };

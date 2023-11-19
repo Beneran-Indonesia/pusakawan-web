@@ -59,7 +59,7 @@ export default function ForgotPassword() {
             </Box>
             <Snackbar
                 open={typeof snackbarOpen === 'string'}
-                // autoHideDuration={3000}
+                autoHideDuration={5000}
                 onClose={() => setSnackbarOpen(false)}
                 message={t(snackbarOpen)} />
         </>
@@ -78,6 +78,8 @@ function ForgotPasswordForm({ setSnackbarOpen }: ForgotPasswordFormProps) {
         setLoading(true);
         const { email } = data;
         try {
+            // Just realised that if the email doesn't exist, it wont trigger the SMPT...
+            // but the data says 'email sent' even if email is not a registered user...
             const res = await api.post('/auth/forget-password', { email })
             if (res.status === 200) {
                 setSnackbarOpen('snackbar.succeed');
@@ -113,10 +115,10 @@ function ForgotPasswordForm({ setSnackbarOpen }: ForgotPasswordFormProps) {
     )
 }
 
-export function getStaticProps({ locale }: { locale: "en" | "id" }) {
+export async function getStaticProps({ locale }: { locale: "en" | "id" }) {
     return {
-        props: {
-            messages: require(`../locales/${locale}.json`),
-        },
+      props: {
+        messages: (await import(`../locales/${locale}.json`)).default,
+      },
     };
-}
+  }

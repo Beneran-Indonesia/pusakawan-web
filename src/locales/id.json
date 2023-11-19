@@ -50,7 +50,8 @@
         "challenge": "Tantangan",
         "course": "Pembelajaran",
         "register": "Daftar",
-        "login": "Masuk"
+        "login": "Masuk",
+        "profile": "Lihat profil"
     },
     "headline": {
         "title": "Siapkan dirimu untuk menjadi pemilih di Pemilu besok.",
@@ -95,7 +96,7 @@
     },
     "register": {
         "title": "Daftar akun",
-        "description" : "Sudah punya akun? Masuk <strong>disini</strong>.",
+        "description": "Sudah punya akun? Masuk <strong>disini</strong>.",
         "to_login": "Login ke akun anda",
         "google": "Daftar dengan",
         "or": "Atau",
@@ -127,15 +128,20 @@
     },
     "account": {
         "account_information": "Informasi Akun",
+        "class_information": "Informasi Kelas",
         "vertical_tab": {
             "profile": "Profil",
-            "class": "Kelas",
-            "log_out": "Keluar"
+            "class": "Kelas"
         },
         "horizontal_tab": {
             "on_going": "Sedang Berlangsung",
             "finished": "Selesai",
-            "empty": "Kosong disini..."
+            "empty": "Kosong disini...",
+            "card": {
+                "starting": "Mulai kelas",
+                "on_going": "Lanjutkan kelas",
+                "finished": "Sertifikat"
+            }
         },
         "edit_profile": {
             "name": "Nama",
@@ -152,9 +158,24 @@
                 "male": "Laki-laki",
                 "female": "Perempuan"
             },
+            "status": {
+                "professional": "Profesional",
+                "student": "Siswa",
+                "scholar": "Mahasiswa"
+            },
             "button": "Edit Profil",
             "edit_failed": "Gangguan server, edit profil gagal. Maaf!",
-            "edit_succeed": "Profil anda berhasil diedit."
+            "edit_succeed": "Profil anda berhasil diedit.",
+            "user_category": "Profesi",
+            "work": "Tempat bekerja",
+            "alumni": "Alumni dari",
+            "entry_year": "Tahun masuk",
+            "graduation_year": "Tahun lulus",
+            "major": "Jurusan",
+            "university": "Universitas",
+            "class": "Kelas",
+            "school": "Nama sekolah"
         }
-    }
+    },
+    "log_out": "Keluar"
 }

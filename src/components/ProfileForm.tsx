@@ -1,19 +1,18 @@
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import { Input } from "./Form/Input";
-import { Control, SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { ProfileInput } from "@/types/form";
 import TelInput from "./Form/TelInput";
 import EditIcon from '@mui/icons-material/EditOutlined';
 import Dropdown from "./Form/Dropdown";
 import api, { getEditProfileFields } from "@/lib/api";
 import { useTranslations } from "next-intl";
-import { religions } from "@/lib/constants";
+import { grade, religions } from "@/lib/constants";
 import RowRadio from "./Form/RowRadio";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { useState } from 'react';
 import { createBearerHeader } from '@/lib/utils';
-import { RegisterUserProps } from '@/types/auth';
 
 type EditProfileProps = {
     accessToken: string;
@@ -24,7 +23,9 @@ type EditProfileProps = {
 export default function EditProfile({ setSnackbar, userData, accessToken }: EditProfileProps) {
     const t = useTranslations('account.edit_profile');
     const [editLoading, setEditLoading] = useState(false);
-    const { control, handleSubmit, getValues, formState: { isDirty, dirtyFields } } = useForm<ProfileInput>({ defaultValues: { ...userData, profession: '', major: '' } });
+    // TODO:
+    const { control, handleSubmit, watch, getValues, formState: { isDirty, dirtyFields } } = useForm<ProfileInput>({ defaultValues: {...userData, user_category: userData !== undefined ? userData.user_category === 'MAHASISWA' ? t('status.scholar') as "MAHASISWA" : userData.user_category === 'SISWA' ? t('status.student') as "SISWA" : t('status.professional') as "PROFESSIONAL" : undefined } });
+    const userCategory = watch('user_category');
     const onSubmit: SubmitHandler<ProfileInput> = async (data) => {
         setEditLoading(true);
         // If wanna be faster can put as a constant (below)
@@ -34,8 +35,8 @@ export default function EditProfile({ setSnackbar, userData, accessToken }: Edit
         try {
             const res = await api.patch('/user/edit-profile/', {
                 dirtyData,
-                // This was a fucking nightmare.. form data was used instead of fucking JSON........ should've known cuz we 
-                // can patch headers and profile pictures
+                // This was a fucking nightmare.. form data was used instead of fucking JSON........
+                //  should've known cuz we can patch headers and profile pictures
             }, { headers: { ...createBearerHeader(accessToken), "Content-Type": "multipart/form-data" } })
             setEditLoading(false);
             if (res.status === 200) {
@@ -56,11 +57,10 @@ export default function EditProfile({ setSnackbar, userData, accessToken }: Edit
             <EditAvatar src={userData.profile_picture} />
             <Input name="full_name" control={control} label="Nama" required />
             <Input name="username" control={control} label="Username" required />
-            {/* FUCKING TYPESCRIPT!!!!!!!!!!! */}
-            <TelInput control={control as unknown as Control<RegisterUserProps>} />
             <Input name="email" control={control} label="Email" required />
-            {/* Jurusan Kuliah */}
-
+            <TelInput name="phone_no" control={control} required={false} />
+            {/* Bio */}
+            {/* DoB */}
             <RowRadio name="gender" control={control}
                 data={[{ value: 'FEMALE', label: t('gender.female') }, { value: "MALE", label: t('gender.male') }]}
             />
@@ -72,8 +72,6 @@ export default function EditProfile({ setSnackbar, userData, accessToken }: Edit
                 pickedItem={getValues('religion')}
                 onOpen={() => ({ status: 200, message: religions.map((dt) => ({ id: dt, name: dt, title: '' })) })}
             />
-            {/* Profesi */}
-
             {/* Ethnicity */}
             <Dropdown
                 name="ethnicity"
@@ -116,6 +114,86 @@ export default function EditProfile({ setSnackbar, userData, accessToken }: Edit
                     return { status: 200, message: provinces };
                 }}
             />
+            {/* Status */}
+            <Dropdown
+                name="user_category"
+                label={t('user_category')}
+                control={control}
+                pickedItem={getValues('user_category')}  //
+                onOpen={async () => ({ status: 200, message: [{ id: "PROFESSIONAL", name: t('status.professional') }, { id: "SISWA", name: t('status.student') }, { id: "MAHASISWA", name: t('status.scholar') }] })}
+            />
+            {
+                userCategory === "PROFESSIONAL"
+                    ? <>
+                        {/* Workplace, institution, year */}
+                        <Input
+                            label={t('work')}
+                            name='work'
+                            control={control}
+                            required
+                        />
+                        <Input
+                            label={t('alumni')}
+                            name='institution'
+                            control={control}
+                            required
+                        />
+                        <Input
+                            label={t('graduation_year')}
+                            name='year'
+                            control={control}
+                            type="number"
+                            required
+                        />
+                    </>
+                    : userCategory === "MAHASISWA"
+                        ? <>
+                            {/* major, institution, year */}
+                            <Input
+                                label={t('major')}
+                                name='major'
+                                control={control}
+                                required
+                            />
+                            <Input
+                                label={t('university')}
+                                name='institution'
+                                control={control}
+                                required
+                            />
+                            <Input
+                                label={t('entry_year')}
+                                name='year'
+                                control={control}
+                                type="number"
+                                required
+                            />
+                        </>
+                        : <>
+                            {/* class, institution, year */}
+                            <Dropdown
+                                label={t('class')}
+                                name='grade'
+                                control={control}
+                                pickedItem={getValues("grade")!}
+                                onOpen={async () => ({ status: 200, message: grade.map((dt) => ({ id: dt, name: dt, title: '' })) })}
+                            />
+
+                            <Input
+                                label={t('school')}
+                                name='institution'
+                                control={control}
+                                required
+                            />
+                            <Input
+                                label={t('entry_year')}
+                                name='year'
+                                control={control}
+                                type="number"
+                                required
+                            />
+                        </>
+            }
             <LoadingButton variant="contained" size="large" type="submit" disabled={!isDirty} loading={editLoading}>
                 {t('button')}
             </LoadingButton>

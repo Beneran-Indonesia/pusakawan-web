@@ -8,26 +8,18 @@ import FormControl from '@mui/material/FormControl';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { useTranslations } from 'next-intl';
-import { Control, Controller } from "react-hook-form";
-import { RegisterUserProps } from "@/types/auth";
-import { SxProps, Theme } from "@mui/material";
+import { Controller, FieldValues } from "react-hook-form";
+import { PasswordInputProps } from "@/types/form";
 
-type PasswordInputProps = {
-    showPassword: boolean;
-    handleClickShowPassword: () => void;
-    control: Control<RegisterUserProps>; // | Control<LoginUserProps>;
-    formSx?: SxProps<Theme>;
-    confirmation?: boolean;
-}
-
-export default function PasswordInput({ control, showPassword, handleClickShowPassword, formSx, confirmation }: PasswordInputProps) {
+export default function PasswordInput<T extends FieldValues>({ name, control, showPassword, handleClickShowPassword, formSx }: PasswordInputProps<T>) {
     const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
     };
     const t = useTranslations('form.text_field');
+    const confirmation = name === 'confirmation';
     return (
         <Controller
-            name={confirmation ? "confirmation" : "password"}
+            name={name}
             control={control}
             // If password, make min length to be 8.
             rules={{

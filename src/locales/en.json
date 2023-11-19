@@ -50,7 +50,8 @@
         "challenge": "Challenge",
         "course": "Course",
         "register": "Register",
-        "login": "Login"
+        "login": "Login",
+        "profile": "See profile"
     },
     "headline": {
         "title": "Prepare yourself to be a voter in tomorrow's election.",
@@ -127,6 +128,7 @@
     },
     "account": {
         "account_information": "Account Information",
+        "class_information": "Class Information",
         "vertical_tab": {
             "profile": "Profile",
             "class": "Class",
@@ -135,7 +137,12 @@
         "horizontal_tab": {
             "on_going": "On going",
             "finished": "Finished",
-            "empty": "Empty here..."
+            "empty": "Nothing here...",
+            "card": {
+                "starting": "Start class",
+                "on_going": "Continue class",
+                "finished": "Certificate"
+            }
         },
         "edit_profile": {
             "name": "Name",
@@ -152,9 +159,24 @@
                 "male": "Male",
                 "female": "Female"
             },
+            "status": {
+                "professional": "Professional",
+                "student": "Student",
+                "scholar": "University student"
+            },
             "button": "Edit Profile",
             "edit_failed": "Server error, edit profile failed. Sorry!",
-            "edit_succeed": "Your profile has been edited."
+            "edit_succeed": "Your profile has been edited.",
+            "user_category": "Profession",
+            "work": "Workplace",
+            "alumni": "Alumni of",
+            "entry_year": "Entry year",
+            "graduation_year": "Graduation year",
+            "major": "Major",
+            "university": "University",
+            "class": "Grade",
+            "school": "School name"
         }
-    }
+    },
+    "log_out": "Sign out"
 }

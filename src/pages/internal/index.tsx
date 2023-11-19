@@ -16,10 +16,10 @@ export default function InternalIndex() {
     )
 }
 
-export function getStaticProps({ locale }: { locale: "en" | "id" }) {
+export async function getStaticProps({ locale }: { locale: "en" | "id" }) {
     return {
-        props: {
-            messages: require(`../../locales/${locale}.json`),
-        },
+      props: {
+        messages: (await import(`../../locales/${locale}.json`)).default,
+      },
     };
-}
+  }

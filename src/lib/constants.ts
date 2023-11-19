@@ -33,6 +33,14 @@ const religions = [
     'Lainnya',
 ];
 
+const grade = [
+    '8', '9', '10', '11', '12', 'Gap Year'
+]
+
+const mockUserClass = [
+    { id: 0, title: 'Peran Pemerintah Dalam Penyelesain Kasus di Pulau Rempang', img: unsplash('Rfflri94rs8'), status: "FINISHED" as "FINISHED" },
+];
+
 type FooterInformationObject = {
     [key: string]: {
         href: string;
@@ -66,4 +74,6 @@ export {
     coursesPictures,
     mockClass,
     religions,
+    grade,
+    mockUserClass
 };

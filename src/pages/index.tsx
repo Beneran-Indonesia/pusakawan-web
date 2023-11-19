@@ -25,7 +25,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Pushakawan</title>
+        <title>Pusakawan</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <main className={`${styles.main} ${inter.className}`}>
@@ -97,10 +97,10 @@ function Card({ title, description }: CardProps) {
 }
 
 
-export function getStaticProps({ locale }: { locale: "en" | "id" }) {
+export async function getStaticProps({ locale }: { locale: "en" | "id" }) {
   return {
     props: {
-      messages: require(`../locales/${locale}.json`),
+      messages: (await import(`../locales/${locale}.json`)).default,
     },
   };
 }
