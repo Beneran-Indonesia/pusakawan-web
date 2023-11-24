@@ -31,7 +31,8 @@ export default function EditProfile({ setSnackbar, userData, accessToken }: Edit
         // If wanna be faster can put as a constant (below)
         const dirtyKeys = Object.keys(dirtyFields) as (keyof ProfileInput)[];
         const dirtyData = new FormData();
-        dirtyKeys.forEach((_, idx) => dirtyData.append(dirtyKeys[idx], data[dirtyKeys[idx]]));
+        // I'm sorry for any but really i would rather not be dealing with this!
+        dirtyKeys.forEach((_, idx) => dirtyData.append(dirtyKeys[idx], data[dirtyKeys[idx]] as any));
         try {
             const res = await api.patch('/user/edit-profile/', {
                 dirtyData,

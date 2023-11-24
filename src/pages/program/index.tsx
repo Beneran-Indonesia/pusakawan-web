@@ -24,7 +24,6 @@ export default function ProgramPage() {
         else if (filterChange === 'FREE') setCurrentData(mockProgramData.filter((dt) => !dt.paid));
         else if (filterChange === 'PAID') setCurrentData(mockProgramData.filter((dt) => dt.paid));
     };
-    console.log('currentdata', currentData)
     return (
         <>
             <Head>

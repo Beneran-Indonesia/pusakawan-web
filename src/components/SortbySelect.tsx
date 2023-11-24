@@ -8,38 +8,23 @@ import {
 } from '@mui/base/Select';
 import { Option as BaseOption, optionClasses } from '@mui/base/Option';
 import { Popper as BasePopper } from '@mui/base/Popper';
-import { styled } from '@mui/system';
+import { styled } from '@mui/material/styles';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { SortBy } from '@/types/components';
 
 // Personally, fuck MUI base.
 // TODO: Make this prettier! ^w^
 
-const Select = React.forwardRef(function Select<
-  TValue extends {},
-  Multiple extends boolean,
->(props: SelectProps<TValue, Multiple>, ref: React.ForwardedRef<HTMLButtonElement>) {
-  const slots: SelectProps<TValue, Multiple>['slots'] = {
-    root: CustomButton,
-    listbox: Listbox,
-    popper: Popper,
-    ...props.slots,
-  };
-
-  return <BaseSelect {...props} ref={ref} slots={slots} />;
-}) as <TValue extends {}, Multiple extends boolean>(
-  props: SelectProps<TValue, Multiple> & React.RefAttributes<HTMLButtonElement>,
-) => JSX.Element;
-
 type SortBySelectProps = {
   onChange: (newValue: SortBy) => void;
   currentValue: SortBy;
 }
+
 export default function SortBySelect({ onChange, currentValue }: SortBySelectProps) {
   const t = useTranslations('program.select')
   const list = [{ value: 'ALL', text: t('all') }, { value: 'FREE', text: t('free') }, { value: 'PAID', text: t('paid') }]
   return (
-    <Select defaultValue={list[0].value} value={currentValue} onChange={(_, newValue: SortBy) => onChange(newValue)}>
+    <Select defaultValue={list[0].value} value={currentValue} onChange={(_, newValue) => onChange(newValue as SortBy)} >
       {
         list.map((l, idx) => <Option value={l.value} key={l.value + idx}>{l.text}</Option>)
       }
@@ -47,6 +32,16 @@ export default function SortBySelect({ onChange, currentValue }: SortBySelectPro
   );
 }
 
+function Select(props: SelectProps<string, false>) {
+  const slots: SelectProps<string, false>['slots'] = {
+    root: StyledButton,
+    listbox: Listbox,
+    popper: Popper,
+    ...props.slots,
+  };
+
+  return <BaseSelect {...props} slots={slots} />;
+}
 const blue = {
   100: '#DAECFF',
   200: '#99CCF3',
@@ -70,23 +65,29 @@ const grey = {
   900: '#1C2025',
 };
 
-const CustomButton = React.forwardRef(function CustomButton<
-  TValue extends {},
-  Multiple extends boolean,
->(
-  props: SelectRootSlotProps<TValue, Multiple>,
+const CustomButton = React.forwardRef(function CustomButton(
+  props: SelectRootSlotProps<string, false>,
   ref: React.ForwardedRef<HTMLButtonElement>,
 ) {
   const { ownerState, ...other } = props;
   return (
-    <StyledButton type="button" {...other} ref={ref}>
-      {other.children}
+    <button
+      type="button"
+      {...other}
+      ref={ref}
+      style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+      }}
+    >
+      <span>{other.children}</span>
       <KeyboardArrowDownIcon />
-    </StyledButton>
+    </button>
   );
 });
 
-const StyledButton = styled('button', { shouldForwardProp: () => true })(
+const StyledButton = styled(CustomButton, { shouldForwardProp: () => true })(
   ({ theme }) => `
   font-family: inherit;
   border: none;

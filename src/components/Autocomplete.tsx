@@ -1,5 +1,5 @@
 import { useAutocomplete } from '@mui/base/useAutocomplete';
-import { styled } from '@mui/system';
+import { styled } from '@mui/material/styles';
 import { ProgramData } from '@/types/components';
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';

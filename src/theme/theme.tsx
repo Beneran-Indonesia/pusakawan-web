@@ -2,9 +2,9 @@ import { ThemeOptions, createTheme } from "@mui/material/styles";
 import PoppinsFont from "./font";
 import type { } from '@mui/lab/themeAugmentation';
 import NextLink from 'next/link';
-import { forwardRef } from 'react';
+import { Ref, forwardRef } from 'react';
 
-const LinkBehaviour = forwardRef(function LinkBehaviour(props, ref) {
+const LinkBehaviour = forwardRef(function LinkBehaviour(props: { href: string }, ref: Ref<HTMLAnchorElement>) {
   return <NextLink ref={ref} {...props} />;
 });
 
@@ -62,7 +62,8 @@ const themeOptions: ThemeOptions = {
     },
     // MuiLoad
   },
-  shadows: ["none", "2px 2px 16px 0px rgba(0, 0, 0, 0.08)"],
+  // TBVH I WANNA DIE
+  shadows: ["none", "2px 2px 16px 0px rgba(0, 0, 0, 0.08)", "", "", "" , "", "", "", "" , "", "", "", "" , "", "", "", "" , "", "", "", "" , "", "", "", "" ] ,
   // Color themes
   palette: {
     primary: {
