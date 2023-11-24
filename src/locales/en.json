@@ -193,10 +193,15 @@
         },
         "content": {
             "title": "Choose Our Program You're Interested In"
+        },
+        "autocomplete": {
+            "placeholder": "Find program",
+            "empty": "Hm, program is not found"
+        },
+        "select": {
+            "all": "All",
+            "paid": "Paid",
+            "free": "Free"
         }
-    },
-    "autocomplete": {
-        "placeholder": "Find program",
-        "empty": "Hm, program is not found"
     }
 }

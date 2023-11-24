@@ -1,25 +1,30 @@
 import BreadcrumbsWrapper from "@/components/Breadcrumbs";
-import { coursesPictures, mockClass, mockProgramData, programPagePicture } from "@/lib/constants";
-import { BreadcrumbProps, ProgramData } from "@/types/components";
+import { mockProgramData, programPagePicture } from "@/lib/constants";
+import { BreadcrumbProps, ProgramData, SortBy } from "@/types/components";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import Container from "@mui/material/Container";
 import { useTranslations } from "next-intl";
 import Head from "next/head";
 import { useState } from "react";
-import Card from "@/components/Card/Category";
 import ProgramCard from "@/components/Card/Program";
 import Autocomplete from "@/components/Autocomplete";
-
+import SortBySelect from "@/components/SortbySelect";
 
 export default function ProgramPage() {
-
-    const [programAmount, setProgramAmount] = useState(5);
+    const [filter, setFilter] = useState<SortBy>('ALL');
+    const [currentData, setCurrentData] = useState(mockProgramData);
     const t = useTranslations('program.header')
     const t2 = useTranslations('program.content')
     const { breadcrumbData }: BreadcrumbProps = { breadcrumbData: [{ id: 'breadcrumb01', children: t('breadcrumbs.home'), href: '/' }, { id: 'breadcrumb02', children: t('breadcrumbs.program'), href: '/program', active: true }] };
     const changeProgramAmount = (num: number) => num > 5 ? 1 : num;
+    const onFilterChange = (filterChange: SortBy) => {
+        setFilter(filterChange);
+        if (filterChange === 'ALL') setCurrentData(mockProgramData);
+        else if (filterChange === 'FREE') setCurrentData(mockProgramData.filter((dt) => !dt.paid));
+        else if (filterChange === 'PAID') setCurrentData(mockProgramData.filter((dt) => dt.paid));
+    };
+    console.log('currentdata', currentData)
     return (
         <>
             <Head>
@@ -51,12 +56,15 @@ export default function ProgramPage() {
                 <Typography variant="h4" component="h4" fontWeight={600}>
                     {t2('title')}
                 </Typography>
-                <Autocomplete classData={mockProgramData} />
+                <Box display="flex" flexDirection="row" gap={3}>
+                    <Autocomplete classData={mockProgramData} />
+                    <SortBySelect currentValue={filter} onChange={onFilterChange} />
+                </Box>
                 <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}
                     justifyContent="center" rowGap={3}
                 >
                     {/* <Card img={mockClass.s3Url}  /> */}
-                    <CoursesCard data={mockProgramData} />
+                    <CoursesCard data={currentData} />
                     {/* do card here */}
                 </Grid>
             </Box>

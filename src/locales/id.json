@@ -192,10 +192,15 @@
         },
         "content": {
             "title": "Pilih Program yang Ingin Anda Pelajari"
+        },
+        "autocomplete": {
+            "placeholder": "Cari program",
+            "empty": "Hm, program tidak ditemukan"
+        },
+        "select": {
+            "all": "Semua",
+            "paid": "Berbayar",
+            "free": "Gratis"
         }
-    },
-    "autocomplete": {
-        "placeholder": "Cari program",
-        "empty": "Hm, program tidak ditemukan"
     }
 }

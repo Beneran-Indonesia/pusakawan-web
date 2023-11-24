@@ -10,7 +10,7 @@ import SearchIcon from '@mui/icons-material/Search';
 export default function Autocomplete({ classData }: { classData: ProgramData[] }) {
   const [value, setValue] = useState<ProgramData | null>(null);
   const [inputValue, setInputValue] = useState('');
-  const t = useTranslations('autocomplete');
+  const t = useTranslations('program.autocomplete');
 
   const {
     getRootProps,
@@ -86,8 +86,6 @@ const StyledAutocompleteRoot = styled('div')(
   border-radius: 3.125rem;
   color: ${theme.palette.mode === 'dark' ? grey[300] : grey[500]};
   background: ${theme.palette.mode === 'dark' ? grey[900] : '#fff'};
-  box-shadow: 0px 2px 4px ${theme.palette.mode === 'dark' ? 'rgba(0,0,0, 0.5)' : 'rgba(0,0,0, 0.05)'
-    };
   display: flex;
   gap: 0.5rem;
   overflow: hidden;

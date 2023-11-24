@@ -14,8 +14,12 @@ type ProgramData = {
     price?: number;
 }
 
+type SortBy = 'ALL' | 'PAID' | 'FREE';
+
+
 export type { 
     BreadcrumbProps,
     BreadcrumbLinkProps,
     ProgramData,
+    SortBy
 }

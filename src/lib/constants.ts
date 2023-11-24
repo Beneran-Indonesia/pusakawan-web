@@ -77,8 +77,10 @@ const mockClass = {
 const mockProgramData: ProgramData[] = [
     { id: 0, img: unsplash('M7ievVk4FzA'), title: "Kebijakan Ekspor Impor", paid: true, price: 15000 },
     { id: 1, img: unsplash("I-8e7wx2hao"), title: "Permasalahan Dana Desa", paid: true, price: 25000 },
-    { id: 3, img: unsplash("I-8e7wx2hao"), title: "Permasalahan Dana Desa", paid: true, price: 25000 },
-    { id: 2, img: unsplash("gMsnXqILjp4"), title: "Rendahnya Daya Saing", paid: false }
+    { id: 2, img: unsplash("gMsnXqILjp4"), title: "Rendahnya Daya Saing", paid: false },
+    { id: 3, img: unsplash("FvBVVf0ctnk"), title: "Tantangan Globalisasi", paid: true, price: 10000 },
+    { id: 4, img: unsplash("xMh_ww8HN_Q"), title: "Ketahanan Pangan", paid: false, },
+
 ]
 
 export {
