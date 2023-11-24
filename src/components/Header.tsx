@@ -7,15 +7,16 @@ import { useTranslations } from "next-intl";
 import PusakawanLogo from "./PusakawanLogo";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 
 export default function Header() {
     const t = useTranslations('header');
-    const { data: session, status } = useSession({ required: true })
+    const { data: session, status } = useSession()
     // console.log(session);
     return (
         <Box component="header" sx={{
-            display: 'flex', justifyContent: 'space-between', alignItems: 'center', py: 4, px: 12.5,
-            boxShadow: "2px 2px 16px 0px rgba(0, 0, 0, 0.08)",
+            display: 'flex', justifyContent: 'space-between', alignItems: 'center', py: 4, px: 12.5, boxShadow: 1
+
         }}>
             <Link href="/" title={t("pusakawan")}>
                 <PusakawanLogo />
@@ -27,8 +28,8 @@ export default function Header() {
                 {
                     status === 'loading'
                         ? <Skeleton variant="rectangular" width={210} height={118} />
-                        : session.accessToken
-                        // TODO:
+                        : session && session.accessToken
+                            // TODO:
                             ? <Link href="/user" title={t('profile')}><Avatar>A</Avatar></Link>
                             : <>
                                 <Link href="/register"><Typography>{t('register')}</Typography></Link>

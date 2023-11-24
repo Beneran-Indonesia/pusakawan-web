@@ -1,9 +1,11 @@
 import HomeButton from "@/components/HomeButton";
 import { mockClass } from "@/lib/constants";
-import { Button, Chip, Container, Typography } from "@mui/material";
+import Button from "@mui/material/Button";
+import Chip from "@mui/material/Chip";
+import Container from "@mui/material/Container";
+import Typography from "@mui/material/Typography";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/router";
-
 
 export default function MockClass() {
     const { title, category, description, s3Url } = mockClass;

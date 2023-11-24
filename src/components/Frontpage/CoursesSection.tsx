@@ -1,5 +1,5 @@
 import { coursesPictures } from "@/lib/constants";
-import Card from "./Card";
+import Card from "../Card/Category";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { useTranslations } from "next-intl";

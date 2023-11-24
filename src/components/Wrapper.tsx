@@ -6,7 +6,7 @@ import Footer from "./Footer";
 export default function Wrapper({ children }: { children: React.ReactNode}) {
     const router = useRouter();
     const { pathname } = router;
-    if (pathname === '/login' || pathname === '/register' || pathname === '/' || pathname === '/reset-password' ) {
+    if (pathname === '/login' || pathname === '/register' || pathname === '/on-development' || pathname === '/reset-password' ) {
         return children;
     }
     return (

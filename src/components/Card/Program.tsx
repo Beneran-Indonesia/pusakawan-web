@@ -1,0 +1,26 @@
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import CardWrapper from "./Wrapper/Normal";
+import { useTranslations } from "next-intl";
+
+type CardProps = {
+    img: string;
+    title: string;
+    // null price means that it's free ( not paid )
+    price: number | null;
+}
+
+export default function ProgramCard({ img, title, price }: CardProps) {
+    const t = useTranslations('program_selection');
+    return (
+        <CardWrapper alt={title} src={img}>
+            <Typography variant="h5" component="h5" fontWeight={500} mb={2}>{title}</Typography>
+            <Typography variant="h3" component="h3" mb={4} fontWeight={600}>
+                {!price
+                    ? t('paid')
+                    : new Intl.NumberFormat('id-ID', {}).format(price)}
+            </Typography>
+            <Button variant="outlined" size="small" sx={{ width: 'fit-content', mb: 3, alignSelf: 'center'}}>{t('button')}</Button>
+        </CardWrapper>
+    )
+}

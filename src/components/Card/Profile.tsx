@@ -13,7 +13,7 @@ export default function ProfileClassCard({ src, title, status }: ProfileClassCar
     const t = useTranslations('account.horizontal_tab.card')
     return (
         <Box display="flex" gap={3} border="1px solid #CCC" margin={4}
-        borderRadius={2} padding={2} boxShadow="2px 2px 16px 0px rgba(0, 0, 0, 0.08)">
+        borderRadius={2} padding={2} boxShadow={1}>
             <Image style={{ borderRadius: '0.5rem'}} src={src} alt="class thumbnail" width={150} height={100} />
             <Box display="flex" py={1} flexDirection="column" justifyContent="space-between">
                 <Typography variant='h5' fontWeight={500} component='h4'>{title}</Typography>

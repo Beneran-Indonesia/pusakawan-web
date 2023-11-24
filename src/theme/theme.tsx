@@ -1,10 +1,26 @@
 import { ThemeOptions, createTheme } from "@mui/material/styles";
 import PoppinsFont from "./font";
 import type { } from '@mui/lab/themeAugmentation';
+import NextLink from 'next/link';
+import { forwardRef } from 'react';
+
+const LinkBehaviour = forwardRef(function LinkBehaviour(props, ref) {
+  return <NextLink ref={ref} {...props} />;
+});
 
 const themeOptions: ThemeOptions = {
   // Auto complete override
   components: {
+    MuiLink: {
+      defaultProps: {
+        component: LinkBehaviour
+      }
+    },
+    MuiButtonBase: {
+      defaultProps: {
+        LinkComponent: LinkBehaviour
+      }
+    },
     MuiLoadingButton: {
       styleOverrides: {
         root: {
@@ -46,6 +62,7 @@ const themeOptions: ThemeOptions = {
     },
     // MuiLoad
   },
+  shadows: ["none", "2px 2px 16px 0px rgba(0, 0, 0, 0.08)"],
   // Color themes
   palette: {
     primary: {

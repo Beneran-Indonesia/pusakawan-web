@@ -52,7 +52,7 @@ export default function EditProfile({ setSnackbar, userData, accessToken }: Edit
         <Box component="form" onSubmit={handleSubmit(onSubmit)}
             px={20} py={6} alignItems="center" mx="auto" maxWidth={700}
             display="flex" gap={3} flexDirection="column" width="100%"
-            borderRadius={8} boxShadow="2px 2px 16px 0px rgba(0, 0, 0, 0.08)"
+            borderRadius={8} boxShadow={1}
         >
             <EditAvatar src={userData.profile_picture} />
             <Input name="full_name" control={control} label="Nama" required />

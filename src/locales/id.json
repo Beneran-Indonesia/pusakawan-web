@@ -92,7 +92,11 @@
             "title": "Kesehatan",
             "text": "Pelajari isu kesehatan dan perkembangannya di lingkungan masyarakat."
         },
-        "button": "Pelajari"
+        "button": "Mulai pelajari"
+    },
+    "program_selection": {
+        "paid": "Gratis",
+        "button": "Mulai pelajari"
     },
     "register": {
         "title": "Daftar akun",
@@ -177,5 +181,21 @@
             "school": "Nama sekolah"
         }
     },
-    "log_out": "Keluar"
+    "log_out": "Keluar",
+    "program": {
+        "header": {
+            "breadcrumbs": {
+                "home": "Beranda",
+                "program": "Program"
+            },
+            "title": "Perdalam <red>kemampuanmu</red> dengan mempelajari program kami"
+        },
+        "content": {
+            "title": "Pilih Program yang Ingin Anda Pelajari"
+        }
+    },
+    "autocomplete": {
+        "placeholder": "Cari program",
+        "empty": "Hm, program tidak ditemukan"
+    }
 }

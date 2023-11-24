@@ -94,6 +94,10 @@
         },
         "button": "Pelajari"
     },
+    "program_selection": {
+        "paid": "Free",
+        "button": "Start learning"
+    },
     "register": {
         "title": "Account register",
         "description": "Already have an account? Login <strong>here</strong>.",
@@ -178,5 +182,21 @@
             "school": "School name"
         }
     },
-    "log_out": "Sign out"
+    "log_out": "Sign out",
+    "program": {
+        "header": {
+            "breadcrumbs": {
+                "home": "Home1",
+                "program": "Program"
+            },
+            "title": "Level up your <red>skills</red> by learning through our programs"
+        },
+        "content": {
+            "title": "Choose Our Program You're Interested In"
+        }
+    },
+    "autocomplete": {
+        "placeholder": "Find program",
+        "empty": "Hm, program is not found"
+    }
 }

@@ -33,7 +33,6 @@ function Input<T extends FieldValues> ({ name, control, label, required=true, au
                     type={type}
                     fullWidth
                     InputProps={{ sx: formControlRoot }}
-                    // inputProps={{ style: { WebkitBoxShadow: "0 0 0 1000px white inset", color: 'black'} }}
                 />
             )}
         />

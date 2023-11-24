@@ -129,8 +129,8 @@ function LoginBox() {
                     setErrorMessage({ error: true, type: 'server', message: t('error.server') })
                     return;
                 }
-                // If no error then go to user
-                router.push('/user')
+                // If no error then go to main page
+                router.push('/')
             })
             .catch((e) => console.error("EMAIL CREDENTIAL CLIENT ERROR:", e));
     };
