@@ -86,7 +86,7 @@ type ClassDatas = {
 export const getServerSideProps: GetServerSideProps<ClassDatas> = async (ctx) => {
     const { locale } = ctx;
     const { name: classname } = ctx.params!;
-    const classData = await getClassOverviewData(classname);
+    const classData = await getClassOverviewData(classname as string);
     return {
         props: {
             classData: classData[0],
