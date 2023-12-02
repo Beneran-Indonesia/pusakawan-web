@@ -3,9 +3,20 @@
         "value": "Home",
         "title": "Go back to home"
     },
+    "accordion": {
+        "module": "Module that needs to be learnt",
+        "assignment": "Assignment"
+    },
     "class": {
         "overview": {
-            "button": "Start learning",
+            "breadcrumbs": {
+                "home": "Home1",
+                "program": "Program"
+            },
+            "button": {
+                "paid": "Paid",
+                "free": "Free program"
+            },
             "description": "Program description",
             "materials": "Need to be learnt materials",
             "assignment": "Assignment"

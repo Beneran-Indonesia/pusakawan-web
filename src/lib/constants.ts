@@ -1,4 +1,4 @@
-import { ProgramData } from "@/types/components";
+import { ClassOverview, ProgramData } from "@/types/components";
 import { CSSProperties } from "react";
 
 const formControlRoot: CSSProperties = {
@@ -70,7 +70,7 @@ const mockUserClass = [
 const mockClass = {
     s3Url: "https://pusaka-api-bucket-dev.s3.ap-southeast-1.amazonaws.com/media/Understanding+Your+Health+Care+Benefits/index.html",
     title: "Rendahnya daya saing",
-    category: "Perekonomian",
+    pusakaPoints: '',
     description: "Bagian ini merupakan deskripsi dari program yang dibuat di backoffice, sehingga hasilnya tergantung dari pembuat program itu sendiri."
 };
 
@@ -80,7 +80,61 @@ const mockProgramData: ProgramData[] = [
     { id: 2, img: unsplash("gMsnXqILjp4"), title: "Rendahnya Daya Saing", paid: false },
     { id: 3, img: unsplash("FvBVVf0ctnk"), title: "Tantangan Globalisasi", paid: true, price: 10000 },
     { id: 4, img: unsplash("xMh_ww8HN_Q"), title: "Ketahanan Pangan", paid: false, },
+]
 
+const mockClassOverviewOne: ClassOverview = {
+    id: 9,
+    title: "Rendahnya Daya Saing",
+    paid: false,
+    img: unsplash("gMsnXqILjp4"),
+    pusakaPoints: 100,
+    posttest: null,
+    pretest: null,
+    description: "Rendahnya daya saing adalah..",
+    assignment: {
+        description: "Ini adalah deskripsi tugas",
+        items: [{
+            href: '/',
+            title: "Tugas 1"
+        }]
+    },
+    modules: {
+        description: "Ini adalah deskripsi modul",
+        items: [{
+            href: '/',
+            title: "Material 1"
+        }]
+    }
+};
+
+const mockClassOverviewTwo: ClassOverview = {
+    id: 10,
+    title: "Permasalahan Dana Desa",
+    paid: true,
+    price: 25000,
+    img: unsplash("I-8e7wx2hao"),
+    pusakaPoints: 100,
+    posttest: null,
+    pretest: null,
+    description: "Permasalahan dana desa adalah..",
+    assignment: {
+        description: "Ini adalah deskripsi tugas",
+        items: [{
+            href: '/',
+            title: "Tugas 1"
+        }]
+    },
+    modules: {
+        description: "Ini adalah deskripsi modul",
+        items: [{
+            href: '/',
+            title: "Material 1"
+        }]
+    }
+};
+
+const mockClassOverviews: ClassOverview[] = [
+    mockClassOverviewOne, mockClassOverviewTwo
 ]
 
 export {
@@ -94,5 +148,6 @@ export {
     grade,
     mockUserClass,
     mockProgramData,
-    programPagePicture
+    programPagePicture,
+    mockClassOverviews
 };

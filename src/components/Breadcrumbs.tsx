@@ -2,12 +2,10 @@ import * as React from 'react';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from '@mui/material/Link';
 import NextLink from "next/link";
-import { useTranslations } from 'next-intl';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import { BreadcrumbLinkProps, BreadcrumbProps } from '@/types/components';
 
 export default function BreadcrumbsWrapper({ breadcrumbData }: BreadcrumbProps) {
-    const t = useTranslations('program');
     return (
         <Breadcrumbs aria-label="breadcrumb" separator={<NavigateNextIcon fontSize="small" />} >
             {

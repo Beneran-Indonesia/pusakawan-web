@@ -14,12 +14,34 @@ type ProgramData = {
     price?: number;
 }
 
+type ClassOverview = ProgramData & {
+    description: string;
+    pusakaPoints: number;
+    pretest: null | string;
+    posttest: null | string;
+    modules: {
+        description?: string;
+        items: {
+            title: string;
+            href: string;
+        }[]
+    };
+    assignment: {
+        description?: string;
+        items: {
+            title: string;
+            href: string;
+        }[]
+    };
+}
+
 type SortBy = 'ALL' | 'PAID' | 'FREE';
 
 
-export type { 
+export type {
     BreadcrumbProps,
     BreadcrumbLinkProps,
     ProgramData,
-    SortBy
+    SortBy,
+    ClassOverview
 }

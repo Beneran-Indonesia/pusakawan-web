@@ -28,7 +28,7 @@ export default function CoursesSection() {
                 red: (chunks) => <Box component="span" color="primary.main">{chunks}</Box>
             })}</Typography>
             <CoursesCard />
-            <UnderlinedLink href="/">
+            <UnderlinedLink href="/program">
                 <Typography fontWeight={500} variant="h5" component="h5" display="inline-flex" gap={1} alignItems="center">
                     {t('cta')}<ChevronRightIcon />
                 </Typography>

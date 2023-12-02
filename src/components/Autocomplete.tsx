@@ -145,7 +145,7 @@ const StyledListbox = styled('ul')(
 const StyledOption = styled('li')(
   ({ theme }) => `
   list-style: none;
-  padding: 8px;
+  padding: 16px;
   border-radius: 8px;
   cursor: default;
 

@@ -27,7 +27,7 @@ export default function Header() {
                 <hr style={{ height: '3rem' }} />
                 {
                     status === 'loading'
-                        ? <Skeleton variant="rectangular" width={210} height={118} />
+                        ? <Skeleton variant="rectangular" width={220} height={60} />
                         : session && session.accessToken
                             // TODO:
                             ? <Link href="/user" title={t('profile')}><Avatar>A</Avatar></Link>

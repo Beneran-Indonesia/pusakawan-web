@@ -2,6 +2,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import CardWrapper from "./Wrapper/Normal";
 import { useTranslations } from "next-intl";
+import { formatNumberToIdr } from "@/lib/utils";
 
 type CardProps = {
     img: string;
@@ -18,9 +19,10 @@ export default function ProgramCard({ img, title, price }: CardProps) {
             <Typography variant="h3" component="h3" mb={4} fontWeight={600}>
                 {!price
                     ? t('paid')
-                    : new Intl.NumberFormat('id-ID', {}).format(price)}
+                    : formatNumberToIdr(price)
+                }
             </Typography>
-            <Button variant="outlined" size="small" sx={{ width: 'fit-content', mb: 3, alignSelf: 'center'}}>{t('button')}</Button>
+            <Button variant="outlined" size="small" sx={{ width: 'fit-content', mb: 3, alignSelf: 'center' }}>{t('button')}</Button>
         </CardWrapper>
     )
 }

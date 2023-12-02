@@ -3,9 +3,20 @@
         "value": "Beranda",
         "title": "Kembali ke beranda"
     },
+    "accordion": {
+        "module": "Modul yang perlu dipelajari",
+        "assignment": "Tugas"
+    },
     "class": {
         "overview": {
-            "button": "Mulai belajar",
+            "breadcrumbs": {
+                "home": "Beranda",
+                "program": "Program"
+            },
+            "button": {
+                "paid": "Berbayar",
+                "free": "Pendaftaran gratis"
+            },
             "description": "Deskripsi program",
             "materials": "Material yang perlu dipelajari",
             "assignment": "Tugas"

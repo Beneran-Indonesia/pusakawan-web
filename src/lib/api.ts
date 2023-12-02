@@ -1,6 +1,7 @@
 // API calls
 import axios from 'axios';
-import { createBearerHeader } from './utils';
+import { createBearerHeader, urlToDatabaseFormatted } from './utils';
+import { mockClassOverviews } from './constants';
 
 const headers = {
     'Accept': 'application/json',
@@ -21,4 +22,11 @@ const getEditProfileFields = (url: string, sessionToken: string) => async () => 
     return { status: res.status, message: res.data };
 };
 
-export { getEditProfileFields };
+const getClassOverviewData = async (name: string) => {
+    const res = await mockClassOverviews.filter((dt) => dt.title.toLowerCase() === urlToDatabaseFormatted(name.toLowerCase()));
+    return res;
+    // const res = await api.get('/class/name')
+    // return { status: res.status, message: res.data };
+}
+
+export { getEditProfileFields, getClassOverviewData };
