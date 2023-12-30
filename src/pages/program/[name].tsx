@@ -1,17 +1,22 @@
 import Accordion from "@/components/Accordion/Accordion";
 import BreadcrumbsWrapper from "@/components/Breadcrumbs";
+import ImageWrapper from "@/components/ImageWrapper";
 import { getClassOverviewData } from "@/lib/api";
 import { formatNumberToIdr } from "@/lib/utils";
 import { BreadcrumbLinkProps, ClassOverview } from "@/types/components";
-import { Box } from "@mui/material";
+import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import { useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/router";
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import Logo from "@svgs/logo.svg"
 
 export default function MockClass({ classData }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+    const { data: session, status } = useSession()
     const t = useTranslations('class.overview');
     const router = useRouter();
     const breadcrumbData: ({
@@ -36,23 +41,41 @@ export default function MockClass({ classData }: InferGetServerSidePropsType<typ
                 <BlurBox />
             </Box>
 
-            <Container sx={{ mt: -6,  position: 'relative', mb: 10 }}>
+            <Container sx={{ mt: -6, position: 'relative', mb: 10 }}>
                 <Box display="flex" flexDirection="column" gap={2}>
                     <Typography variant='h2' component='h2' fontWeight={600}>{title}</Typography>
                     <Box display="flex" gap={4}>
-                        <Button variant="contained" size="medium">
+                        <Box>
+                            <Button variant="contained" size="medium" sx={{ textAlign: 'center' }}
+                                disabled={status === "unauthenticated"}
+                            >
+                                {
+                                    classData.paid
+                                        ? <>
+                                            {t('button.paid')}
+                                            <Typography ml={1} variant="h4" component="span">
+                                                Rp. {formatNumberToIdr(classData.price!)}
+                                            </Typography>
+                                        </>
+                                        : t('button.free')
+                                }
+                            </Button>
                             {
-                                classData.paid
-                                    ? <>
-                                        {t('button.free')}
-                                        <Typography variant="h4" component="span">
-                                            {formatNumberToIdr(classData.price!)}
-                                        </Typography>
-                                    </>
-                                    : t('button.free')
+                                status === "unauthenticated"
+                                    ? <Typography variant="h6" color="primary.main" mt={0.5}>
+                                        Anda belum masuk.
+                                    </Typography>
+                                    : null
                             }
-                        </Button>
-                        <Box>100 poin</Box>
+                        </Box>
+                        <Box display="flex" boxShadow={1} height="40px" width="160px" px={1.5} py={1} borderRadius={2} gap={1.5} alignItems="center">
+                            <ImageWrapper src={Logo} width={15} height={21} alt="pusakawan logo" />
+                            <Typography fontWeight={500}>
+                                {classData.pusakaPoints}{" "}
+                                {t('points')}
+                            </Typography>
+                            <HelpOutlineIcon width={18} sx={{ ml: 'auto' }} />
+                        </Box>
                     </Box>
                     <Typography variant="h5" component="h5" fontWeight={600}>{t('description')}</Typography>
                     <Typography mb={2}>{description}</Typography>
@@ -69,7 +92,7 @@ function BlurBox() {
         <div
             style={{
                 position: 'absolute',
-                bottom:  0,
+                bottom: 0,
                 width: "100%",
                 height: "10.5rem",
                 background: "linear-gradient(0deg, #FFF 21.66%, rgba(255, 255, 255, 0.40) 66.91%, rgba(255, 255, 255, 0.00) 100%)"

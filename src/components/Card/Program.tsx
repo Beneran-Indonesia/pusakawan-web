@@ -9,9 +9,10 @@ type CardProps = {
     title: string;
     // null price means that it's free ( not paid )
     price: number | null;
+    href: string;
 }
 
-export default function ProgramCard({ img, title, price }: CardProps) {
+export default function ProgramCard({ img, title, price, href }: CardProps) {
     const t = useTranslations('program_selection');
     return (
         <CardWrapper alt={title} src={img}>
@@ -22,7 +23,7 @@ export default function ProgramCard({ img, title, price }: CardProps) {
                     : formatNumberToIdr(price)
                 }
             </Typography>
-            <Button variant="outlined" size="small" sx={{ width: 'fit-content', mb: 3, alignSelf: 'center' }}>{t('button')}</Button>
+            <Button variant="outlined" size="small" sx={{ width: 'fit-content', mb: 3, alignSelf: 'center' }} href={href}>{t('button')}</Button>
         </CardWrapper>
     )
 }

@@ -4,7 +4,7 @@ import DetailPanel from "@/components/Frontpage/DetailPanel";
 import Banner from "@/components/Frontpage/Banner";
 import CoursesSection from "@/components/Frontpage/CoursesSection";
 
-export default function InternalIndex() {
+export default function Index() {
     return (
         <>
             <Head><title>Pusakawan</title></Head>

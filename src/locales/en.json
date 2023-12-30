@@ -1,4 +1,16 @@
 {
+    "error_page": {
+        "404": {
+            "title": "Page Not Found",
+            "description": "Sorry, the page you are trying to access is not currently available. We are performing maintenance or there is a technical issue that we are working on. Please try again later. Thank you for your understanding and patience.",
+            "button": "Go back to main page"
+        },
+        "maintenance": {
+            "title": "Under development",
+            "description": "This section is still under the development stage. Please check this site often~",
+            "button": "Go back to main page"
+        }
+    },
     "home_button": {
         "value": "Home",
         "title": "Go back to home"
@@ -19,7 +31,8 @@
             },
             "description": "Program description",
             "materials": "Need to be learnt materials",
-            "assignment": "Assignment"
+            "assignment": "Assignment",
+            "points": "Points"
         }
     },
     "form": {
@@ -59,10 +72,12 @@
     "header": {
         "pusakawan": "Back to Pusakawan",
         "challenge": "Challenge",
-        "course": "Course",
+        "program": "Course",
         "register": "Register",
         "login": "Login",
-        "profile": "See profile"
+        "profile": "See profile",
+        "leaderboards": "Leaderboards",
+        "about_us": "About us"
     },
     "headline": {
         "title": "Prepare yourself to be a voter in tomorrow's election.",
@@ -214,5 +229,8 @@
             "paid": "Paid",
             "free": "Free"
         }
+    },
+    "notice_bar": {
+        "profile" : "<red>Warning:</red> You have not completed your profile. Please complete your profile <link>here</link> in order to register for programs."
     }
 }

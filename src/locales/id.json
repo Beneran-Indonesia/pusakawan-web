@@ -1,4 +1,17 @@
 {
+    "error_page": {
+        "404": {
+            "title": "Halaman Tidak Ditemukan",
+            "description": "Mohon maaf, halaman yang Anda coba akses saat ini tidak tersedia. Kami sedang melakukan pemeliharaan atau ada masalah teknis yang sedang kami tangani. Silakan coba lagi nanti. Terima kasih atas pengertian dan kesabarannya.",
+            "button": "Kembali ke halaman utama"
+        }
+        ,
+        "maintenance": {
+            "title": "Dalam tahap pengembangan",
+            "description": "Bagian ini masih dalam tahap pengembangan. Sering cek situs ini untuk tahu lebih lanjut, ya!",
+            "button": "Kembali ke halaman utama"
+        }
+    },
     "home_button": {
         "value": "Beranda",
         "title": "Kembali ke beranda"
@@ -19,7 +32,8 @@
             },
             "description": "Deskripsi program",
             "materials": "Material yang perlu dipelajari",
-            "assignment": "Tugas"
+            "assignment": "Tugas",
+            "points": "Poin"
         }
     },
     "form": {
@@ -59,10 +73,12 @@
     "header": {
         "pusakawan": "Kembali ke Pusakawan",
         "challenge": "Tantangan",
-        "course": "Pembelajaran",
+        "program": "Program",
         "register": "Daftar",
         "login": "Masuk",
-        "profile": "Lihat profil"
+        "profile": "Lihat profil",
+        "leaderboards": "Peringkat",
+        "about_us": "Tentang kami"
     },
     "headline": {
         "title": "Siapkan dirimu untuk menjadi pemilih di Pemilu besok.",
@@ -213,5 +229,8 @@
             "paid": "Berbayar",
             "free": "Gratis"
         }
+    },
+    "notice_bar": {
+        "profile" : "<red>Perhatian:</red> Anda belum melengkapi profil anda. Tolong lengkapi profil anda <link>disini</link> untuk mendaftar di program."
     }
 }

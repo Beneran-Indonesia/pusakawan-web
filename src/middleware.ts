@@ -12,12 +12,13 @@ export async function middleware(req: NextRequest) {
   //   return NextResponse.redirect(new URL('/on-development', req.url));
   // }
   // Redirect user to / if user is not logged in
-  if (pathname === '/user' && !loggedIn) {
-    return NextResponse.redirect(new URL('/', req.url))
+  if ((pathname === '/user' || pathname === 'reset-password') && !loggedIn) {
+    return NextResponse.redirect(new URL('/login', req.url))
   }
   // Redirect user to /user if user is logged in
-  if ((pathname === '/login' || pathname === '/register' || pathname === 'reset-password') && loggedIn) {
+  if ((pathname === '/login' || pathname === '/register') && loggedIn) {
     return NextResponse.redirect(new URL('/user', req.url))
   }
+
   return NextResponse.next();
 }

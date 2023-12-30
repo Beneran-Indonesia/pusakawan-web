@@ -9,7 +9,7 @@ const LinkBehaviour = forwardRef(function LinkBehaviour(props: { href: string },
 });
 
 const themeOptions: ThemeOptions = {
-  // Auto complete override
+  // Link override
   components: {
     MuiLink: {
       defaultProps: {
@@ -31,6 +31,7 @@ const themeOptions: ThemeOptions = {
         },
       }
     },
+    // Auto complete override
     MuiOutlinedInput: {
       styleOverrides: {
         input: {
@@ -63,7 +64,7 @@ const themeOptions: ThemeOptions = {
     // MuiLoad
   },
   // TBVH I WANNA DIE
-  shadows: ["none", "2px 2px 16px 0px rgba(0, 0, 0, 0.08)", "", "", "" , "", "", "", "" , "", "", "", "" , "", "", "", "" , "", "", "", "" , "", "", "", "" ] ,
+  shadows: ["none", "2px 2px 16px 0px rgba(0, 0, 0, 0.08)", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""],
   // Color themes
   palette: {
     primary: {

@@ -1,6 +1,7 @@
 import { useTranslations } from "next-intl";
 import ClassAccordion from "./Wrapper";
-import { Link, Typography } from "@mui/material";
+import Link from "@mui/material/Link";
+import Typography from "@mui/material/Typography";
 import NextLink from "next/link";
 
 type ModuleAccordionProps = {

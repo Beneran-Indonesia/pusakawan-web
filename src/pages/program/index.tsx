@@ -10,14 +10,20 @@ import { useState } from "react";
 import ProgramCard from "@/components/Card/Program";
 import Autocomplete from "@/components/Autocomplete";
 import SortBySelect from "@/components/SortbySelect";
+import NoticeBar from "@/components/Notice";
+import Link from "@mui/material/Link";
+import { databaseToUrlFormatted } from "@/lib/utils";
+import { useSession } from "next-auth/react";
 
 export default function ProgramPage() {
+    const { data: session, status } = useSession()
+    console.log(session)
     const [filter, setFilter] = useState<SortBy>('ALL');
     const [currentData, setCurrentData] = useState(mockProgramData);
     const t = useTranslations('program.header')
     const t2 = useTranslations('program.content')
+    const t3 = useTranslations('notice_bar');
     const { breadcrumbData }: BreadcrumbProps = { breadcrumbData: [{ id: 'breadcrumb01', children: t('breadcrumbs.home'), href: '/' }, { id: 'breadcrumb02', children: t('breadcrumbs.program'), href: '/program', active: true }] };
-    const changeProgramAmount = (num: number) => num > 5 ? 1 : num;
     const onFilterChange = (filterChange: SortBy) => {
         setFilter(filterChange);
         if (filterChange === 'ALL') setCurrentData(mockProgramData);
@@ -31,6 +37,19 @@ export default function ProgramPage() {
             </Head>
             {/* Header part */}
             {/* <Box position="relative"> */}
+            {
+                status === "authenticated"
+                    ?
+                    !session.user.is_profile_complete
+                        ? <NoticeBar>
+                            {t3.rich('profile', {
+                                'red': (chunks) => <Box component="span" color="primary.main">{chunks}</Box>,
+                                'link': (chunks) => <Link href="/user">{chunks}</Link>,
+                            })}
+                        </NoticeBar>
+                        : null
+                    : null
+            }
             <Box display="flex" px={25.5} py={7} flexDirection="column" justifyContent="space-between"
                 sx={{
                     background: `linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,.5)), url('${programPagePicture}')`,
@@ -84,6 +103,7 @@ function CoursesCard({ data }: { data: ProgramData[] }) {
                             img={dt.img}
                             title={dt.title}
                             price={dt.paid ? dt.price! : null}
+                            href={`/program/${databaseToUrlFormatted(dt.title)}`}
                         />
                     </Grid>
                 ))

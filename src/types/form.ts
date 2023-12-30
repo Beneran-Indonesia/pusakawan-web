@@ -60,6 +60,7 @@ type ProfileInput = InputProfileInput & DropdownProfileInput & {
     major: string;
     profile_picture: string;
     accessToken: string;
+    is_profile_complete: boolean;
 }
 
 type ExpectedJSON = {

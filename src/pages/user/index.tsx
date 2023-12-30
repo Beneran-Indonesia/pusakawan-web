@@ -1,5 +1,3 @@
-import api from '@/lib/api';
-import { createBearerHeader } from '@/lib/utils';
 import type { InferGetServerSidePropsType, GetServerSideProps } from 'next'
 import { getSession } from 'next-auth/react';
 import Container from '@mui/material/Container';
@@ -127,17 +125,6 @@ export const getServerSideProps: GetServerSideProps<UserDatas> = async (ctx) => 
             tabNumber = [1, 0];
         }
     }
-    if (!session) return { props: { userData: "Cannot process your request at the moment. Session unavailable." } };
-    try {
-        const res = await api.get(process.env.API_URL + '/user/my-profile', {
-            headers: createBearerHeader(session.accessToken)
-        });
-        // Only 1 country in database: {id: 1, name: 'Indonesia'}.
-        if (res.status === 200) {
-            return { props: { userData: { ...res.data, accessToken: session.accessToken }, messages: (await import(`../../locales/${ctx.locale}.json`)).default, tabNumber, } };
-        }
-    } catch (e) {
-        console.error("GET PROFILE ERROR", e)
-    }
-    return { props: { userData: "Cannot process your request at the moment." } };
+    if (!session) return { props: { userData: "Cannot process your request at the moment. Session unavailable.", messages: (await import(`../../locales/${ctx.locale}.json`)).default, tabNumber } };
+    return { props: { userData: { ...session.user }, messages: (await import(`../../locales/${ctx.locale}.json`)).default, tabNumber } };
 }

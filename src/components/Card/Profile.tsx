@@ -1,4 +1,5 @@
-import { Button, Typography } from "@mui/material";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
