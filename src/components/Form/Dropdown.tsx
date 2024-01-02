@@ -27,6 +27,17 @@ export default function
                         value={value}
                         label={label}
                         onChange={onChange}
+                        MenuProps={{
+                            PaperProps: {
+                              sx: {
+                                boxShadow: 1,
+                                '& .MuiMenuItem-root': {
+                                  py: 1,
+                                  px: 2,
+                                },
+                              },
+                            },
+                          }}
                         onOpen={onOpen ? async () => {
                             if (items.length !== 1) return
                             // Assuming datas is an array of string

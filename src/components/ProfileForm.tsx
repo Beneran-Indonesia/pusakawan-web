@@ -13,6 +13,8 @@ import RowRadio from "./Form/RowRadio";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { useState } from 'react';
 import { createBearerHeader } from '@/lib/utils';
+import DatePicker from './Form/Datepicker';
+import { useSession } from 'next-auth/react';
 
 type EditProfileProps = {
     accessToken: string;
@@ -23,8 +25,9 @@ type EditProfileProps = {
 export default function EditProfile({ setSnackbar, userData, accessToken }: EditProfileProps) {
     const t = useTranslations('account.edit_profile');
     const [editLoading, setEditLoading] = useState(false);
+    const { data: session, update } = useSession();
     // TODO:
-    const { control, handleSubmit, watch, getValues, formState: { isDirty, dirtyFields } } = useForm<ProfileInput>({ defaultValues: {...userData, user_category: userData !== undefined ? userData.user_category === 'MAHASISWA' ? t('status.scholar') as "MAHASISWA" : userData.user_category === 'SISWA' ? t('status.student') as "SISWA" : t('status.professional') as "PROFESSIONAL" : undefined } });
+    const { control, handleSubmit, watch, getValues, formState: { isDirty, dirtyFields } } = useForm<ProfileInput>({ defaultValues: { ...userData, user_category: userData !== undefined ? userData.user_category === 'MAHASISWA' ? t('status.scholar') as "MAHASISWA" : userData.user_category === 'SISWA' ? t('status.student') as "SISWA" : t('status.professional') as "PROFESSIONAL" : undefined } });
     const userCategory = watch('user_category');
     const onSubmit: SubmitHandler<ProfileInput> = async (data) => {
         setEditLoading(true);
@@ -37,11 +40,17 @@ export default function EditProfile({ setSnackbar, userData, accessToken }: Edit
             const res = await api.patch('/user/edit-profile/', {
                 dirtyData,
                 // This was a fucking nightmare.. form data was used instead of fucking JSON........
-                //  should've known cuz we can patch headers and profile pictures
+                // should've known cuz we can patch headers and profile pictures
             }, { headers: { ...createBearerHeader(accessToken), "Content-Type": "multipart/form-data" } })
             setEditLoading(false);
             if (res.status === 200) {
-                setSnackbar(true, true, t("edit_succeed"))
+                setSnackbar(true, true, t("edit_succeed"));
+                console.log(dirtyData, res.data);
+                return;
+                // Update session
+                    // console.log('hello this was session triggered')
+                    // console.log({ ... session, user: { ...session?.user, ...dirtyData }})
+                    await update({ ... session, user: { ...session?.user, ...dirtyData }})
                 return;
             }
         } catch (e) {
@@ -55,13 +64,19 @@ export default function EditProfile({ setSnackbar, userData, accessToken }: Edit
             display="flex" gap={3} flexDirection="column" width="100%"
             borderRadius={8} boxShadow={1}
         >
+            {/* <p>{JSON.stringify(userData)}</p> */}
             <EditAvatar src={userData.profile_picture} />
-            <Input name="full_name" control={control} label="Nama" required />
+            <Input name="full_name" control={control} label="Name" required />
             <Input name="username" control={control} label="Username" required />
             <Input name="email" control={control} label="Email" required />
             <TelInput name="phone_no" control={control} required={false} />
             {/* Bio */}
+            <Input name="bio" control={control} label="Bio" required={false} />
+
             {/* DoB */}
+            <DatePicker control={control} label="DoB" name="date_of_birth" required />
+
+            {/* Gender */}
             <RowRadio name="gender" control={control}
                 data={[{ value: 'FEMALE', label: t('gender.female') }, { value: "MALE", label: t('gender.male') }]}
             />
@@ -73,6 +88,7 @@ export default function EditProfile({ setSnackbar, userData, accessToken }: Edit
                 pickedItem={getValues('religion')}
                 onOpen={() => ({ status: 200, message: religions.map((dt) => ({ id: dt, name: dt, title: '' })) })}
             />
+
             {/* Ethnicity */}
             <Dropdown
                 name="ethnicity"
@@ -139,11 +155,10 @@ export default function EditProfile({ setSnackbar, userData, accessToken }: Edit
                             control={control}
                             required
                         />
-                        <Input
-                            label={t('graduation_year')}
+                        <DatePicker
                             name='year'
+                            label={t('graduation_year')}
                             control={control}
-                            type="number"
                             required
                         />
                     </>
@@ -162,11 +177,10 @@ export default function EditProfile({ setSnackbar, userData, accessToken }: Edit
                                 control={control}
                                 required
                             />
-                            <Input
-                                label={t('entry_year')}
+                            <DatePicker
                                 name='year'
                                 control={control}
-                                type="number"
+                                label={t('entry_year')}
                                 required
                             />
                         </>
@@ -179,18 +193,16 @@ export default function EditProfile({ setSnackbar, userData, accessToken }: Edit
                                 pickedItem={getValues("grade")!}
                                 onOpen={async () => ({ status: 200, message: grade.map((dt) => ({ id: dt, name: dt, title: '' })) })}
                             />
-
                             <Input
                                 label={t('school')}
                                 name='institution'
                                 control={control}
                                 required
                             />
-                            <Input
-                                label={t('entry_year')}
+                            <DatePicker
                                 name='year'
                                 control={control}
-                                type="number"
+                                label={t('entry_year')}
                                 required
                             />
                         </>

@@ -1,7 +1,8 @@
 import { useRouter } from "next/router"
 import Header from "./Header";
 import Footer from "./Footer";
-
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 
 export default function Wrapper({ children }: { children: React.ReactNode }) {
     const router = useRouter();
@@ -10,10 +11,10 @@ export default function Wrapper({ children }: { children: React.ReactNode }) {
         return children;
     }
     return (
-        <>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
             <Header />
             {children}
             <Footer />
-        </>
+        </LocalizationProvider>
     )
 }

@@ -45,7 +45,10 @@
                 "required": "This column is required.",
                 "min_length_password": "Password too short. Minimum 8 characters.",
                 "min_length_phone": "Number too short. Minimum 4 digit.",
-                "max_length_phone": "Number too long. Maximum 12 digit."
+                "max_length_phone": "Number too long. Maximum 12 digit.",
+                "number": {
+                    "min": "Input only number above 1900."
+                }
             }
         },
         "phone": {

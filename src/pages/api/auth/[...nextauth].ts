@@ -1,11 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from "next"
 import CredentialsProvider from "next-auth/providers/credentials";
 import api from "@/lib/api";
-import NextAuth, { Profile } from "next-auth";
+import NextAuth from "next-auth";
 import { createBearerHeader } from "@/lib/utils";
 import { ProfileInput } from "@/types/form";
-
-// TODO: Works but the typing isn't.
 
 const getMaxAgeDay = (days: number) => days * 24 * 3600;
 
@@ -75,9 +73,14 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
             })
         ],
         callbacks: {
-            async jwt({ user, token }) {
+            async jwt({ trigger, session, user, token }) {
                 if (user?.accessToken) {
                     return user as ProfileInput;
+                }
+                // if update was triggered,
+                if (trigger === "update" && session) {
+                    console.log('hello this was triggered');
+                    return { ...token, ...session?.user };
                 }
                 return token;
             },

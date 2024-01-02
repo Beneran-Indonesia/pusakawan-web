@@ -90,8 +90,8 @@ export default function UserHome({ userData, tabNumber }: InferGetServerSideProp
                         </TabPanel>
                     </Box>
                 </TabWrapper>
-                <p>{JSON.stringify(userData)}</p>
             </Container>
+            <p>{JSON.stringify(userData)}</p>
         </>
     )
 }
@@ -125,6 +125,8 @@ export const getServerSideProps: GetServerSideProps<UserDatas> = async (ctx) => 
             tabNumber = [1, 0];
         }
     }
-    if (!session) return { props: { userData: "Cannot process your request at the moment. Session unavailable.", messages: (await import(`../../locales/${ctx.locale}.json`)).default, tabNumber } };
-    return { props: { userData: { ...session.user }, messages: (await import(`../../locales/${ctx.locale}.json`)).default, tabNumber } };
+    console.log('get server side props', session?.user)
+    const defaultReturn = { messages: (await import(`../../locales/${ctx.locale}.json`)).default, tabNumber };
+    if (!session) return { props: { userData: "Cannot process your request at the moment. Session unavailable.", ...defaultReturn } };
+    return { props: { userData: { ...session.user }, ...defaultReturn } };
 }
