@@ -132,7 +132,10 @@ function LoginBox() {
                 // If no error then go to main page
                 router.push('/')
             })
-            .catch((e) => console.error("EMAIL CREDENTIAL CLIENT ERROR:", e));
+            .catch((e) => {
+                setLoading(false);
+                console.error("EMAIL CREDENTIAL CLIENT ERROR:", e)
+            });
     };
 
     const firebaseAuth = async () => {
@@ -141,6 +144,7 @@ function LoginBox() {
         const accessToken = await signUpWithGoogle();
         // If no accessToken return error
         if (!accessToken) {
+            setLoading(false);
             setErrorMessage({ error: true, type: 'server', message: t('error.server') });
             return;
         }
@@ -166,9 +170,13 @@ function LoginBox() {
                     return;
                 }
                 // If succeeds go to /user
-                router.push('/user')
+                router.
+                    push('/user')
             })
-            .catch((e) => console.error("FIREBASE AUTH CREDENTIAL CLIENT ERROR:", e));
+            .catch((e) => {
+                setLoading(false);
+                console.error("FIREBASE AUTH CREDENTIAL CLIENT ERROR:", e)
+            });
     };
 
     const handleClickShowPassword = () => setShowPassword(!showPassword);

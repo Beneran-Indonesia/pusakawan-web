@@ -134,6 +134,7 @@ function SignupForm({ setSnackbarOpen }: SignupFormProps) {
         setLoading(true);
         const accessToken = await signUpWithGoogle();
         if (!accessToken) {
+            setLoading(false);
             setSnackbarOpen('snackbar.failed');
             return;
         }
@@ -160,6 +161,7 @@ function SignupForm({ setSnackbarOpen }: SignupFormProps) {
                 router.push('/user')
             })
             .catch((e) => console.error("FIREBASE REGISTER CLIENT ERROR:", e));
+        setLoading(false);
     };
 
     return (
@@ -319,8 +321,8 @@ function TermsAndConditionModal({ open, handleClose }: TermsAndConditionModalPro
 
 export async function getStaticProps({ locale }: { locale: "en" | "id" }) {
     return {
-      props: {
-        messages: (await import(`../locales/${locale}.json`)).default,
-      },
+        props: {
+            messages: (await import(`../locales/${locale}.json`)).default,
+        },
     };
-  }
+}
