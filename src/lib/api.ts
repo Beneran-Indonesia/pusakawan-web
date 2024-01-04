@@ -9,13 +9,13 @@ const headers = {
 }
 
 const api = axios.create({
-    baseURL: "https://api.pusakaapp.id",
+    baseURL: process.env.API_URL,
     headers
 })
 
 export default api;
 
-const getEditProfileFields = (url: string, sessionToken: string) => async () => {
+const getEditProfileFields = async (url: string, sessionToken: string) => {
     const res = await api.get(url, {
         headers: createBearerHeader(sessionToken)
     })

@@ -4,6 +4,8 @@ import { ProgramData } from '@/types/components';
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import SearchIcon from '@mui/icons-material/Search';
+import { Link } from '@mui/material';
+import { databaseToUrlFormatted } from '@/lib/utils';
 
 // TODO: LET'S MAKE THIS PRETTIER OK
 
@@ -41,9 +43,13 @@ export default function Autocomplete({ classData }: { classData: ProgramData[] }
       {(inputValue.length > 0 && groupedOptions.length > 0) && (
         <StyledListbox {...getListboxProps()}>
           {(groupedOptions as ProgramData[]).map((option, index) => (
-            <StyledOption key={option.title + index} {...getOptionProps({ option, index })}>
-              {option.title}
-            </StyledOption>
+            <Link href={`program/${databaseToUrlFormatted(option.title)}`} key={option.title + index} 
+            sx={{ textDecoration: 'none', 'color': 'black'}}
+            >
+              <StyledOption {...getOptionProps({ option, index })}>
+                {option.title}
+              </StyledOption>
+            </Link>
           ))}
         </StyledListbox>
       )}
@@ -58,34 +64,23 @@ export default function Autocomplete({ classData }: { classData: ProgramData[] }
   );
 }
 
-const blue = {
-  100: '#DAECFF',
-  200: '#99CCF3',
-  400: '#3399FF',
-  500: '#007FFF',
-  600: '#0072E5',
-  700: '#0059B2',
-  900: '#003A75',
-};
-
 const grey = {
-  50: '#F3F6F9',
-  100: '#E5EAF2',
   200: '#DAE2ED',
-  300: '#C7D0DD',
-  400: '#B0B8C4',
   500: '#9DA8B7',
-  600: '#6B7A90',
-  700: '#434D5B',
-  800: '#303740',
   900: '#1C2025',
 };
+
+const moncohrome = {
+  50: 'rgba(239, 208, 211, 0.2)',
+  100: 'rgba(239, 208, 211, 0.4)',
+};
+
 
 const StyledAutocompleteRoot = styled('div')(
   ({ theme }) => `
   border-radius: 3.125rem;
-  color: ${theme.palette.mode === 'dark' ? grey[300] : grey[500]};
-  background: ${theme.palette.mode === 'dark' ? grey[900] : '#fff'};
+  color: ${grey[500]};
+  background: #fff;
   display: flex;
   gap: 0.5rem;
   overflow: hidden;
@@ -94,14 +89,6 @@ const StyledAutocompleteRoot = styled('div')(
   box-shadow: ${theme.shadows[1]};
   align-items: center;
   padding-left: 0.5rem;
-
-  &.focused {
-    border-color: ${blue[400]};
-  }
-
-  &:hover {
-    border-color: ${blue[400]};
-  }
 
   &:focus-visible {
     outline: 0;
@@ -136,9 +123,9 @@ const StyledListbox = styled('ul')(
   max-height: 300px;
   z-index: 1;
   position: absolute;
-  background: ${theme.palette.mode === 'dark' ? grey[900] : '#fff'};
-  border: 1px solid ${theme.palette.mode === 'dark' ? grey[700] : grey[200]};
-  color: ${theme.palette.mode === 'dark' ? grey[300] : grey[900]};
+  background: #fff;
+  border: 1px solid ${grey[200]};
+  color: ${grey[900]};
   `,
 );
 
@@ -157,25 +144,10 @@ const StyledOption = styled('li')(
     cursor: pointer;
   }
 
-  &[aria-selected=true] {
-    background-color: ${theme.palette.mode === 'dark' ? blue[900] : blue[100]};
-    color: ${theme.palette.mode === 'dark' ? blue[100] : blue[900]};
-  }
-
   &.Mui-focused,
   &.Mui-focusVisible {
-    background-color: ${theme.palette.mode === 'dark' ? grey[800] : grey[100]};
-    color: ${theme.palette.mode === 'dark' ? grey[300] : grey[900]};
-  }
-
-  &.Mui-focusVisible {
-    box-shadow: 0 0 0 3px ${theme.palette.mode === 'dark' ? blue[500] : blue[200]};
-  }
-
-  &[aria-selected=true].Mui-focused,
-  &[aria-selected=true].Mui-focusVisible {
-    background-color: ${theme.palette.mode === 'dark' ? blue[900] : blue[100]};
-    color: ${theme.palette.mode === 'dark' ? blue[100] : blue[900]};
+    background-color: ${moncohrome[100]};
+    color: ${grey[900]};
   }
   `,
 );

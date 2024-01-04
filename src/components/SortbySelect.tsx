@@ -42,27 +42,10 @@ function Select(props: SelectProps<string, false>) {
 
   return <BaseSelect {...props} slots={slots} />;
 }
-const blue = {
-  100: '#DAECFF',
-  200: '#99CCF3',
-  400: '#3399FF',
-  500: '#007FFF',
-  600: '#0072E5',
-  700: '#0059B2',
-  900: '#003A75',
-};
 
 const grey = {
-  50: '#F3F6F9',
-  100: '#E5EAF2',
-  200: '#DAE2ED',
-  300: '#C7D0DD',
-  400: '#B0B8C4',
-  500: '#9DA8B7',
-  600: '#6B7A90',
-  700: '#434D5B',
-  800: '#303740',
-  900: '#1C2025',
+  50: 'rgba(239, 208, 211, 0.2)',
+  100: 'rgba(239, 208, 211, 0.4)',
 };
 
 const CustomButton = React.forwardRef(function CustomButton(
@@ -98,7 +81,7 @@ const StyledButton = styled(CustomButton, { shouldForwardProp: () => true })(
   border-radius: 100px;
   text-align: left;
   line-height: 1.2;
-  background: ${theme.palette.mode === 'dark' ? grey[900] : '#fff'};
+  background: #fff;
   color: black;
   box-shadow: ${theme.shadows[1]};
 
@@ -107,7 +90,7 @@ const StyledButton = styled(CustomButton, { shouldForwardProp: () => true })(
   transition-duration: 120ms;
 
   &:hover {
-    background: ${theme.palette.mode === 'dark' ? grey[800] : grey[50]};
+    background: ${grey[50]};
   }
 
   &.${selectClasses.focusVisible} {
@@ -148,29 +131,23 @@ const Option = styled(BaseOption)(
   }
 
   &.${optionClasses.selected} {
-    background-color: ${theme.palette.mode === 'dark' ? blue[900] : blue[100]};
-    color: ${theme.palette.mode === 'dark' ? blue[100] : blue[900]};
+    background-color: ${grey[100]};
+    color: ${theme.palette.primary.main};
   }
 
   &.${optionClasses.highlighted} {
-    background-color: ${theme.palette.mode === 'dark' ? grey[800] : grey[100]};
-    color: ${theme.palette.mode === 'dark' ? grey[300] : grey[900]};
+    background-color: ${grey[100]};
+    color: ${theme.palette.primary.main};
   }
 
   &.${optionClasses.highlighted}.${optionClasses.selected} {
-    background-color: ${theme.palette.mode === 'dark' ? blue[900] : blue[100]};
-    color: ${theme.palette.mode === 'dark' ? blue[100] : blue[900]};
-  }
-
-  &.${optionClasses.disabled} {
-    color: ${theme.palette.mode === 'dark' ? grey[700] : grey[400]};
+    background-color: ${grey[100]};
+    color: ${theme.palette.primary.main};
   }
 
   &:hover:not(.${optionClasses.disabled}) {
-    background-color: ${theme.palette.mode === 'dark' ? grey[800] : grey[100]};
-    color: ${theme.palette.mode === 'dark' ? grey[300] : grey[900]};
-  }
-  `,
+    background-color: ${grey[100]};
+  }`,
 );
 
 const Popper = styled(BasePopper)`

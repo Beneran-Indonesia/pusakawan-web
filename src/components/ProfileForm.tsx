@@ -2,11 +2,11 @@ import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import { Input } from "./Form/Input";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { ProfileInput } from "@/types/form";
+import { DropdownItems, DropdownItemsData, ProfileInput } from "@/types/form";
 import TelInput from "./Form/TelInput";
 import EditIcon from '@mui/icons-material/EditOutlined';
 import Dropdown from "./Form/Dropdown";
-import api, { getEditProfileFields } from "@/lib/api";
+import api from "@/lib/api";
 import { useTranslations } from "next-intl";
 import { grade, religions } from "@/lib/constants";
 import RowRadio from "./Form/RowRadio";
@@ -20,14 +20,14 @@ type EditProfileProps = {
     accessToken: string;
     userData: ProfileInput & { profile_picture: string; };
     setSnackbar: (open: boolean, success: boolean, message: string) => void;
-}
+} & DropdownItems;
 
-export default function EditProfile({ setSnackbar, userData, accessToken }: EditProfileProps) {
+export default function EditProfile({ setSnackbar, userData, accessToken, dropdownItems }: EditProfileProps) {
     const t = useTranslations('account.edit_profile');
     const [editLoading, setEditLoading] = useState(false);
     const { data: session, update } = useSession();
     // TODO:
-    const { control, handleSubmit, watch, getValues, formState: { isDirty, dirtyFields } } = useForm<ProfileInput>({ defaultValues: { ...userData, user_category: userData !== undefined ? userData.user_category === 'MAHASISWA' ? t('status.scholar') as "MAHASISWA" : userData.user_category === 'SISWA' ? t('status.student') as "SISWA" : t('status.professional') as "PROFESSIONAL" : undefined } });
+    const { control, handleSubmit, getValues, watch, formState: { isDirty, dirtyFields } } = useForm<ProfileInput>({ defaultValues: { ...userData } });
     const userCategory = watch('user_category');
     const onSubmit: SubmitHandler<ProfileInput> = async (data) => {
         setEditLoading(true);
@@ -39,18 +39,16 @@ export default function EditProfile({ setSnackbar, userData, accessToken }: Edit
         try {
             const res = await api.patch('/user/edit-profile/', {
                 dirtyData,
-                // This was a fucking nightmare.. form data was used instead of fucking JSON........
-                // should've known cuz we can patch headers and profile pictures
             }, { headers: { ...createBearerHeader(accessToken), "Content-Type": "multipart/form-data" } })
             setEditLoading(false);
             if (res.status === 200) {
                 setSnackbar(true, true, t("edit_succeed"));
-                console.log(dirtyData, res.data);
+                console.log(dirtyData, res.data, '\n', res);
                 return;
                 // Update session
-                    // console.log('hello this was session triggered')
-                    // console.log({ ... session, user: { ...session?.user, ...dirtyData }})
-                    await update({ ... session, user: { ...session?.user, ...dirtyData }})
+                // console.log('hello this was session triggered')
+                // console.log({ ... session, user: { ...session?.user, ...dirtyData }})
+                await update({ ...session, user: res.data })
                 return;
             }
         } catch (e) {
@@ -85,8 +83,7 @@ export default function EditProfile({ setSnackbar, userData, accessToken }: Edit
                 name="religion"
                 label={t('religion')}
                 control={control}
-                pickedItem={getValues('religion')}
-                onOpen={() => ({ status: 200, message: religions.map((dt) => ({ id: dt, name: dt, title: '' })) })}
+                items={religions.map((dt) => ({ id: dt, name: dt }))}
             />
 
             {/* Ethnicity */}
@@ -94,8 +91,7 @@ export default function EditProfile({ setSnackbar, userData, accessToken }: Edit
                 name="ethnicity"
                 label={t('ethnicity')}
                 control={control}
-                pickedItem={getValues("ethnicity")}
-                onOpen={getEditProfileFields(`/user/ethnicity/`, accessToken)}
+                items={dropdownItems!.ethnicity}
             />
 
             {/* Island */}
@@ -103,8 +99,7 @@ export default function EditProfile({ setSnackbar, userData, accessToken }: Edit
                 name="island"
                 label={t('island')}
                 control={control}
-                pickedItem={getValues("island")}
-                onOpen={getEditProfileFields(`/address/island/`, accessToken)}
+                items={dropdownItems!.island}
             />
 
             {/* Province */}
@@ -112,8 +107,7 @@ export default function EditProfile({ setSnackbar, userData, accessToken }: Edit
                 name="province"
                 label={t('province')}
                 control={control}
-                pickedItem={getValues("province")}
-                onOpen={getEditProfileFields(`/address/state-province/`, accessToken)}
+                items={dropdownItems!.stateProvince}
             />
 
             {/* City */}
@@ -121,23 +115,14 @@ export default function EditProfile({ setSnackbar, userData, accessToken }: Edit
                 name="city"
                 label={t('city')}
                 control={control}
-                pickedItem={getValues("city")}
-                onOpen={async () => {
-                    const userProvince = getValues("province");
-                    // Have to filter data according to user's province.
-                    const res = await getEditProfileFields(`/address/city-district/`, accessToken)();
-                    if (res.status !== 200 || !userProvince) return res;
-                    const provinces = res.message.filter((dt: { state_province: string; }) => dt.state_province === userProvince);
-                    return { status: 200, message: provinces };
-                }}
+                items={dropdownItems!.cityDistrict.filter((dt) => dt.state_province === getValues('province'))}
             />
             {/* Status */}
             <Dropdown
                 name="user_category"
                 label={t('user_category')}
                 control={control}
-                pickedItem={getValues('user_category')}  //
-                onOpen={async () => ({ status: 200, message: [{ id: "PROFESSIONAL", name: t('status.professional') }, { id: "SISWA", name: t('status.student') }, { id: "MAHASISWA", name: t('status.scholar') }] })}
+                items={[{ id: "PROFESSIONAL", name: t('status.professional') }, { id: "SISWA", name: t('status.student') }, { id: "MAHASISWA", name: t('status.scholar') }]}
             />
             {
                 userCategory === "PROFESSIONAL"
@@ -190,8 +175,7 @@ export default function EditProfile({ setSnackbar, userData, accessToken }: Edit
                                 label={t('class')}
                                 name='grade'
                                 control={control}
-                                pickedItem={getValues("grade")!}
-                                onOpen={async () => ({ status: 200, message: grade.map((dt) => ({ id: dt, name: dt, title: '' })) })}
+                                items={grade.map((grd) => ({ id: grd, name: grd }))}
                             />
                             <Input
                                 label={t('school')}

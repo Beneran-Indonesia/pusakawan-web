@@ -8,13 +8,14 @@ import Box from '@mui/material/Box';
 import TabPanel from '@/components/Tabs/TabPanel';
 import TabWrapper from '@/components/Tabs/Wrapper';
 import EditProfile from '@/components/ProfileForm';
-import { ProfileInput } from '@/types/form';
+import { DropdownItems, ProfileInput } from '@/types/form';
 import { Alert, Snackbar } from '@mui/material';
 import Head from 'next/head';
 import { mockUserClass } from "@/lib/constants";
 import ProfileClassCard from '@/components/Card/Profile';
+import { getEditProfileFields } from '@/lib/api';
 
-export default function UserHome({ userData, tabNumber }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+export default function UserHome({ dropdownItems, userData, tabNumber }: InferGetServerSidePropsType<typeof getServerSideProps>) {
     const t = useTranslations('account');
 
     const [currentTabNumber, setCurrentTabNumber] = useState(tabNumber ? tabNumber[0] : 0);
@@ -39,7 +40,7 @@ export default function UserHome({ userData, tabNumber }: InferGetServerSideProp
             <Head>
                 <title>Profile</title>
             </Head>
-            <Container maxWidth="lg" sx={{ mt: 5, overflow: 'hidden' }}>
+            <Container maxWidth="lg" sx={{ mt: 5, mb: 5 }}>
                 <Snackbar open={snackbarOpen.open} autoHideDuration={6000} onClose={handleSnackbarClose}>
                     <Alert onClose={handleSnackbarClose} severity={snackbarOpen.success ? "success" : "error"} sx={{ width: '100%' }}>
                         {snackbarOpen.message}
@@ -67,6 +68,7 @@ export default function UserHome({ userData, tabNumber }: InferGetServerSideProp
                                     : <EditProfile userData={userData}
                                         accessToken={userData.accessToken}
                                         setSnackbar={handleSnackbar}
+                                        dropdownItems={dropdownItems!}
                                     />
                             }
                         </TabPanel>
@@ -91,7 +93,7 @@ export default function UserHome({ userData, tabNumber }: InferGetServerSideProp
                     </Box>
                 </TabWrapper>
             </Container>
-            <p>{JSON.stringify(userData)}</p>
+            {/* <p>{JSON.stringify(userData)}</p> */}
         </>
     )
 }
@@ -108,7 +110,7 @@ const EmptyTab = () => {
 type UserDatas = {
     userData: string | ProfileInput;
     tabNumber?: number[];
-}
+} & DropdownItems;
 
 export const getServerSideProps: GetServerSideProps<UserDatas> = async (ctx) => {
     // Basically: 0 index of array in which 0 is 'profile' tab.
@@ -125,8 +127,20 @@ export const getServerSideProps: GetServerSideProps<UserDatas> = async (ctx) => 
             tabNumber = [1, 0];
         }
     }
-    console.log('get server side props', session?.user)
-    const defaultReturn = { messages: (await import(`../../locales/${ctx.locale}.json`)).default, tabNumber };
+    const defaultReturn = { messages: (await import(`../../locales/${ctx.locale}.json`)).default, tabNumber, dropdownItems: undefined };
     if (!session) return { props: { userData: "Cannot process your request at the moment. Session unavailable.", ...defaultReturn } };
-    return { props: { userData: { ...session.user }, ...defaultReturn } };
+    const accessToken = session.user.accessToken;
+    const [ethnicity, island, stateProvince, cityDistrict] = await Promise.all([
+        getEditProfileFields(`/user/ethnicity/`, accessToken),
+        getEditProfileFields(`/address/island/`, accessToken),
+        getEditProfileFields(`/address/state-province/`, accessToken),
+        getEditProfileFields(`/address/city-district/`, accessToken)
+    ]);
+    const dropdownItems = {
+        ethnicity: ethnicity.message,
+        island: island.message,
+        stateProvince: stateProvince.message,
+        cityDistrict: cityDistrict.message,
+    }
+    return { props: { userData: { ...session.user }, ...defaultReturn, dropdownItems } };
 }

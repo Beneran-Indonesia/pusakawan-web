@@ -9,8 +9,8 @@ export default function BreadcrumbsWrapper({ breadcrumbData }: BreadcrumbProps) 
     return (
         <Breadcrumbs aria-label="breadcrumb" separator={<NavigateNextIcon fontSize="small" />} >
             {
-                breadcrumbData.map((bc) =>
-                    <BreadcrumbLink key={bc.id} href={bc.href} title={bc.title} active={bc.active}>{bc.children}</BreadcrumbLink>
+                breadcrumbData.map((bc, idx) =>
+                    <BreadcrumbLink key={`breadcrumb-${idx}`} href={bc.href} title={bc.title} active={bc.active}>{bc.children}</BreadcrumbLink>
                 )
             }
         </Breadcrumbs>

@@ -231,9 +231,7 @@
             "all": "Semua",
             "paid": "Berbayar",
             "free": "Gratis"
-        }
-    },
-    "notice_bar": {
-        "profile" : "<red>Perhatian:</red> Anda belum melengkapi profil anda. Tolong lengkapi profil anda <link>disini</link> untuk mendaftar di program."
+        },
+        "notice_bar": "<red>Perhatian:</red> Anda belum melengkapi profil anda. Tolong lengkapi profil anda <link>disini</link> untuk mendaftar di program."
     }
 }

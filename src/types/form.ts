@@ -29,15 +29,28 @@ interface TelInputProps<T extends FieldValues> extends FormProps<T> {
     required: boolean;
 }
 
+type DropdownItemsData = {
+    id: number | string; 
+    name: string;
+    title?: string;
+    state_province?: string;
+};
+
+type DropdownItems = {
+    dropdownItems: {
+        ethnicity: DropdownItemsData[];
+        island: DropdownItemsData[];
+        stateProvince: DropdownItemsData[];
+        cityDistrict: DropdownItemsData[];
+    } | undefined;
+}
+
 type DropdownProps = {
     name: keyof DropdownProfileInput;
     control: Control<ProfileInput>
     label: string;
-    pickedItem: string;
-    // Dude. I fucking give up.
-    onOpen?: () => Promise<{ status: number, message: ExpectedJSON[] }> | { status: number, message: { id: string, name: string; title: string; }[] };
+    items: DropdownItemsData[]; 
 }
-
 
 enum UserCategory {
     MAHASISWA = 'MAHASISWA',
@@ -94,5 +107,7 @@ export type {
     DropdownProfileInput,
     PasswordInputProps,
     TelInputProps,
-    DatepickerProps
+    DatepickerProps,
+    DropdownItems,
+    DropdownItemsData
 };

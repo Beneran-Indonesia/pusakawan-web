@@ -215,7 +215,7 @@
     "program": {
         "header": {
             "breadcrumbs": {
-                "home": "Home1",
+                "home": "Home",
                 "program": "Program"
             },
             "title": "Level up your <red>skills</red> by learning through our programs"
@@ -231,9 +231,7 @@
             "all": "All",
             "paid": "Paid",
             "free": "Free"
-        }
-    },
-    "notice_bar": {
-        "profile" : "<red>Warning:</red> You have not completed your profile. Please complete your profile <link>here</link> in order to register for programs."
+        },
+        "notice_bar" : "<red>Warning:</red> You have not completed your profile. Please complete your profile <link>here</link> in order to register for programs."
     }
 }
