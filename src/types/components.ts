@@ -2,41 +2,52 @@ type BreadcrumbLinkProps = {
     href: string, children: string, active?: boolean, title?: string
 }
 
+type STATUS = "NONACTIVE" | "ACTIVE" | "DRAFT"
+
 type ProgramData = {
     id: number;
-    img: string;
+    status: STATUS;
     title: string;
-    paid: boolean;
-    price?: number;
+    banners: { id: number; image: string; }[]
+    description: string;
+    price: number;
+    pusaka_points: number;
+    // paid: boolean;
 }
 
-type ClassOverview = ProgramData & {
+type ModuleData = {
+    id: number;
+    title: string;
+    storyline_path: string;
     description: string;
-    pusakaPoints: number;
     pretest: null | string;
     posttest: null | string;
-    modules: {
-        description?: string;
-        items: {
-            title: string;
-            href: string;
-        }[]
-    };
-    assignment: {
-        description?: string;
-        items: {
-            title: string;
-            href: string;
-        }[]
-    };
+    // modules: {
+    //     description?: string;
+    //     items: {
+    //         title: string;
+    //         href: string;
+    //     }[]
+    // };
+    // assignment: {
+    //     description?: string;
+    //     items: {
+    //         title: string;
+    //         href: string;
+    //     }[]
+    // };
 }
 
 type SortBy = 'ALL' | 'PAID' | 'FREE';
 
+type EnrolledProgram = {
+    enrolledPrograms: ProgramData[]
+}
 
 export type {
     BreadcrumbLinkProps,
     ProgramData,
     SortBy,
-    ClassOverview
+    ModuleData,
+    EnrolledProgram
 }

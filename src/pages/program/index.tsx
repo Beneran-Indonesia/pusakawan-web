@@ -15,10 +15,12 @@ import Link from "@mui/material/Link";
 import { databaseToUrlFormatted } from "@/lib/utils";
 import { useSession } from "next-auth/react";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
-import api from "@/lib/api";
+import { enrollUser, getAllStorylinePrograms } from "@/lib/api";
 
 export default function ProgramPage({ programData }: InferGetServerSidePropsType<typeof getServerSideProps>) {
     const { data: session, status } = useSession()
+    const authenticated = status === "authenticated";
+    const user = authenticated && { id: session!.user.id, sessionToken: session!.user.accessToken };
     const [filter, setFilter] = useState<SortBy>('ALL');
     const [currentData, setCurrentData] = useState(programData);
     const t = useTranslations('program')
@@ -26,8 +28,8 @@ export default function ProgramPage({ programData }: InferGetServerSidePropsType
     const onFilterChange = (filterChange: SortBy) => {
         setFilter(filterChange);
         if (filterChange === 'ALL') setCurrentData(programData);
-        else if (filterChange === 'FREE') setCurrentData(currentData.filter((dt) => !dt.paid));
-        else if (filterChange === 'PAID') setCurrentData(currentData.filter((dt) => dt.paid));
+        else if (filterChange === 'FREE') setCurrentData(currentData.filter((dt) => !dt.price));
+        else if (filterChange === 'PAID') setCurrentData(currentData.filter((dt) => dt.price));
     };
     return (
         <>
@@ -36,9 +38,9 @@ export default function ProgramPage({ programData }: InferGetServerSidePropsType
             </Head>
             {/* Header part */}
             {
-                status === "authenticated"
+                authenticated
                     ?
-                    !session.user.is_profile_complete
+                    !session!.user.is_profile_complete
                         ? <NoticeBar>
                             {t.rich('notice_bar', {
                                 'red': (chunks) => <Box component="span" color="primary.main">{chunks}</Box>,
@@ -75,11 +77,15 @@ export default function ProgramPage({ programData }: InferGetServerSidePropsType
                     <Autocomplete classData={mockProgramData} />
                     <SortBySelect currentValue={filter} onChange={onFilterChange} />
                 </Box>
-                <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}
-                    justifyContent="center" rowGap={3}
+                <Grid
+                    container
+                    spacing={{ xs: 2, md: 3 }}
+                    columns={{ xs: 1, sm: 2, md: 3 }}
+                    justifyContent="center"
+                    rowGap={3}
                 >
                     {/* <Card img={mockClass.s3Url}  /> */}
-                    <CoursesCard data={currentData} />
+                    <CoursesCard user={user} data={currentData} />
                     {/* do card here */}
                 </Grid>
             </Box>
@@ -87,7 +93,9 @@ export default function ProgramPage({ programData }: InferGetServerSidePropsType
     )
 }
 
-function CoursesCard({ data }: { data: ProgramData[] }) {
+type CoursesCardProps = { data: ProgramData[], user: false | { id: number; sessionToken: string; } }
+
+function CoursesCard({ data, user }: CoursesCardProps) {
     return (
         <>
             {
@@ -96,10 +104,12 @@ function CoursesCard({ data }: { data: ProgramData[] }) {
                         key={`course-card ${dt.title} ${dt.id}`}
                     >
                         <ProgramCard
-                            img={dt.img}
+                            // onEnroll={user === false ? undefined : (() => enrollUser(dt.id, user.id, user.sessionToken))}
+                            img={dt.banners[0]?.image}
                             title={dt.title}
-                            price={dt.paid ? dt.price! : null}
+                            price={dt.price!}
                             href={`/program/${databaseToUrlFormatted(dt.title)}`}
+                            programId={dt.id}
                         />
                     </Grid>
                 ))
@@ -110,14 +120,20 @@ function CoursesCard({ data }: { data: ProgramData[] }) {
 
 type Programs = {
     programData: ProgramData[];
+    // messages: string;
 }
 
 export const getServerSideProps: GetServerSideProps<Programs> = async (ctx) => {
     const { locale } = ctx;
-    const defaultReturn = { messages: (await import(`../../locales/${locale}.json`)).default };
+    const storylinePrograms = await getAllStorylinePrograms();
+    // console.log(storylinePrograms);
+    const defaultReturn = { programData: [], messages: (await import(`../../locales/${locale}.json`)).default };
+    if (!storylinePrograms) return { props: { ...defaultReturn } }
     // const res = await api.get('/programs', { headers: ...})
-    return { props: {
-        ...defaultReturn,
-        programData: mockProgramData
-    } };
+    return {
+        props: {
+            ...defaultReturn,
+            programData: storylinePrograms.message
+        }
+    };
 }

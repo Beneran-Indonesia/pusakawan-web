@@ -1,4 +1,4 @@
-import { ClassOverview, ProgramData } from "@/types/components";
+import { ModuleData, ProgramData } from "@/types/components";
 import { CSSProperties } from "react";
 
 const formControlRoot: CSSProperties = {
@@ -31,6 +31,8 @@ const coursesPictures = [
     unsplash('joqWSI9u_XM'),
     unsplash('OJF3lYjC6vg'),
 ];
+
+const getRandomCoursePicture = () => coursesPictures[Math.random() * 2 | 0];
 
 const footerInformation: FooterInformationObject = {
     office: {
@@ -75,65 +77,63 @@ const mockClass = {
 };
 
 const mockProgramData: ProgramData[] = [
-    { id: 0, img: unsplash('M7ievVk4FzA'), title: "Kebijakan Ekspor Impor", paid: true, price: 15000 },
-    { id: 1, img: unsplash("I-8e7wx2hao"), title: "Permasalahan Dana Desa", paid: true, price: 25000 },
-    { id: 2, img: unsplash("gMsnXqILjp4"), title: "Rendahnya Daya Saing", paid: false },
-    { id: 3, img: unsplash("FvBVVf0ctnk"), title: "Tantangan Globalisasi", paid: true, price: 10000 },
-    { id: 4, img: unsplash("xMh_ww8HN_Q"), title: "Ketahanan Pangan", paid: false, },
+    { id: 0, banners: [{ image: unsplash('M7ievVk4FzA'), id: 1 }], title: "Kebijakan Ekspor Impor", status: "ACTIVE", description: "", pusaka_points: 100, price: 15000 },
+    { id: 1, banners: [{ image: unsplash("I-8e7wx2hao"), id: 1 }], title: "Permasalahan Dana Desa", status: "ACTIVE", description: "", pusaka_points: 100, price: 25000 },
+    { id: 2, banners: [{ image: unsplash('gMsnXqILjp4'), id: 1 }], title: "Rendahnya Daya Saing", status: "ACTIVE", description: "", pusaka_points: 100, price: 0},
+    { id: 3, banners: [{ image: unsplash('FvBVVf0ctnk'), id: 1 }], title: "Tantangan Globalisasi", status: "ACTIVE", description: "", pusaka_points: 100, price: 10000 },
+    { id: 4, banners: [{ image: unsplash('xMh_ww8HN_Q'), id: 1 }], title: "Ketahanan Pangan", status: "ACTIVE", description: "", pusaka_points: 100, price: 0 },
 ]
 
-const mockClassOverviewOne: ClassOverview = {
-    id: 9,
-    title: "Rendahnya Daya Saing",
-    paid: false,
-    img: unsplash("gMsnXqILjp4"),
-    pusakaPoints: 100,
-    posttest: null,
-    pretest: null,
-    description: "Rendahnya daya saing adalah..",
-    assignment: {
-        description: "Ini adalah deskripsi tugas",
-        items: [{
-            href: '/',
-            title: "Tugas 1"
-        }]
-    },
-    modules: {
-        description: "Ini adalah deskripsi modul",
-        items: [{
-            href: '/',
-            title: "Material 1"
-        }]
-    }
-};
+// const mockClassOverviewOne: ModuleData = {
+//     id: 9,
+//     title: "Rendahnya Daya Saing",
+//     img: unsplash("gMsnXqILjp4"),
+//     pusakaPoints: 100,
+//     posttest: null,
+//     pretest: null,
+//     description: "Rendahnya daya saing adalah..",
+//     assignment: {
+//         description: "Ini adalah deskripsi tugas",
+//         items: [{
+//             href: '/',
+//             title: "Tugas 1"
+//         }]
+//     },
+//     modules: {
+//         description: "Ini adalah deskripsi modul",
+//         items: [{
+//             href: '/',
+//             title: "Material 1"
+//         }]
+//     }
+// };
 
-const mockClassOverviewTwo: ClassOverview = {
-    id: 10,
-    title: "Permasalahan Dana Desa",
-    paid: true,
-    price: 25000,
-    img: unsplash("I-8e7wx2hao"),
-    pusakaPoints: 100,
-    posttest: null,
-    pretest: null,
-    description: "Permasalahan dana desa adalah..",
-    assignment: {
-        description: "Ini adalah deskripsi tugas",
-        items: [{
-            href: '/',
-            title: "Tugas 1"
-        }]
-    },
-    modules: {
-        description: "Ini adalah deskripsi modul",
-        items: [{
-            href: '/',
-            title: "Material 1"
-        }]
-    }
-};
+// const mockClassOverviewTwo: ModuleData = {
+//     id: 10,
+//     title: "Permasalahan Dana Desa",
+//     price: 25000,
+//     img: unsplash("I-8e7wx2hao"),
+//     pusakaPoints: 100,
+//     posttest: null,
+//     pretest: null,
+//     description: "Permasalahan dana desa adalah..",
+//     assignment: {
+//         description: "Ini adalah deskripsi tugas",
+//         items: [{
+//             href: '/',
+//             title: "Tugas 1"
+//         }]
+//     },
+//     modules: {
+//         description: "Ini adalah deskripsi modul",
+//         items: [{
+//             href: '/',
+//             title: "Material 1"
+//         }]
+//     }
+// };
 
-const mockClassOverviews: ClassOverview[] = [
+const mockClassOverviews: ModuleData[] = [
     mockClassOverviewOne, mockClassOverviewTwo
 ]
 
@@ -149,5 +149,6 @@ export {
     mockUserClass,
     mockProgramData,
     programPagePicture,
-    mockClassOverviews
+    mockClassOverviews,
+    getRandomCoursePicture
 };

@@ -21,7 +21,7 @@ const nextConfig = {
     defaultLocale: 'id'
   },
   images: {
-    domains: ["source.unsplash.com"]
+    domains: ["source.unsplash.com", "pusaka-api-bucket-dev.s3.amazonaws.com"]
   },
 };
 

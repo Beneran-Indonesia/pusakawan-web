@@ -81,6 +81,7 @@ type InputProfileInput = {
 }
 
 type ProfileInput = InputProfileInput & DropdownProfileInput & {
+    id: number;
     full_name: string;
     username: string;
     phone_no: string;

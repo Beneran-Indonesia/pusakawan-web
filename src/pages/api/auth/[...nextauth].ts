@@ -4,6 +4,7 @@ import api from "@/lib/api";
 import NextAuth from "next-auth";
 import { createBearerHeader } from "@/lib/utils";
 import { ProfileInput } from "@/types/form";
+import { EnrolledProgram } from "@/types/components";
 
 const getMaxAgeDay = (days: number) => days * 24 * 3600;
 
@@ -35,7 +36,8 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
                         if (res.status === 200) {
                             const accessToken = res.data.tokens.access;
                             const profile = await getProfile(accessToken);
-                            return profile;
+                            const enrolledPrograms = await getEnrolledPrograms(accessToken);
+                            return {...profile, ...enrolledPrograms};
                         }
 
                     } catch (e: any) {
@@ -61,7 +63,8 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
                         if (conn.status === 200) {
                             const accessToken = conn.data.tokens.access;
                             const profile = await getProfile(accessToken);
-                            return profile;
+                            const enrolledPrograms = await getEnrolledPrograms(accessToken);
+                            return {...profile, enrolledPrograms, accessToken};
                         }
                     } catch (e: any) {
                         console.error("ERROR EMAIL NEXTAUTH", e);
@@ -75,7 +78,7 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
         callbacks: {
             async jwt({ trigger, session, user, token }) {
                 if (user?.accessToken) {
-                    return user as ProfileInput;
+                    return user;
                 }
                 // if update was triggered,
                 if (trigger === "update" && session) {
@@ -87,7 +90,7 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
             async session({ session, token }) {
                 // Return a cookie value as part of the session
                 // This is read when `req.query.nextauth.includes("session") && req.method === "GET"`
-                session = { ...session, user: { ...token } as ProfileInput };
+                session = { ...session, user: { ...token } as ProfileInput & EnrolledProgram };
                 // expected: { user: email, ...token }, expires: strnig;
                 return session;
             }
@@ -102,10 +105,27 @@ async function getProfile(accessToken: string) {
         });
         // Only 1 country in database: {id: 1, name: 'Indonesia'}.
         if (res.status === 200) {
-            return { ...res.data, accessToken: accessToken };
+            return res.data;
         }
         return false;
     } catch (e) {
-        console.error("GET PROFILE ERROR", e)
-    }
-}
+        console.error("GET PROFILE ERROR", e);
+    };
+};
+
+async function getEnrolledPrograms(accessToken: string) {
+    try {
+        const res = await api.get(process.env.API_URL + '/program/my-programs', {
+            headers: createBearerHeader(accessToken),
+            params: {
+                "program_type": "STORYLINE"
+            }
+        });
+        if (res.status === 200) {
+            return res.data;
+        }
+        return false;
+    } catch (e) {
+        console.error("GET ENROLLED PROGRAMS ERROR", e);
+    };
+};
