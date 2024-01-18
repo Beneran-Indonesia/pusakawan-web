@@ -138,8 +138,8 @@ type ClassDatas = {
 }
 
 export const getServerSideProps: GetServerSideProps<ClassDatas> = async (ctx) => {
-    const { locale } = ctx;
-    const { name: classname } = ctx.params!;
+    const { locale, params } = ctx;
+    const classname = params!.name as string;
     const programDataReq = await getProgramData(classname as string);
 
     if (!programDataReq || programDataReq.message.length === 0) {
@@ -154,19 +154,17 @@ export const getServerSideProps: GetServerSideProps<ClassDatas> = async (ctx) =>
         programData = { ...programData, banners: defaultBanner };
     }
     const moduleData = await getModuleData(programId.toString());
-    if (moduleData) {
+    if (!moduleData) return { notFound: true };
 
-        const modules = moduleData.message.map((mdl: ModuleData) => 
-        ({ title: mdl.title, href: process.env.BUCKET_URL + mdl.storyline_path }))
-        return {
-            props: {
-                classname,
-                programData,
-                moduleData: modules,
-                messages: (await import(`../../locales/${locale}.json`)).default,
-            }
+    const modules = moduleData.message.map((mdl: ModuleData) =>
+        ({ title: mdl.title, href: process.env.BUCKET_URL + mdl.storyline_path }));
+        
+    return {
+        props: {
+            classname,
+            programData,
+            moduleData: modules,
+            messages: (await import(`../../locales/${locale}.json`)).default,
         }
     }
-    return { props: { messages: (await import(`../../locales/${locale}.json`)).default, } }
-
 }
