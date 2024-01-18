@@ -3,10 +3,12 @@ import Typography from "@mui/material/Typography";
 import CardWrapper from "./Wrapper/Normal";
 import { useTranslations } from "next-intl";
 import { formatNumberToIdr } from "@/lib/utils";
+import Link from "next/link";
 
 type CardProps = {
     img: string;
     title: string;
+    programId: number;
     // null price means that it's free ( not paid )
     price: number | null;
     href: string;
@@ -23,7 +25,11 @@ export default function ProgramCard({ img, title, price, href }: CardProps) {
                     : formatNumberToIdr(price)
                 }
             </Typography>
-            <Button variant="outlined" size="small" sx={{ width: 'fit-content', mb: 3, alignSelf: 'center' }} href={href}>{t('button')}</Button>
+            <Button variant="outlined" size="small" href={href}
+                // onClick={onEnroll} disabled={!onEnroll}
+                sx={{ width: 'fit-content', mb: 3, alignSelf: 'center' }}>
+                    {t('button')}
+            </Button>
         </CardWrapper>
     )
 }

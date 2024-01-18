@@ -6,6 +6,11 @@ interface FormProps<T extends FieldValues> {
     control: Control<T>; //  Control<ProfileInput> | Control<RegisterUserProps> // | Control<ProfileInput>; // | Control<LoginUserProps>;
 }
 
+interface DatepickerProps<T extends FieldValues> extends FormProps<T> {
+    label: string;
+    required: boolean;
+}
+
 interface FormInputProps<T extends FieldValues> extends FormProps<T> {
     autoComplete?: string;
     type?: React.HTMLInputTypeAttribute;
@@ -22,6 +27,29 @@ interface PasswordInputProps<T extends FieldValues> extends FormProps<T> {
 
 interface TelInputProps<T extends FieldValues> extends FormProps<T> {
     required: boolean;
+}
+
+type DropdownItemsData = {
+    id: number | string; 
+    name: string;
+    title?: string;
+    state_province?: string;
+};
+
+type DropdownItems = {
+    dropdownItems: {
+        ethnicity: DropdownItemsData[];
+        island: DropdownItemsData[];
+        stateProvince: DropdownItemsData[];
+        cityDistrict: DropdownItemsData[];
+    } | undefined;
+}
+
+type DropdownProps = {
+    name: keyof DropdownProfileInput;
+    control: Control<ProfileInput>
+    label: string;
+    items: DropdownItemsData[]; 
 }
 
 enum UserCategory {
@@ -49,9 +77,11 @@ type InputProfileInput = {
     major: string | null;
     graduated: string | null;
     work: string | null;
+    date_of_birth: string | null;
 }
 
 type ProfileInput = InputProfileInput & DropdownProfileInput & {
+    id: number;
     full_name: string;
     username: string;
     phone_no: string;
@@ -71,20 +101,14 @@ type ExpectedJSON = {
     province?: string;
 }
 
-type DropdownProps = {
-    name: keyof DropdownProfileInput;
-    control: Control<ProfileInput>
-    label: string;
-    pickedItem: string;
-    // Dude. I fucking give up.
-    onOpen?: () => Promise<{ status: number, message: ExpectedJSON[] }> | { status: number, message: { id: string, name: string; title: string; }[] };
-}
-
 export type {
     FormInputProps,
     ProfileInput,
     DropdownProps,
     DropdownProfileInput,
     PasswordInputProps,
-    TelInputProps
+    TelInputProps,
+    DatepickerProps,
+    DropdownItems,
+    DropdownItemsData
 };

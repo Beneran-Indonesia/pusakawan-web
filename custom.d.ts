@@ -1,4 +1,5 @@
 import { ProfileInput } from "@/types/form";
+import { EnrolledProgram } from "@/types/components";
 import {
     type DefaultSession,
     type DefaultUser,
@@ -6,10 +7,10 @@ import {
 
 declare module "next-auth" {
     interface Session extends DefaultSession {
-        user: DefaultSession["user"] & ProfileInput;
+        user: DefaultSession["user"] & ProfileInput & EnrolledProgram;
     }
 
-    interface User extends DefaultUser, ProfileInput {}
+    interface User extends DefaultUser, ProfileInput, EnrolledProgram {}
 }
 
 type MonochromePalette = {

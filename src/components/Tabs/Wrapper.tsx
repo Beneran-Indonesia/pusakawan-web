@@ -45,7 +45,7 @@ export default function TabWrapper({ vertical, labels, currentTabNumber, handleC
                 }
                 {
                     vertical
-                        ? <Button variant='contained' sx={{ mt: 3 }} fullWidth onClick={() => signOut()}>{t('log_out')}</Button>
+                        ? <Button variant='contained' sx={{ mt: 3 }} fullWidth onClick={() => signOut({ callbackUrl: '/'})}>{t('log_out')}</Button>
                         : null
                 }
             </Tabs>

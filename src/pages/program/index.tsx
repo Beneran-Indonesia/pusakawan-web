@@ -1,6 +1,6 @@
 import BreadcrumbsWrapper from "@/components/Breadcrumbs";
 import { mockProgramData, programPagePicture } from "@/lib/constants";
-import { BreadcrumbProps, ProgramData, SortBy } from "@/types/components";
+import { BreadcrumbLinkProps, ProgramData, SortBy } from "@/types/components";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
@@ -14,21 +14,22 @@ import NoticeBar from "@/components/Notice";
 import Link from "@mui/material/Link";
 import { databaseToUrlFormatted } from "@/lib/utils";
 import { useSession } from "next-auth/react";
+import { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import { getAllStorylinePrograms } from "@/lib/api";
 
-export default function ProgramPage() {
+export default function ProgramPage({ programData }: InferGetServerSidePropsType<typeof getServerSideProps>) {
     const { data: session, status } = useSession()
-    console.log(session)
+    const authenticated = status === "authenticated";
+    const user = authenticated && { id: session!.user.id, sessionToken: session!.user.accessToken };
     const [filter, setFilter] = useState<SortBy>('ALL');
-    const [currentData, setCurrentData] = useState(mockProgramData);
-    const t = useTranslations('program.header')
-    const t2 = useTranslations('program.content')
-    const t3 = useTranslations('notice_bar');
-    const { breadcrumbData }: BreadcrumbProps = { breadcrumbData: [{ id: 'breadcrumb01', children: t('breadcrumbs.home'), href: '/' }, { id: 'breadcrumb02', children: t('breadcrumbs.program'), href: '/program', active: true }] };
+    const [currentData, setCurrentData] = useState(programData);
+    const t = useTranslations('program')
+    const breadcrumbData: BreadcrumbLinkProps[] = [{ children: t('header.breadcrumbs.home'), href: '/' }, { children: t('header.breadcrumbs.program'), href: '/program', active: true }];
     const onFilterChange = (filterChange: SortBy) => {
         setFilter(filterChange);
-        if (filterChange === 'ALL') setCurrentData(mockProgramData);
-        else if (filterChange === 'FREE') setCurrentData(mockProgramData.filter((dt) => !dt.paid));
-        else if (filterChange === 'PAID') setCurrentData(mockProgramData.filter((dt) => dt.paid));
+        if (filterChange === 'ALL') setCurrentData(programData);
+        else if (filterChange === 'FREE') setCurrentData(currentData.filter((dt) => !dt.price));
+        else if (filterChange === 'PAID') setCurrentData(currentData.filter((dt) => dt.price));
     };
     return (
         <>
@@ -36,13 +37,12 @@ export default function ProgramPage() {
                 <title>Program</title>
             </Head>
             {/* Header part */}
-            {/* <Box position="relative"> */}
             {
-                status === "authenticated"
+                authenticated
                     ?
-                    !session.user.is_profile_complete
+                    !session!.user.is_profile_complete
                         ? <NoticeBar>
-                            {t3.rich('profile', {
+                            {t.rich('notice_bar', {
                                 'red': (chunks) => <Box component="span" color="primary.main">{chunks}</Box>,
                                 'link': (chunks) => <Link href="/user">{chunks}</Link>,
                             })}
@@ -57,10 +57,9 @@ export default function ProgramPage() {
                 }}
                 height={400}
             >
-                {/* TODO: */}
                 <BreadcrumbsWrapper breadcrumbData={breadcrumbData} />
                 <Typography variant="h4" component="h2" fontWeight={600} maxWidth={469}>
-                    {t.rich('title', {
+                    {t.rich('header.title', {
                         red: (chunks) => <Box component="span" color="primary.main">{chunks}</Box>
                     })}
                 </Typography>
@@ -72,26 +71,31 @@ export default function ProgramPage() {
                 marginTop="-20px"
             >
                 <Typography variant="h4" component="h4" fontWeight={600}>
-                    {t2('title')}
+                    {t('content.title')}
                 </Typography>
                 <Box display="flex" flexDirection="row" gap={3}>
                     <Autocomplete classData={mockProgramData} />
                     <SortBySelect currentValue={filter} onChange={onFilterChange} />
                 </Box>
-                <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}
-                    justifyContent="center" rowGap={3}
+                <Grid
+                    container
+                    spacing={{ xs: 2, md: 3 }}
+                    columns={{ xs: 1, sm: 2, md: 3 }}
+                    justifyContent="center"
+                    rowGap={3}
                 >
                     {/* <Card img={mockClass.s3Url}  /> */}
                     <CoursesCard data={currentData} />
                     {/* do card here */}
                 </Grid>
             </Box>
-            {/* </Box> */}
         </>
     )
 }
 
-function CoursesCard({ data }: { data: ProgramData[] }) {
+type CoursesCardProps = { data: ProgramData[] }
+
+function CoursesCard({ data }: CoursesCardProps) {
     return (
         <>
             {
@@ -100,10 +104,11 @@ function CoursesCard({ data }: { data: ProgramData[] }) {
                         key={`course-card ${dt.title} ${dt.id}`}
                     >
                         <ProgramCard
-                            img={dt.img}
+                            img={dt.banners[0]?.image}
                             title={dt.title}
-                            price={dt.paid ? dt.price! : null}
+                            price={dt.price!}
                             href={`/program/${databaseToUrlFormatted(dt.title)}`}
+                            programId={dt.id}
                         />
                     </Grid>
                 ))
@@ -112,10 +117,22 @@ function CoursesCard({ data }: { data: ProgramData[] }) {
     )
 }
 
-export async function getStaticProps({ locale }: { locale: "en" | "id" }) {
+type Programs = {
+    programData: ProgramData[];
+    // messages: string;
+}
+
+export const getServerSideProps: GetServerSideProps<Programs> = async (ctx) => {
+    const { locale } = ctx;
+    const storylinePrograms = await getAllStorylinePrograms();
+    // console.log(storylinePrograms);
+    const defaultReturn = { programData: [], messages: (await import(`../../locales/${locale}.json`)).default };
+    if (!storylinePrograms) return { props: { ...defaultReturn } }
+    // const res = await api.get('/programs', { headers: ...})
     return {
         props: {
-            messages: (await import(`../../locales/${locale}.json`)).default,
-        },
+            ...defaultReturn,
+            programData: storylinePrograms.message
+        }
     };
 }

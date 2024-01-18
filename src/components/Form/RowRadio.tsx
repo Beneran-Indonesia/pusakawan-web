@@ -6,6 +6,7 @@ import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import { Control, Controller } from 'react-hook-form';
 import { ProfileInput } from '@/types/form';
+import { useTranslations } from 'next-intl';
 
 type RowRadioProps = {
     name: keyof ProfileInput,
@@ -15,10 +16,14 @@ type RowRadioProps = {
 }
 
 export default function RowRadio({ name, control, title, data }: RowRadioProps) {
+    const t = useTranslations('form.text_field.error');
     return (
         <Controller
             name={name}
             control={control}
+            rules={{
+                required: { value: true, message: t('required') }
+            }}
             render={({
                 field: { onChange, value },
             }) => (

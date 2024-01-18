@@ -46,7 +46,10 @@
                 "required": "Kolom ini perlu diisi.",
                 "min_length_password": "Password terlalu pendek. Minimum 8 karakter.",
                 "min_length_phone": "Nomor terlalu pendek. Minimum 4 digit.",
-                "max_length_phone": "Nomor terlalu panjang. Maksimum 12 digit."
+                "max_length_phone": "Nomor terlalu panjang. Maksimum 12 digit.",
+                "number": {
+                    "min": "Hanya menerima tahun diatas 1900."
+                }
             }
         },
         "phone": {
@@ -228,9 +231,7 @@
             "all": "Semua",
             "paid": "Berbayar",
             "free": "Gratis"
-        }
-    },
-    "notice_bar": {
-        "profile" : "<red>Perhatian:</red> Anda belum melengkapi profil anda. Tolong lengkapi profil anda <link>disini</link> untuk mendaftar di program."
+        },
+        "notice_bar": "<red>Perhatian:</red> Anda belum melengkapi profil anda. Tolong lengkapi profil anda <link>disini</link> untuk mendaftar di program."
     }
 }
