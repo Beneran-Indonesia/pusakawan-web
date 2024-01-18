@@ -107,7 +107,7 @@ function CoursesCard({ data }: CoursesCardProps) {
                             img={dt.banners[0]?.image}
                             title={dt.title}
                             price={dt.price!}
-                            href={`/program/${databaseToUrlFormatted(dt.title)}`}
+                            href={`/program/${databaseToUrlFormatted(dt.title)}/`}
                             programId={dt.id}
                         />
                     </Grid>

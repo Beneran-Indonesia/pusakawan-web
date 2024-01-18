@@ -142,6 +142,8 @@ export const getServerSideProps: GetServerSideProps<ClassDatas> = async (ctx) =>
     const classname = params!.name as string;
     const programDataReq = await getProgramData(classname as string);
 
+    // console.log(classname, programDataReq);
+
     if (!programDataReq || programDataReq.message.length === 0) {
         return { notFound: true };
     }
@@ -154,11 +156,16 @@ export const getServerSideProps: GetServerSideProps<ClassDatas> = async (ctx) =>
         programData = { ...programData, banners: defaultBanner };
     }
     const moduleData = await getModuleData(programId.toString());
-    if (!moduleData) return { notFound: true };
+    let modules;
 
-    const modules = moduleData.message.map((mdl: ModuleData) =>
-        ({ title: mdl.title, href: process.env.BUCKET_URL + mdl.storyline_path }));
-        
+    if (!moduleData) {
+        modules = [{ title: "", href: "" }]
+    } else {
+
+        modules = moduleData.message.map((mdl: ModuleData) =>
+            ({ title: mdl.title, href: process.env.BUCKET_URL + mdl.storyline_path }));
+    };
+
     return {
         props: {
             classname,
