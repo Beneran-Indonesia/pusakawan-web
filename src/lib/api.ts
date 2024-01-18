@@ -1,7 +1,6 @@
 // API calls
 import axios from 'axios';
 import { createBearerHeader, urlToDatabaseFormatted } from './utils';
-import { mockClassOverviews } from './constants';
 
 const headers = {
     'Accept': 'application/json',
@@ -9,7 +8,7 @@ const headers = {
 }
 
 const api = axios.create({
-    baseURL: process.env.API_URL,
+    baseURL: process.env.NEXT_PUBLIC_API_URL,
     headers
 })
 
@@ -33,18 +32,6 @@ async function getAllStorylinePrograms() {
         return { status: res.status, message: res.data };
     } catch (e) {
         console.log("GET ALL STORYLINE PROGRAM ERROR:", e)
-    }
-}
-
-async function enrollUser(userId: number, programId: number, sessionToken: string) {
-    try {
-        const res = await api.post("/program/enrollment/", {
-            program: programId,
-            participant: userId,
-        }, { headers: createBearerHeader(sessionToken) })
-        return { status: res.status, message: res.data };
-    } catch (e) {
-        console.log("ENROLL USER ERROR:", e)
     }
 }
 
@@ -78,4 +65,4 @@ async function getProgramData (classname: string) {
     }
 }
 
-export { getProgramData, getEditProfileFields, getModuleData, getAllStorylinePrograms, enrollUser };
+export { getProgramData, getEditProfileFields, getModuleData, getAllStorylinePrograms };

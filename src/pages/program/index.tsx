@@ -15,7 +15,7 @@ import Link from "@mui/material/Link";
 import { databaseToUrlFormatted } from "@/lib/utils";
 import { useSession } from "next-auth/react";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
-import { enrollUser, getAllStorylinePrograms } from "@/lib/api";
+import { getAllStorylinePrograms } from "@/lib/api";
 
 export default function ProgramPage({ programData }: InferGetServerSidePropsType<typeof getServerSideProps>) {
     const { data: session, status } = useSession()
@@ -85,7 +85,7 @@ export default function ProgramPage({ programData }: InferGetServerSidePropsType
                     rowGap={3}
                 >
                     {/* <Card img={mockClass.s3Url}  /> */}
-                    <CoursesCard user={user} data={currentData} />
+                    <CoursesCard data={currentData} />
                     {/* do card here */}
                 </Grid>
             </Box>
@@ -93,9 +93,9 @@ export default function ProgramPage({ programData }: InferGetServerSidePropsType
     )
 }
 
-type CoursesCardProps = { data: ProgramData[], user: false | { id: number; sessionToken: string; } }
+type CoursesCardProps = { data: ProgramData[] }
 
-function CoursesCard({ data, user }: CoursesCardProps) {
+function CoursesCard({ data }: CoursesCardProps) {
     return (
         <>
             {
@@ -104,7 +104,6 @@ function CoursesCard({ data, user }: CoursesCardProps) {
                         key={`course-card ${dt.title} ${dt.id}`}
                     >
                         <ProgramCard
-                            // onEnroll={user === false ? undefined : (() => enrollUser(dt.id, user.id, user.sessionToken))}
                             img={dt.banners[0]?.image}
                             title={dt.title}
                             price={dt.price!}

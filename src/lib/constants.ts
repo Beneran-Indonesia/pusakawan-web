@@ -133,9 +133,9 @@ const mockProgramData: ProgramData[] = [
 //     }
 // };
 
-const mockClassOverviews: ModuleData[] = [
-    mockClassOverviewOne, mockClassOverviewTwo
-]
+// const mockClassOverviews: ModuleData[] = [
+//     mockClassOverviewOne, mockClassOverviewTwo
+// ]
 
 export {
     formControlRoot,
@@ -149,6 +149,6 @@ export {
     mockUserClass,
     mockProgramData,
     programPagePicture,
-    mockClassOverviews,
+    // mockClassOverviews,
     getRandomCoursePicture
 };

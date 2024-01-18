@@ -3,7 +3,11 @@ import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from '@mui/material/Link';
 import NextLink from "next/link";
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
-import { BreadcrumbLinkProps, BreadcrumbProps } from '@/types/components';
+import { BreadcrumbLinkProps } from '@/types/components';
+
+type BreadcrumbProps = {
+    breadcrumbData: BreadcrumbLinkProps[];
+}
 
 export default function BreadcrumbsWrapper({ breadcrumbData }: BreadcrumbProps) {
     return (

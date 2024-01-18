@@ -1,8 +1,8 @@
 import Accordion from "@/components/Accordion/Accordion";
 import BreadcrumbsWrapper from "@/components/Breadcrumbs";
 import ImageWrapper from "@/components/ImageWrapper";
-import { getModuleData, getProgramData } from "@/lib/api";
-import { formatNumberToIdr } from "@/lib/utils";
+import api, { getModuleData, getProgramData } from "@/lib/api";
+import { createBearerHeader, formatNumberToIdr } from "@/lib/utils";
 import { BreadcrumbLinkProps, ModuleData, ProgramData } from "@/types/components";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -16,25 +16,43 @@ import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import Logo from "@svgs/logo.svg"
 import { getRandomCoursePicture } from "@/lib/constants";
 
+
+
 export default function MockClass({ classname, programData, moduleData }: InferGetServerSidePropsType<typeof getServerSideProps>) {
     const { data: session, status } = useSession();
     const t = useTranslations('class.overview');
     const router = useRouter();
     const userIsEnrolled = status === "authenticated" && session.user.enrolledPrograms.some((program) => program.id === programData.id);
-    const breadcrumbData: ({
-        id: string;
-    } & BreadcrumbLinkProps)[] = [
-            { id: 'breadcrumb0', href: '/', children: t('breadcrumbs.home'), title: t('breadcrumbs.home') },
-            { id: 'breadcrumb1', href: '/program', children: t('breadcrumbs.program'), title: t('breadcrumbs.program') },
-            { id: 'breadcrumb3', href: router.pathname, children: programData.title, title: programData.title, active: true },
-        ];
+    const user = { id: session?.user.id, accessToken: session?.user.accessToken };
+    const breadcrumbData: BreadcrumbLinkProps[] = [
+        { href: '/', children: t('breadcrumbs.home'), title: t('breadcrumbs.home') },
+        { href: '/program', children: t('breadcrumbs.program'), title: t('breadcrumbs.program') },
+        { href: router.pathname, children: programData.title, title: programData.title, active: true },
+    ];
+
     const { title, description, banners, pusaka_points: pusakaPoints, price } = programData;
     // storyline path is the folder to the storyline in s3.
+
+    // works but doesn't refresh user session
+    async function enrollUser(userId: number, programId: number, sessionToken: string) {
+        console.log(userId, programId, sessionToken);
+        try {
+            const res = await api.post(process.env.NEXT_PUBLIC_API_URL + "/program/enrollment/", {
+                program: programId,
+                participant: userId,
+            }, { headers: createBearerHeader(sessionToken) });
+            console.log(res);
+            return { status: res.status, message: res.data };
+        } catch (e) {
+            console.log("ENROLL USER ERROR:", e)
+        }
+    }
+
     return (
         <>
             <Box sx={{
                 pt: 4,
-                background: `linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url(${programData.banners[0].image})`,
+                background: `linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url(${banners[0].image})`,
                 backgroundRepeat: "no-repeat", backgroundSize: 'cover', backgroundPosition: '0 45%',
                 height: 345, position: 'relative'
             }} >
@@ -47,13 +65,14 @@ export default function MockClass({ classname, programData, moduleData }: InferG
             <Container sx={{ mt: -6, position: 'relative', mb: 10 }}>
                 <Box display="flex" flexDirection="column" gap={2}>
                     <Typography variant='h2' component='h2' fontWeight={600}>{title}</Typography>
-                    <Box display="flex" gap={4}>
+                    <Box display="flex">
                         <Box>
                             {
                                 userIsEnrolled
                                     ? null
-                                    : <Button variant="contained" size="medium" sx={{ textAlign: 'center' }}
+                                    : <Button variant="contained" size="medium" sx={{ textAlign: 'center', mr: 4 }}
                                         disabled={status === "unauthenticated"}
+                                        onClick={() => enrollUser(user.id as number, programData.id, user.accessToken as string)}
                                     >
                                         {
                                             price
@@ -122,7 +141,6 @@ type ClassDatas = {
     moduleData: FormattedModule[];
     messages: string;
 }
-
 
 export const getServerSideProps: GetServerSideProps<ClassDatas> = async (ctx) => {
     const { locale } = ctx;

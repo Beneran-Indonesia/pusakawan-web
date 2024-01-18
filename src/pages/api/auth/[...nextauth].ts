@@ -100,7 +100,7 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
 
 async function getProfile(accessToken: string) {
     try {
-        const res = await api.get(process.env.API_URL + '/user/my-profile', {
+        const res = await api.get(process.env.NEXT_PUBLIC_API_URL + '/user/my-profile', {
             headers: createBearerHeader(accessToken)
         });
         // Only 1 country in database: {id: 1, name: 'Indonesia'}.
@@ -115,7 +115,7 @@ async function getProfile(accessToken: string) {
 
 async function getEnrolledPrograms(accessToken: string) {
     try {
-        const res = await api.get(process.env.API_URL + '/program/my-programs', {
+        const res = await api.get(process.env.NEXT_PUBLIC_API_URL + '/program/my-programs', {
             headers: createBearerHeader(accessToken),
             params: {
                 "program_type": "STORYLINE"

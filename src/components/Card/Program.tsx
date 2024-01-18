@@ -12,10 +12,9 @@ type CardProps = {
     // null price means that it's free ( not paid )
     price: number | null;
     href: string;
-    // onEnroll: undefined | (() => void);
 }
 
-export default function ProgramCard({ img, title, price, href, programId }: CardProps) {
+export default function ProgramCard({ img, title, price, href }: CardProps) {
     const t = useTranslations('program_selection');
     return (
         <CardWrapper alt={title} src={img}>
@@ -29,12 +28,7 @@ export default function ProgramCard({ img, title, price, href, programId }: Card
             <Button variant="outlined" size="small" href={href}
                 // onClick={onEnroll} disabled={!onEnroll}
                 sx={{ width: 'fit-content', mb: 3, alignSelf: 'center' }}>
-                {/* <Link href={href} as={{
-                    pathname: href,
-                    query: { id: programId }
-                }}> */}
                     {t('button')}
-                {/* </Link> */}
             </Button>
         </CardWrapper>
     )
