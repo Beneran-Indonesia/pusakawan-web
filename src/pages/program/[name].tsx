@@ -16,8 +16,6 @@ import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import Logo from "@svgs/logo.svg"
 import { getRandomCoursePicture } from "@/lib/constants";
 
-
-
 export default function MockClass({ classname, programData, moduleData }: InferGetServerSidePropsType<typeof getServerSideProps>) {
     const { data: session, status } = useSession();
     const t = useTranslations('class.overview');
@@ -41,7 +39,6 @@ export default function MockClass({ classname, programData, moduleData }: InferG
                 program: programId,
                 participant: userId,
             }, { headers: createBearerHeader(sessionToken) });
-            console.log(res);
             return { status: res.status, message: res.data };
         } catch (e) {
             console.log("ENROLL USER ERROR:", e)
@@ -106,7 +103,7 @@ export default function MockClass({ classname, programData, moduleData }: InferG
                     <Typography variant="h5" component="h5" fontWeight={600}>{t('description')}</Typography>
                     <Typography mb={2}>{description}</Typography>
                     {/* Apparently no description.. */}
-                    <Accordion isModule={true} description={undefined} items={moduleData} />
+                    <Accordion isModule={true} description={undefined} items={moduleData} userIsEnrolled={userIsEnrolled} />
                     {/* <Accordion isModule={false} description={undefined} items={assignment?.items} /> */}
                 </Box>
             </Container>
@@ -129,8 +126,6 @@ function BlurBox() {
 }
 
 type FormattedModule = {
-    // title: string[];
-    // href: string[];
     title: string;
     href: string;
 }
@@ -153,7 +148,6 @@ export const getServerSideProps: GetServerSideProps<ClassDatas> = async (ctx) =>
 
     let programData = programDataReq.message[0] as ProgramData;
     const programId = programData.id;
-    console.log(programDataReq, classname, "GETSERVERSIDEPROPS")
 
     if (programData.banners.length === 0) {
         const defaultBanner = [{ id: 1, image: getRandomCoursePicture() }];
@@ -161,12 +155,9 @@ export const getServerSideProps: GetServerSideProps<ClassDatas> = async (ctx) =>
     }
     const moduleData = await getModuleData(programId.toString());
     if (moduleData) {
-        // const modules = {
-        //     title: moduleData.message.map((mdl: ModuleData) => mdl.title),
-        //     href: moduleData.message.map((mdl: ModuleData) => process.env.BUCKET_URL + mdl.storyline_path)
-        //   };
 
-        const modules = moduleData.message.map((mdl: ModuleData) => ({ title: mdl.title, href: process.env.BUCKET_URL + mdl.storyline_path }))
+        const modules = moduleData.message.map((mdl: ModuleData) => 
+        ({ title: mdl.title, href: process.env.BUCKET_URL + mdl.storyline_path }))
         return {
             props: {
                 classname,
