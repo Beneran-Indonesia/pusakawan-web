@@ -37,7 +37,7 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
                             const accessToken = res.data.tokens.access;
                             const profile = await getProfile(accessToken);
                             const enrolledPrograms = await getEnrolledPrograms(accessToken);
-                            return {...profile, ...enrolledPrograms};
+                            return { ...profile, enrolledPrograms, accessToken };
                         }
 
                     } catch (e: any) {
@@ -64,7 +64,7 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
                             const accessToken = conn.data.tokens.access;
                             const profile = await getProfile(accessToken);
                             const enrolledPrograms = await getEnrolledPrograms(accessToken);
-                            return {...profile, enrolledPrograms, accessToken};
+                            return { ...profile, enrolledPrograms, accessToken };
                         }
                     } catch (e: any) {
                         console.error("ERROR EMAIL NEXTAUTH", e);

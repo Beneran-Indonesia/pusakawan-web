@@ -10,7 +10,7 @@ import { useSession } from "next-auth/react";
 
 export default function Header() {
     const t = useTranslations('header');
-    const { data: session, status } = useSession()
+    const { data: session, status } = useSession();
     return (
         <Box component="header" sx={{
             display: 'flex', justifyContent: 'space-between', alignItems: 'center', py: 4, px: 12.5, boxShadow: 1

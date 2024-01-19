@@ -17,7 +17,7 @@ import { getEditProfileFields } from '@/lib/api';
 
 export default function UserHome({ dropdownItems, userData, tabNumber }: InferGetServerSidePropsType<typeof getServerSideProps>) {
     const t = useTranslations('account');
-    // console.log(userData);
+
     const [currentTabNumber, setCurrentTabNumber] = useState(tabNumber ? tabNumber[0] : 0);
     const [currentClassTabNumber, setCurrentClassTabNumber] = useState(tabNumber ? tabNumber[1] ?? 0 : 0);
     const [snackbarOpen, setSnackbarOpen] = useState({ open: false, success: false, message: "" });
@@ -128,6 +128,7 @@ export const getServerSideProps: GetServerSideProps<UserDatas> = async (ctx) => 
         }
     }
     const defaultReturn = { messages: (await import(`../../locales/${ctx.locale}.json`)).default, tabNumber, dropdownItems: undefined };
+    console.log(session)
     if (!session) return { props: { userData: "Cannot process your request at the moment. Session unavailable.", ...defaultReturn } };
     const accessToken = session.user.accessToken;
     const [ethnicity, island, stateProvince, cityDistrict] = await Promise.all([
