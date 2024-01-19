@@ -37,6 +37,7 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
                             const accessToken = res.data.tokens.access;
                             const profile = await getProfile(accessToken);
                             const enrolledPrograms = await getEnrolledPrograms(accessToken);
+                            console.log(profile, enrolledPrograms);
                             return { ...profile, enrolledPrograms, accessToken };
                         }
 

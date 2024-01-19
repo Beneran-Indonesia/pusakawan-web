@@ -21,6 +21,7 @@
   },
   "class": {
     "overview": {
+      "notice_bar": "<red>Warning:</red> You have not completed your profile. Please complete your profile <link>here</link> in order to register for programs.",
       "breadcrumbs": {
         "home": "Home",
         "program": "Program"
@@ -32,7 +33,17 @@
       "description": "Program description",
       "materials": "Need to be learnt materials",
       "assignment": "Assignment",
-      "points": "Points"
+      "points": "Points",
+      "pusaka_points_details": "Pusaka Points is a currency. The more points you have, the more you can exchange it with prizes. Let's get all the points you can!",
+      "modal": {
+        "confirm": "Yes, enroll",
+        "cancel": "No, cancel",
+        "description": "By enrolling, you are committed to finish all the content available in this program."
+      },
+      "error": {
+        "unauthenticated": "You are not logged in.",
+        "profile_not_complete": "Your profile is not complete yet."
+      }
     }
   },
   "form": {
@@ -226,6 +237,9 @@
     "autocomplete": {
       "placeholder": "Find program",
       "empty": "Hm, program is not found"
+    },
+    "card": {
+      "empty": "No matching program found."
     },
     "select": {
       "all": "All",
