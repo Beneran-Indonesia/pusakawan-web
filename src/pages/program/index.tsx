@@ -96,10 +96,13 @@ export default function ProgramPage({ programData }: InferGetServerSidePropsType
 type CoursesCardProps = { data: ProgramData[] }
 
 function CoursesCard({ data }: CoursesCardProps) {
+    const t = useTranslations("program.card")
     return (
         <>
             {
-                data.map((dt, idx) => (
+                data.length === 0
+                ? <Typography mt={4}>{t("empty")}</Typography>
+                : data.map((dt, idx) => (
                     <Grid item
                         key={`course-card ${dt.title} ${dt.id}`}
                     >
@@ -107,7 +110,7 @@ function CoursesCard({ data }: CoursesCardProps) {
                             img={dt.banners[0]?.image}
                             title={dt.title}
                             price={dt.price!}
-                            href={`/program/${databaseToUrlFormatted(dt.title)}`}
+                            href={`/program/${databaseToUrlFormatted(dt.title)}/`}
                             programId={dt.id}
                         />
                     </Grid>

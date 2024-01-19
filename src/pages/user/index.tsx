@@ -9,15 +9,17 @@ import TabPanel from '@/components/Tabs/TabPanel';
 import TabWrapper from '@/components/Tabs/Wrapper';
 import EditProfile from '@/components/ProfileForm';
 import { DropdownItems, ProfileInput } from '@/types/form';
-import { Alert, Snackbar } from '@mui/material';
+import Alert from '@mui/material/Alert';
+import Snackbar from '@mui/material/Snackbar';
 import Head from 'next/head';
-import { mockUserClass } from "@/lib/constants";
+import { getRandomCoursePicture, mockUserClass } from "@/lib/constants";
 import ProfileClassCard from '@/components/Card/Profile';
 import { getEditProfileFields } from '@/lib/api';
+import { ProgramData } from '@/types/components';
 
-export default function UserHome({ dropdownItems, userData, tabNumber }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+export default function UserHome({ enrolledPrograms, dropdownItems, userData, tabNumber }: InferGetServerSidePropsType<typeof getServerSideProps>) {
     const t = useTranslations('account');
-    // console.log(userData);
+
     const [currentTabNumber, setCurrentTabNumber] = useState(tabNumber ? tabNumber[0] : 0);
     const [currentClassTabNumber, setCurrentClassTabNumber] = useState(tabNumber ? tabNumber[1] ?? 0 : 0);
     const [snackbarOpen, setSnackbarOpen] = useState({ open: false, success: false, message: "" });
@@ -80,10 +82,15 @@ export default function UserHome({ dropdownItems, userData, tabNumber }: InferGe
                                 labels={[t('horizontal_tab.on_going'), t('horizontal_tab.finished')]}
                             >
                                 <TabPanel value={currentClassTabNumber} index={0}>
-                                    {/* <EmptyTab /> */}
-                                    <ProfileClassCard src={mockUserClass[0].img}
-                                        status={mockUserClass[0].status}
-                                        title={mockUserClass[0].title} />
+                                    {
+                                        enrolledPrograms
+                                            ? enrolledPrograms.map((dt) =>
+                                                <ProfileClassCard key={dt.title + dt.id}
+                                                    src={dt?.banners ? dt.banners[0].image : getRandomCoursePicture()}
+                                                    status="ONGOING"
+                                                    title={dt.title} />
+                                            ) : null
+                                    }
                                 </TabPanel>
                                 <TabPanel value={currentClassTabNumber} index={1}>
                                     <EmptyTab />
@@ -110,6 +117,7 @@ const EmptyTab = () => {
 type UserDatas = {
     userData: string | ProfileInput;
     tabNumber?: number[];
+    enrolledPrograms?: ProgramData[]
 } & DropdownItems;
 
 export const getServerSideProps: GetServerSideProps<UserDatas> = async (ctx) => {
@@ -126,8 +134,10 @@ export const getServerSideProps: GetServerSideProps<UserDatas> = async (ctx) => 
         } else {
             tabNumber = [1, 0];
         }
-    }
+    };
+
     const defaultReturn = { messages: (await import(`../../locales/${ctx.locale}.json`)).default, tabNumber, dropdownItems: undefined };
+
     if (!session) return { props: { userData: "Cannot process your request at the moment. Session unavailable.", ...defaultReturn } };
     const accessToken = session.user.accessToken;
     const [ethnicity, island, stateProvince, cityDistrict] = await Promise.all([
@@ -136,11 +146,12 @@ export const getServerSideProps: GetServerSideProps<UserDatas> = async (ctx) => 
         getEditProfileFields(`/address/state-province/`, accessToken),
         getEditProfileFields(`/address/city-district/`, accessToken)
     ]);
+    const enrolledPrograms = mockUserClass as unknown as ProgramData[]; // session.user.enrolledPrograms;
     const dropdownItems = {
         ethnicity: ethnicity.message,
         island: island.message,
         stateProvince: stateProvince.message,
         cityDistrict: cityDistrict.message,
     }
-    return { props: { userData: { ...session.user }, ...defaultReturn, dropdownItems } };
+    return { props: { userData: { ...session.user }, ...defaultReturn, enrolledPrograms, dropdownItems } };
 }

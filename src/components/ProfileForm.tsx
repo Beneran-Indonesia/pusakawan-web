@@ -2,7 +2,7 @@ import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import { Input } from "./Form/Input";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { DropdownItems, DropdownItemsData, ProfileInput } from "@/types/form";
+import { DropdownItems, ProfileInput } from "@/types/form";
 import TelInput from "./Form/TelInput";
 import EditIcon from '@mui/icons-material/EditOutlined';
 import Dropdown from "./Form/Dropdown";

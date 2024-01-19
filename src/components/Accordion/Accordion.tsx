@@ -21,7 +21,7 @@ export default function ModuleAccordion({ isModule, description, items, userIsEn
             <Typography mb={2}>{description}</Typography>
             {
                 items && items.map((dt) => 
-                <Link component={NextLink} href={!userIsEnrolled ? dt.href : "#"} variant='h5' fontWeight={500}
+                <Link component={NextLink} href={userIsEnrolled ? dt.href : "#"} variant='h5' fontWeight={500}
                     underline="always" aria-current={undefined} key={dt.title}
                     sx={!userIsEnrolled ? { pointerEvents: 'none'} : undefined}
                     >

@@ -50,6 +50,21 @@ const getModuleData = async (id: string) => {
     }
 }
 
+async function getProgram(id: number) {
+    try {
+        const res = await api.get("/program/", {
+            params: {
+                id,
+                status: "ACTIVE",
+                program_type: "STORYLINE",
+            }
+        })
+        return { status: res.status, message: res.data };
+    } catch (e) {
+        console.log("GET PROGRAM DATA ERROR:", e)
+    }
+}
+
 async function getProgramData (classname: string) {
     try {
         const res = await api.get("/program", {
@@ -65,4 +80,4 @@ async function getProgramData (classname: string) {
     }
 }
 
-export { getProgramData, getEditProfileFields, getModuleData, getAllStorylinePrograms };
+export { getProgramData, getEditProfileFields, getModuleData, getAllStorylinePrograms, getProgram };

@@ -4,8 +4,7 @@
             "title": "Halaman Tidak Ditemukan",
             "description": "Mohon maaf, halaman yang Anda coba akses saat ini tidak tersedia. Kami sedang melakukan pemeliharaan atau ada masalah teknis yang sedang kami tangani. Silakan coba lagi nanti. Terima kasih atas pengertian dan kesabarannya.",
             "button": "Kembali ke halaman utama"
-        }
-        ,
+        },
         "maintenance": {
             "title": "Dalam tahap pengembangan",
             "description": "Bagian ini masih dalam tahap pengembangan. Sering cek situs ini untuk tahu lebih lanjut, ya!",
@@ -22,6 +21,7 @@
     },
     "class": {
         "overview": {
+            "notice_bar": "<red>Perhatian:</red> Anda belum melengkapi profil anda. Tolong lengkapi profil anda <link>disini</link> untuk mendaftar di program.",
             "breadcrumbs": {
                 "home": "Beranda",
                 "program": "Program"
@@ -33,7 +33,17 @@
             "description": "Deskripsi program",
             "materials": "Material yang perlu dipelajari",
             "assignment": "Tugas",
-            "points": "Poin"
+            "points": "Poin",
+            "pusaka_points_details": "Pusaka Points adalah currency. Semakin banyak poin yang kamu punya, bisa kamu tukar dengan hadiah menarik. Yuk kumpulkan poinnya sebanyak mungkin!",
+            "modal": {
+                "confirm": "Ya, daftar",
+                "cancel": "Tidak, cancel",
+                "description": "Dengan mendaftar, Anda berkomitmen untuk menyelesaikan semua konten yang tersedia dalam program ini."
+            }
+        },
+        "error": {
+            "unauthenticated": "Anda belum masuk.",
+            "profile_not_complete": "Anda belum melengkapi profil anda."
         }
     },
     "form": {
@@ -226,6 +236,9 @@
         "autocomplete": {
             "placeholder": "Cari program",
             "empty": "Hm, program tidak ditemukan"
+        },
+        "card": {
+            "empty": "Program sesuai tidak ditemukan"
         },
         "select": {
             "all": "Semua",
