@@ -21,6 +21,14 @@ const themeOptions: ThemeOptions = {
         LinkComponent: LinkBehaviour
       }
     },
+    MuiMenuList: {
+      styleOverrides: {
+        root: {
+          px: 8,
+          py: 6
+        }
+      }
+    },
     MuiLoadingButton: {
       styleOverrides: {
         root: {

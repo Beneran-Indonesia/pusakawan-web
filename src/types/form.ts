@@ -91,6 +91,7 @@ type ProfileInput = InputProfileInput & DropdownProfileInput & {
     profile_picture: string;
     accessToken: string;
     is_profile_complete: boolean;
+    pusaka_points: number;
 }
 
 type ExpectedJSON = {

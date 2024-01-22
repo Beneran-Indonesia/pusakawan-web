@@ -39,6 +39,7 @@ export default function Dropdown({ name, control, items, label }: DropdownProps)
                         {
                             items.map((item) => {
                                 const val = name === 'ethnicity' ? item.title : item.name;
+                                console.log(item)
                                 return (
                                     <MenuItem key={`dropdown-${val}`} value={name === 'user_category' ? item.id : val}>
                                         {val}

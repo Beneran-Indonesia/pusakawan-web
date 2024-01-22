@@ -39,11 +39,11 @@
                 "confirm": "Ya, daftar",
                 "cancel": "Tidak, cancel",
                 "description": "Dengan mendaftar, Anda berkomitmen untuk menyelesaikan semua konten yang tersedia dalam program ini."
+            },
+            "error": {
+                "unauthenticated": "Anda belum masuk.",
+                "profile_not_complete": "Anda belum melengkapi profil anda."
             }
-        },
-        "error": {
-            "unauthenticated": "Anda belum masuk.",
-            "profile_not_complete": "Anda belum melengkapi profil anda."
         }
     },
     "form": {

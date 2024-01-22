@@ -37,18 +37,16 @@ export default function EditProfile({ setSnackbar, userData, accessToken, dropdo
         // I'm sorry for any but really i would rather not be dealing with this!
         dirtyKeys.forEach((_, idx) => dirtyData.append(dirtyKeys[idx], data[dirtyKeys[idx]] as any));
         try {
-            const res = await api.patch('/user/edit-profile/', {
+            const res = await api.patch('/user/edit-profile/',
                 dirtyData,
-            }, { headers: { ...createBearerHeader(accessToken), "Content-Type": "multipart/form-data" } })
+                {
+                    headers: { ...createBearerHeader(accessToken), "Content-Type": "multipart/form-data" }
+                })
             setEditLoading(false);
             if (res.status === 200) {
                 setSnackbar(true, true, t("edit_succeed"));
-                console.log(dirtyData, res.data, '\n', res);
-                return;
                 // Update session
-                // console.log('hello this was session triggered')
-                // console.log({ ... session, user: { ...session?.user, ...dirtyData }})
-                await update({ ...session, user: res.data })
+                await update({ ...session, user: {...res.data} })
                 return;
             }
         } catch (e) {

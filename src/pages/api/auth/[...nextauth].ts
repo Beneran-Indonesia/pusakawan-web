@@ -37,7 +37,6 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
                             const accessToken = res.data.tokens.access;
                             const profile = await getProfile(accessToken);
                             const enrolledPrograms = await getEnrolledPrograms(accessToken);
-                            console.log(profile, enrolledPrograms);
                             return { ...profile, enrolledPrograms, accessToken };
                         }
 
@@ -77,22 +76,12 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
             })
         ],
         callbacks: {
-            async jwt({ trigger, session, user, token }) {
-                if (user?.accessToken) {
-                    return user;
-                }
-                // if update was triggered,
-                if (trigger === "update" && session) {
-                    console.log('hello this was triggered');
-                    return { ...token, ...session?.user };
-                }
-                return token;
-            },
             async session({ session, token }) {
                 // Return a cookie value as part of the session
                 // This is read when `req.query.nextauth.includes("session") && req.method === "GET"`
                 session = { ...session, user: { ...token } as ProfileInput & EnrolledProgram };
                 // expected: { user: email, ...token }, expires: strnig;
+                console.log("This is session:", session)
                 return session;
             }
         }
