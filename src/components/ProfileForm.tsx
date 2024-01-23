@@ -15,6 +15,7 @@ import { useState } from 'react';
 import { createBearerHeader } from '@/lib/utils';
 import DatePicker from './Form/Datepicker';
 import { useSession } from 'next-auth/react';
+import { styled } from '@mui/material/styles';
 
 type UserData = ProfileInput & { profile_picture: string; };
 
@@ -218,11 +219,26 @@ export default function EditProfile({ setSnackbar, userData, accessToken, dropdo
     )
 }
 
+const VisuallyHiddenInput = styled('input')({
+    clip: 'rect(0 0 0 0)',
+    clipPath: 'inset(50%)',
+    height: 1,
+    overflow: 'hidden',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    whiteSpace: 'nowrap',
+    width: 1,
+});
+
+
 function EditAvatar({ src }: { src: string }) {
+    const t = useTranslations("account.edit_profile");
     return (
-        <Box position="relative" width="fit-content" mb={3}>
+        <Box position="relative" width="fit-content" mb={3} component="label" title={t("profile_picture")} sx={{ cursor: "pointer" }}>
             <Avatar src={src} alt="user avatar" sx={{ height: 100, width: 100 }} />
             <span style={{ position: 'absolute', right: -5, top: -5 }}><EditIcon fontSize="large" /></span>
+            <VisuallyHiddenInput type="file" accept="image/jpg, image/jpeg, image/png" />
         </Box>
     )
 }

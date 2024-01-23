@@ -200,6 +200,7 @@
       }
     },
     "edit_profile": {
+      "profile_picture": "Change profile picture",
       "name": "Name",
       "email": "Email",
       "username": "Username",

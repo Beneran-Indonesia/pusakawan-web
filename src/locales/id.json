@@ -95,13 +95,13 @@
         "sign_out": "Keluar dari Pusaka",
         "points": "Pusaka point anda",
         "menu": {
-          "point": "Poin",
-          "profile": "Profil",
-          "sign_out": "Keluar",
-          "language": {
-            "indonesian": "Ubah bahasa website ke Bahasa Indonesia",
-            "english": "Ubah bahasa website ke Bahasa Inggris"
-          }
+            "point": "Poin",
+            "profile": "Profil",
+            "sign_out": "Keluar",
+            "language": {
+                "indonesian": "Ubah bahasa website ke Bahasa Indonesia",
+                "english": "Ubah bahasa website ke Bahasa Inggris"
+            }
         }
     },
     "headline": {
@@ -199,6 +199,7 @@
             }
         },
         "edit_profile": {
+            "profile_picture": "Ubah foto profil anda",
             "name": "Nama",
             "email": "Email",
             "username": "Username",
