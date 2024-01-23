@@ -147,7 +147,7 @@ export const getServerSideProps: GetServerSideProps<UserDatas> = async (ctx) => 
         getEditProfileFields(`/address/state-province/`, accessToken),
         getEditProfileFields(`/address/city-district/`, accessToken)
     ]);
-    const enrolledPrograms = mockUserClass as unknown as ProgramData[]; // session.user.enrolledPrograms;
+    const enrolledPrograms = session.user.enrolledPrograms;
     const dropdownItems = {
         ethnicity: ethnicity.message,
         island: island.message,
