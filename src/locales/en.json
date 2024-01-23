@@ -91,7 +91,18 @@
     "login": "Login",
     "profile": "See profile",
     "leaderboards": "Leaderboards",
-    "about_us": "About us"
+    "about_us": "About us",
+    "points": "Your Pusaka points",
+    "sign_out": "Signout from Pushaka",
+    "menu": {
+      "point": "Points",
+      "profile": "Profile",
+      "sign_out": "Sign out",
+      "language": {
+        "indonesian": "Change site language to Indonesian",
+        "english": "Change site language to English"
+      }
+    }
   },
   "headline": {
     "title": "Prepare yourself to be a voter in tomorrow's election.",

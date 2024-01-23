@@ -91,7 +91,18 @@
         "login": "Masuk",
         "profile": "Lihat profil",
         "leaderboards": "Peringkat",
-        "about_us": "Tentang kami"
+        "about_us": "Tentang kami",
+        "sign_out": "Keluar dari Pusaka",
+        "points": "Pusaka point anda",
+        "menu": {
+          "point": "Poin",
+          "profile": "Profil",
+          "sign_out": "Keluar",
+          "language": {
+            "indonesian": "Ubah bahasa website ke Bahasa Indonesia",
+            "english": "Ubah bahasa website ke Bahasa Inggris"
+          }
+        }
     },
     "headline": {
         "title": "Siapkan dirimu untuk menjadi pemilih di Pemilu besok.",

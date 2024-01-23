@@ -2,7 +2,7 @@ import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import { Input } from "./Form/Input";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { DropdownItems, ProfileInput } from "@/types/form";
+import { DropdownItems, DropdownItemsData, ProfileInput } from "@/types/form";
 import TelInput from "./Form/TelInput";
 import EditIcon from '@mui/icons-material/EditOutlined';
 import Dropdown from "./Form/Dropdown";
@@ -16,18 +16,20 @@ import { createBearerHeader } from '@/lib/utils';
 import DatePicker from './Form/Datepicker';
 import { useSession } from 'next-auth/react';
 
+type UserData = ProfileInput & { profile_picture: string; };
+
 type EditProfileProps = {
     accessToken: string;
-    userData: ProfileInput & { profile_picture: string; };
+    userData: UserData;
     setSnackbar: (open: boolean, success: boolean, message: string) => void;
-} & DropdownItems;
+    dropdownItems: DropdownItems;
+}
 
 export default function EditProfile({ setSnackbar, userData, accessToken, dropdownItems }: EditProfileProps) {
     const t = useTranslations('account.edit_profile');
     const [editLoading, setEditLoading] = useState(false);
     const { data: session, update } = useSession();
-    // TODO:
-    const { control, handleSubmit, getValues, watch, formState: { isDirty, dirtyFields } } = useForm<ProfileInput>({ defaultValues: { ...userData } });
+    const { control, handleSubmit, watch, formState: { isDirty, dirtyFields } } = useForm<ProfileInput>({ defaultValues: { ...userData } });
     const userCategory = watch('user_category');
     const onSubmit: SubmitHandler<ProfileInput> = async (data) => {
         setEditLoading(true);
@@ -35,7 +37,20 @@ export default function EditProfile({ setSnackbar, userData, accessToken, dropdo
         const dirtyKeys = Object.keys(dirtyFields) as (keyof ProfileInput)[];
         const dirtyData = new FormData();
         // I'm sorry for any but really i would rather not be dealing with this!
-        dirtyKeys.forEach((_, idx) => dirtyData.append(dirtyKeys[idx], data[dirtyKeys[idx]] as any));
+        dirtyKeys.forEach((_, idx) => {
+            const key = dirtyKeys[idx];
+            let val = data[key];
+            if (key in dropdownItems) {
+                const dropdownData = dropdownItems[key as keyof DropdownItems];
+                val = dropdownData.find((dt) => {
+                    if (key === "ethnicity") {
+                        return dt.title === val;
+                    }
+                    return dt.name === val;
+                })!.id;
+            }
+            dirtyData.append(key, val as string)
+        });
         try {
             const res = await api.patch('/user/edit-profile/',
                 dirtyData,
@@ -46,21 +61,28 @@ export default function EditProfile({ setSnackbar, userData, accessToken, dropdo
             if (res.status === 200) {
                 setSnackbar(true, true, t("edit_succeed"));
                 // Update session
-                await update({ ...session, user: {...res.data} })
+                await update({ ...session, user: data })
                 return;
             }
         } catch (e) {
+            setEditLoading(false);
             console.error("PROFILE FORM ERROR: ", e)
         }
+        setEditLoading(false);
         setSnackbar(true, false, t("edit_failed"))
     };
+
+    const selectedProvinceId = watch("province");
+    const selectedProvince = dropdownItems!.province.find(dt => dt.name === selectedProvinceId)?.name;
+
+    const cityDistrict = dropdownItems!.city.filter(dt => dt.state_province === selectedProvince);
+
     return (
         <Box component="form" onSubmit={handleSubmit(onSubmit)}
             px={20} py={6} alignItems="center" mx="auto" maxWidth={700}
             display="flex" gap={3} flexDirection="column" width="100%"
             borderRadius={8} boxShadow={1}
         >
-            {/* <p>{JSON.stringify(userData)}</p> */}
             <EditAvatar src={userData.profile_picture} />
             <Input name="full_name" control={control} label="Name" required />
             <Input name="username" control={control} label="Username" required />
@@ -105,7 +127,7 @@ export default function EditProfile({ setSnackbar, userData, accessToken, dropdo
                 name="province"
                 label={t('province')}
                 control={control}
-                items={dropdownItems!.stateProvince}
+                items={dropdownItems!.province}
             />
 
             {/* City */}
@@ -113,7 +135,7 @@ export default function EditProfile({ setSnackbar, userData, accessToken, dropdo
                 name="city"
                 label={t('city')}
                 control={control}
-                items={dropdownItems!.cityDistrict.filter((dt) => dt.state_province === getValues('province'))}
+                items={cityDistrict}
             />
             {/* Status */}
             <Dropdown

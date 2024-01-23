@@ -39,6 +39,15 @@ const themeOptions: ThemeOptions = {
         },
       }
     },
+    MuiMenuItem: {
+      styleOverrides: {
+        root: {
+          "&.Mui-selected": {
+            backgroundColor: "transparent"
+          }
+        }
+      }
+    },
     // Auto complete override
     MuiOutlinedInput: {
       styleOverrides: {

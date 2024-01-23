@@ -6,12 +6,15 @@ import Avatar from "@mui/material/Avatar";
 import { useTranslations } from "next-intl";
 import PusakawanLogo from "./PusakawanLogo";
 import NextLink from "next/link";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { useState } from "react";
-import { Menu, MenuItem, MenuProps } from "@mui/material";
-import { styled, alpha } from '@mui/material/styles';
+import { ButtonGroup, Divider, IconButton, Link, Menu, MenuItem, MenuProps } from "@mui/material";
+import { styled } from '@mui/material/styles';
 import LogoutIcon from '@mui/icons-material/Logout';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
+import ImageWrapper from "./ImageWrapper";
+import PusakaPoints from "@svgs/logo.svg";
+import { useRouter } from "next/router";
 
 export default function Header() {
     const t = useTranslations('header');
@@ -26,6 +29,10 @@ export default function Header() {
     const handleClose = () => {
         setAnchorEl(null);
     };
+
+    const router = useRouter();
+
+    const changeLocale = (locale: "en" | "id") => router.push(router.asPath, router.asPath, { locale })
 
     return (
         <Box component="header" sx={{
@@ -54,13 +61,12 @@ export default function Header() {
                                     aria-expanded={menuOpen ? 'true' : undefined}
                                     onClick={handleClick}
                                     sx={{ cursor: "pointer" }}
+                                    tabIndex={0}
                                     display="flex" gap={2} alignItems="center">
                                     <Typography>{session.user.username}</Typography>
                                     <Avatar alt="user picture" sx={{ bgcolor: 'primary.main' }}
                                         src={session.user.profile_picture ?? undefined}>{session.user.username[0].toUpperCase()}
                                     </Avatar>
-                                    <NextLink href="/user" title={t('profile')}>
-                                    </NextLink>
                                 </Box>
                                 <HeaderMenu
                                     id="header-menu"
@@ -70,17 +76,42 @@ export default function Header() {
                                     MenuListProps={{
                                         'aria-labelledby': 'header-button',
                                     }}
-
                                 >
-                                    <MenuItem onClick={handleClose} disableRipple>{session.user.pusaka_points} Poin</MenuItem>
-                                    <MenuItem onClick={handleClose} href="/user" disableRipple>
-                                        <PersonOutlineIcon fontSize="medium"/>
-                                        Profile
+                                    <MenuItem onClick={handleClose} title={t("points")} selected={false}>
+                                        <ImageWrapper src={PusakaPoints}
+                                            alt="Pusaka points logo"
+                                            width={22} height={22}
+                                            style={{ marginRight: 14 }}
+                                        />
+                                        {session.user.pusaka_points} {t("menu.point")}
                                     </MenuItem>
-                                    <MenuItem onClick={handleClose} href="" disableRipple>
-                                        <LogoutIcon fontSize="medium"/>
-                                        Keluar
+                                    <Link href="/user" title={t("profile")} tabIndex={0}
+                                        sx={{ textDecoration: 'none', color: 'black' }}>
+                                        <MenuItem onClick={handleClose}>
+                                            <PersonOutlineIcon fontSize="medium" />
+                                            {t("menu.profile")}
+                                        </MenuItem>
+                                    </Link>
+                                    <MenuItem onClick={() => {
+                                        handleClose();
+                                        signOut({ callbackUrl: '/' });
+                                    }}
+                                        title={t("sign_out")}
+                                    >
+                                        <LogoutIcon fontSize="medium" />
+                                        {t("menu.sign_out")}
                                     </MenuItem>
+                                    <Divider />
+                                    <ButtonGroup variant="text" aria-label="change language label" sx={{ ml: 1.5 }}>
+                                        <IconButton onClick={() => changeLocale("id")}
+                                            color="primary" title={t("menu.language.indonesian")}>
+                                            🇮🇩
+                                        </IconButton>
+                                        <IconButton  onClick={() => changeLocale("en")}
+                                        color="primary" title={t("menu.language.english")}>
+                                            🇺🇸
+                                        </IconButton>
+                                    </ButtonGroup>
                                 </HeaderMenu>
                             </>
                             : <>
@@ -105,6 +136,7 @@ const HeaderMenu = styled((props: MenuProps) => (
             vertical: 'top',
             horizontal: 'right',
         }}
+        sx={{ boxShadow: 1 }}
         {...props}
     />
 ))(({ theme }) => ({
@@ -112,18 +144,19 @@ const HeaderMenu = styled((props: MenuProps) => (
         borderRadius: 6,
         marginTop: theme.spacing(1),
         minWidth: 180,
-        boxShadow: 1,
+        boxShadow:
+            'rgb(255, 255, 255) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px',
         '& .MuiMenu-list': {
             padding: '4px 0',
         },
+
         '& .MuiMenuItem-root': {
             '& .MuiSvgIcon-root': {
                 marginRight: theme.spacing(1.5),
             },
-            '&:active': {
-                backgroundColor: "white"
-            },
+
         },
+
     },
 }));
 

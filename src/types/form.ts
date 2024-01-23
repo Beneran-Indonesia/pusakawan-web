@@ -16,7 +16,7 @@ interface FormInputProps<T extends FieldValues> extends FormProps<T> {
     type?: React.HTMLInputTypeAttribute;
     required: boolean;
     label: string;
-    rules?: { [key: string]: { value: string | number; message: string; }}[]
+    rules?: { [key: string]: { value: string | number; message: string; } }[]
 }
 
 interface PasswordInputProps<T extends FieldValues> extends FormProps<T> {
@@ -30,26 +30,24 @@ interface TelInputProps<T extends FieldValues> extends FormProps<T> {
 }
 
 type DropdownItemsData = {
-    id: number | string; 
+    id: number | string;
     name: string;
     title?: string;
     state_province?: string;
 };
 
 type DropdownItems = {
-    dropdownItems: {
-        ethnicity: DropdownItemsData[];
-        island: DropdownItemsData[];
-        stateProvince: DropdownItemsData[];
-        cityDistrict: DropdownItemsData[];
-    } | undefined;
-}
+    ethnicity: DropdownItemsData[];
+    island: DropdownItemsData[];
+    province: DropdownItemsData[];
+    city: DropdownItemsData[];
+};
 
 type DropdownProps = {
     name: keyof DropdownProfileInput;
     control: Control<ProfileInput>
     label: string;
-    items: DropdownItemsData[]; 
+    items: DropdownItemsData[];
 }
 
 enum UserCategory {
@@ -59,16 +57,12 @@ enum UserCategory {
 }
 
 type DropdownProfileInput = {
-    religion: string;
-    province: string;
-    city: string;
-    island: string;
-    ethnicity: string;
+    [K in keyof DropdownItems]: string;
+} & {
     user_category: 'MAHASISWA' | 'SISWA' | 'PROFESSIONAL';
-    // 
     grade: string | null;
-
-}
+    religion: string;
+};
 
 type InputProfileInput = {
     bio: string | null;
