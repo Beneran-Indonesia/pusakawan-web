@@ -67,7 +67,7 @@ export default function Headline() {
                         <Typography component="p" variant="h5">
                             {t('subtitle')}
                         </Typography>
-                        <Button color="monochrome" size="small" variant="contained" sx={{ width: 'fit-content', color: 'black' }}>
+                        <Button href="/program" color="monochrome" size="small" variant="contained" sx={{ width: 'fit-content', color: 'black' }}>
                             {t('button')}
                         </Button>
                     </Box>

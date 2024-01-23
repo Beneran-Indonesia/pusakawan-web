@@ -128,7 +128,6 @@ type Programs = {
 export const getServerSideProps: GetServerSideProps<Programs> = async (ctx) => {
     const { locale } = ctx;
     const storylinePrograms = await getAllStorylinePrograms();
-    // console.log(storylinePrograms);
     const defaultReturn = { programData: [], messages: (await import(`../../locales/${locale}.json`)).default };
     if (!storylinePrograms) return { props: { ...defaultReturn } }
     // const res = await api.get('/programs', { headers: ...})

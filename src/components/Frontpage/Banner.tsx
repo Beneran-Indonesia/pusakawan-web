@@ -24,7 +24,7 @@ function BannerTypography() {
     return (
         <Box width={230}>
             <Typography fontWeight={500} variant="h4" component="h4" mb={2}>{t('title')}</Typography>
-            <Button size="medium" variant="contained">{t('button')}</Button>
+            <Button size="medium" variant="contained" href="/challenge">{t('button')}</Button>
         </Box>
     )
 }

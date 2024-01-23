@@ -37,7 +37,6 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
                             const accessToken = res.data.tokens.access;
                             const profile = await getProfile(accessToken);
                             const enrolledPrograms = await getEnrolledPrograms(accessToken);
-                            console.log(profile, enrolledPrograms);
                             return { ...profile, enrolledPrograms, accessToken };
                         }
 
@@ -77,22 +76,22 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
             })
         ],
         callbacks: {
-            async jwt({ trigger, session, user, token }) {
+            async jwt({ account, profile, trigger, session, user, token }) {
                 if (user?.accessToken) {
-                    return user;
+                    // If user is authenticated
+                    return { ...user, ...token };
                 }
-                // if update was triggered,
                 if (trigger === "update" && session) {
-                    console.log('hello this was triggered');
                     return { ...token, ...session?.user };
                 }
                 return token;
             },
+
             async session({ session, token }) {
                 // Return a cookie value as part of the session
                 // This is read when `req.query.nextauth.includes("session") && req.method === "GET"`
                 session = { ...session, user: { ...token } as ProfileInput & EnrolledProgram };
-                // expected: { user: email, ...token }, expires: strnig;
+                // expected: { user: email, ...token }, expires: string;
                 return session;
             }
         }
@@ -119,7 +118,8 @@ async function getEnrolledPrograms(accessToken: string) {
         const res = await api.get(process.env.NEXT_PUBLIC_API_URL + '/program/my-programs', {
             headers: createBearerHeader(accessToken),
             params: {
-                "program_type": "STORYLINE"
+                program_type: "STORYLINE",
+                status: "ACTIVE"
             }
         });
         if (res.status === 200) {

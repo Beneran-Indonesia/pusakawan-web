@@ -9,7 +9,6 @@ function Input<T extends FieldValues>({ name, control, label, required = true, a
     return (
         <Controller
             name={name}
-            // Fucking work around
             control={control}
             rules={{
                 ...rules,

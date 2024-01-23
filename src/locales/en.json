@@ -91,7 +91,18 @@
     "login": "Login",
     "profile": "See profile",
     "leaderboards": "Leaderboards",
-    "about_us": "About us"
+    "about_us": "About us",
+    "points": "Your Pusaka points",
+    "sign_out": "Signout from Pushaka",
+    "menu": {
+      "point": "Points",
+      "profile": "Profile",
+      "sign_out": "Sign out",
+      "language": {
+        "indonesian": "Change site language to Indonesian",
+        "english": "Change site language to English"
+      }
+    }
   },
   "headline": {
     "title": "Prepare yourself to be a voter in tomorrow's election.",
@@ -118,21 +129,21 @@
     "button": "Take challenge"
   },
   "courses_selection": {
-    "title": "Belajar dari <red>Isu-Isu</red> Sekitar",
-    "cta": "Lihat isu lainnya",
+    "title": "Learn from <red>currently hot</red> issues",
+    "cta": "See other issues",
     "environment": {
-      "title": "Lingkungan",
-      "text": "Pelajari isu yang terkait lingkungan yang menjadi perhatian anak muda saat ini."
+      "title": "Environmental",
+      "text": "Learn about environmental issues that concern young people today."
     },
     "economy": {
-      "title": "Ekonomi",
-      "text": "Pelajari isu ekonomi dan perkembangannya serta dampaknya bagi masyarakat."
+      "title": "Economics",
+      "text": "Study economic issues and their development and impact on society."
     },
     "health": {
-      "title": "Kesehatan",
-      "text": "Pelajari isu kesehatan dan perkembangannya di lingkungan masyarakat."
+      "title": "Health",
+      "text": "Study health issues and their development in society."
     },
-    "button": "Pelajari"
+    "button": "Learn"
   },
   "program_selection": {
     "paid": "Free",
@@ -189,9 +200,12 @@
       }
     },
     "edit_profile": {
+      "profile_picture": "Change profile picture",
       "name": "Name",
       "email": "Email",
       "username": "Username",
+      "bio": "Description",
+      "dob": "Date of birth",
       "phone": "Phone number",
       "province": "Province",
       "island": "Island",

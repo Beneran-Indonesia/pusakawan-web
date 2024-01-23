@@ -21,6 +21,14 @@ const themeOptions: ThemeOptions = {
         LinkComponent: LinkBehaviour
       }
     },
+    MuiMenuList: {
+      styleOverrides: {
+        root: {
+          px: 8,
+          py: 6
+        }
+      }
+    },
     MuiLoadingButton: {
       styleOverrides: {
         root: {
@@ -29,6 +37,15 @@ const themeOptions: ThemeOptions = {
           color: "white",
           height: '3rem',
         },
+      }
+    },
+    MuiMenuItem: {
+      styleOverrides: {
+        root: {
+          "&.Mui-selected": {
+            backgroundColor: "transparent"
+          }
+        }
       }
     },
     // Auto complete override

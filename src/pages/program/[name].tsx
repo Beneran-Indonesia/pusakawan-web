@@ -61,16 +61,23 @@ export default function MockClass({ classname, programData, moduleData }: InferG
             }, { headers: createBearerHeader(sessionToken) });
             setEnrollLoading(false)
             if (res.status === 201) {
-                setEnrollLoading(false)
+                setEnrollLoading(false);
                 handleSnackbar(true, true, "You have enrolled!");
-                const programId = res.data;
-                const program = await getProgram(programId.program);
-                if (program?.status !== 200) throw Error();
-                const newEnrolledProgram = [...session!.user.enrolledPrograms, ...program.message];
-                const _ = { user: { enrolledPrograms: newEnrolledProgram } }
-                await update({ ...session, ..._ });
-                return { status: res.status, message: res.data };
+
+                const programId = res.data.program;
+                const enrolledProgram = (await getProgram(programId))?.message;
+
+                if (enrolledProgram) {
+                    await update({
+                        ...session!,
+                        user: { enrolledPrograms: [...session!.user.enrolledPrograms, ...enrolledProgram] },
+                    });
+                    return { status: res.status, message: res.data };
+                }
+                
+                throw new Error("Failed to fetch enrolled program details");
             }
+
             handleSnackbar(true, false, "Error occured. Sorry!");
             setEnrollLoading(false)
             return;
@@ -234,8 +241,6 @@ export const getServerSideProps: GetServerSideProps<ClassDatas> = async (ctx) =>
     const { locale, params } = ctx;
     const classname = params!.name as string;
     const programDataReq = await getProgramData(classname as string);
-
-    // console.log(classname, programDataReq);
 
     if (!programDataReq || programDataReq.message.length === 0) {
         return { notFound: true };

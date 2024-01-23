@@ -117,8 +117,9 @@ const EmptyTab = () => {
 type UserDatas = {
     userData: string | ProfileInput;
     tabNumber?: number[];
-    enrolledPrograms?: ProgramData[]
-} & DropdownItems;
+    enrolledPrograms?: ProgramData[];
+    dropdownItems?: DropdownItems;
+}
 
 export const getServerSideProps: GetServerSideProps<UserDatas> = async (ctx) => {
     // Basically: 0 index of array in which 0 is 'profile' tab.
@@ -146,12 +147,12 @@ export const getServerSideProps: GetServerSideProps<UserDatas> = async (ctx) => 
         getEditProfileFields(`/address/state-province/`, accessToken),
         getEditProfileFields(`/address/city-district/`, accessToken)
     ]);
-    const enrolledPrograms = mockUserClass as unknown as ProgramData[]; // session.user.enrolledPrograms;
+    const enrolledPrograms = session.user.enrolledPrograms;
     const dropdownItems = {
         ethnicity: ethnicity.message,
         island: island.message,
-        stateProvince: stateProvince.message,
-        cityDistrict: cityDistrict.message,
+        province: stateProvince.message,
+        city: cityDistrict.message,
     }
     return { props: { userData: { ...session.user }, ...defaultReturn, enrolledPrograms, dropdownItems } };
 }

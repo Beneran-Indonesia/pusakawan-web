@@ -1,7 +1,7 @@
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import { Input } from "./Form/Input";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { Control, SubmitHandler, UseFormRegister, useForm } from "react-hook-form";
 import { DropdownItems, ProfileInput } from "@/types/form";
 import TelInput from "./Form/TelInput";
 import EditIcon from '@mui/icons-material/EditOutlined';
@@ -11,68 +11,102 @@ import { useTranslations } from "next-intl";
 import { grade, religions } from "@/lib/constants";
 import RowRadio from "./Form/RowRadio";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import { createBearerHeader } from '@/lib/utils';
 import DatePicker from './Form/Datepicker';
 import { useSession } from 'next-auth/react';
+import UploadImage from './Form/UploadImage';
+
+type UserData = ProfileInput & { profile_picture: string; };
 
 type EditProfileProps = {
     accessToken: string;
-    userData: ProfileInput & { profile_picture: string; };
+    userData: UserData;
     setSnackbar: (open: boolean, success: boolean, message: string) => void;
-} & DropdownItems;
+    dropdownItems: DropdownItems;
+}
 
 export default function EditProfile({ setSnackbar, userData, accessToken, dropdownItems }: EditProfileProps) {
     const t = useTranslations('account.edit_profile');
     const [editLoading, setEditLoading] = useState(false);
+
+    const [profilePicture, setProfilePicture] = useState<null | File>(null);
     const { data: session, update } = useSession();
-    // TODO:
-    const { control, handleSubmit, getValues, watch, formState: { isDirty, dirtyFields } } = useForm<ProfileInput>({ defaultValues: { ...userData } });
+    const { control, handleSubmit, watch, formState: { isDirty, dirtyFields } } = useForm<ProfileInput>({ defaultValues: { ...userData } });
+
     const userCategory = watch('user_category');
+
     const onSubmit: SubmitHandler<ProfileInput> = async (data) => {
         setEditLoading(true);
         // If wanna be faster can put as a constant (below)
         const dirtyKeys = Object.keys(dirtyFields) as (keyof ProfileInput)[];
         const dirtyData = new FormData();
-        // I'm sorry for any but really i would rather not be dealing with this!
-        dirtyKeys.forEach((_, idx) => dirtyData.append(dirtyKeys[idx], data[dirtyKeys[idx]] as any));
+        // Sorry.
+        dirtyKeys.forEach(async (_, idx) => {
+            const key = dirtyKeys[idx];
+            let val = data[key];
+            if (key === "profile_picture") {
+                dirtyData.append("profile_picture", profilePicture!)
+                return;
+            } else if (key in dropdownItems) {
+                const dropdownData = dropdownItems[key as keyof DropdownItems];
+                val = dropdownData.find((dt) => {
+                    if (key === "ethnicity") {
+                        return dt.title === val;
+                    }
+                    return dt.name === val;
+                })!.id;
+            }
+            dirtyData.append(key, val as string)
+        });
+
         try {
-            const res = await api.patch('/user/edit-profile/', {
+            const res = await api.patch('/user/edit-profile/',
                 dirtyData,
-            }, { headers: { ...createBearerHeader(accessToken), "Content-Type": "multipart/form-data" } })
+                {
+                    headers: { ...createBearerHeader(accessToken), "Content-Type": "multipart/form-data" }
+                })
             setEditLoading(false);
             if (res.status === 200) {
                 setSnackbar(true, true, t("edit_succeed"));
-                console.log(dirtyData, res.data, '\n', res);
-                return;
                 // Update session
-                // console.log('hello this was session triggered')
-                // console.log({ ... session, user: { ...session?.user, ...dirtyData }})
-                await update({ ...session, user: res.data })
+                if (res.data.profile_picture) {
+                    await update({ ...session, user: { ...data, profile_picture: res.data.profile_picture } });
+                    return;
+                }
+                await update({ ...session, user: data })
                 return;
             }
         } catch (e) {
             console.error("PROFILE FORM ERROR: ", e)
         }
+        setEditLoading(false);
         setSnackbar(true, false, t("edit_failed"))
     };
+
+    const imagePreview = watch("profile_picture");
+    const selectedProvinceId = watch("province");
+
+    const selectedProvince = dropdownItems!.province.find(dt => dt.name === selectedProvinceId)?.name;
+
+    const cityDistrict = dropdownItems!.city.filter(dt => dt.state_province === selectedProvince);
+
     return (
         <Box component="form" onSubmit={handleSubmit(onSubmit)}
             px={20} py={6} alignItems="center" mx="auto" maxWidth={700}
             display="flex" gap={3} flexDirection="column" width="100%"
             borderRadius={8} boxShadow={1}
         >
-            {/* <p>{JSON.stringify(userData)}</p> */}
-            <EditAvatar src={userData.profile_picture} />
-            <Input name="full_name" control={control} label="Name" required />
-            <Input name="username" control={control} label="Username" required />
-            <Input name="email" control={control} label="Email" required />
+            <EditAvatar src={imagePreview ?? userData.profile_picture} control={control} setProfilePicture={setProfilePicture} />
+            <Input name="full_name" control={control} label={t("name")} required />
+            <Input name="username" control={control} label={t("username")} required />
+            <Input name="email" control={control} label={t("email")} required />
             <TelInput name="phone_no" control={control} required={false} />
             {/* Bio */}
-            <Input name="bio" control={control} label="Bio" required={false} />
+            <Input name="bio" control={control} label={t("bio")} required={false} />
 
             {/* DoB */}
-            <DatePicker control={control} label="DoB" name="date_of_birth" required />
+            <DatePicker control={control} label={t("dob")} name="date_of_birth" required />
 
             {/* Gender */}
             <RowRadio name="gender" control={control}
@@ -107,7 +141,7 @@ export default function EditProfile({ setSnackbar, userData, accessToken, dropdo
                 name="province"
                 label={t('province')}
                 control={control}
-                items={dropdownItems!.stateProvince}
+                items={dropdownItems!.province}
             />
 
             {/* City */}
@@ -115,7 +149,7 @@ export default function EditProfile({ setSnackbar, userData, accessToken, dropdo
                 name="city"
                 label={t('city')}
                 control={control}
-                items={dropdownItems!.cityDistrict.filter((dt) => dt.state_province === getValues('province'))}
+                items={cityDistrict}
             />
             {/* Status */}
             <Dropdown
@@ -198,11 +232,21 @@ export default function EditProfile({ setSnackbar, userData, accessToken, dropdo
     )
 }
 
-function EditAvatar({ src }: { src: string }) {
+type EditAvatarProps = {
+    src: string;
+    control: Control<ProfileInput>;
+    setProfilePicture: Dispatch<SetStateAction<File | null>>;
+}
+
+function EditAvatar({ src, control, setProfilePicture }: EditAvatarProps) {
+    const t = useTranslations("account.edit_profile");
+
     return (
-        <Box position="relative" width="fit-content" mb={3}>
+        <Box position="relative" width="fit-content" mb={3} component="label"
+            title={t("profile_picture")} sx={{ cursor: "pointer" }}>
             <Avatar src={src} alt="user avatar" sx={{ height: 100, width: 100 }} />
             <span style={{ position: 'absolute', right: -5, top: -5 }}><EditIcon fontSize="large" /></span>
+            <UploadImage control={control} name="profile_picture" setProfilePicture={setProfilePicture} />
         </Box>
     )
 }

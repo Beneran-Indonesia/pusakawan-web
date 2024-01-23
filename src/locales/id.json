@@ -39,11 +39,11 @@
                 "confirm": "Ya, daftar",
                 "cancel": "Tidak, cancel",
                 "description": "Dengan mendaftar, Anda berkomitmen untuk menyelesaikan semua konten yang tersedia dalam program ini."
+            },
+            "error": {
+                "unauthenticated": "Anda belum masuk.",
+                "profile_not_complete": "Anda belum melengkapi profil anda."
             }
-        },
-        "error": {
-            "unauthenticated": "Anda belum masuk.",
-            "profile_not_complete": "Anda belum melengkapi profil anda."
         }
     },
     "form": {
@@ -91,7 +91,18 @@
         "login": "Masuk",
         "profile": "Lihat profil",
         "leaderboards": "Peringkat",
-        "about_us": "Tentang kami"
+        "about_us": "Tentang kami",
+        "sign_out": "Keluar dari Pusaka",
+        "points": "Pusaka point anda",
+        "menu": {
+            "point": "Poin",
+            "profile": "Profil",
+            "sign_out": "Keluar",
+            "language": {
+                "indonesian": "Ubah bahasa website ke Bahasa Indonesia",
+                "english": "Ubah bahasa website ke Bahasa Inggris"
+            }
+        }
     },
     "headline": {
         "title": "Siapkan dirimu untuk menjadi pemilih di Pemilu besok.",
@@ -188,8 +199,11 @@
             }
         },
         "edit_profile": {
+            "profile_picture": "Ubah foto profil anda",
             "name": "Nama",
             "email": "Email",
+            "bio": "Biodata",
+            "dob": "Ulang tahun",
             "username": "Username",
             "phone": "Nomor telfon",
             "province": "Provinsi",

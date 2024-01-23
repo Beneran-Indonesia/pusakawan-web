@@ -6,11 +6,34 @@ import Avatar from "@mui/material/Avatar";
 import { useTranslations } from "next-intl";
 import PusakawanLogo from "./PusakawanLogo";
 import NextLink from "next/link";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
+import { useState } from "react";
+import { ButtonGroup, Divider, IconButton, Link, Menu, MenuItem, MenuProps } from "@mui/material";
+import { styled } from '@mui/material/styles';
+import LogoutIcon from '@mui/icons-material/Logout';
+import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
+import ImageWrapper from "./ImageWrapper";
+import PusakaPoints from "@svgs/logo.svg";
+import { useRouter } from "next/router";
 
 export default function Header() {
     const t = useTranslations('header');
     const { data: session, status } = useSession();
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+    const menuOpen = Boolean(anchorEl);
+
+    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
+    const router = useRouter();
+
+    const changeLocale = (locale: "en" | "id") => router.push(router.asPath, router.asPath, { locale })
+
     return (
         <Box component="header" sx={{
             display: 'flex', justifyContent: 'space-between', alignItems: 'center', py: 4, px: 12.5, boxShadow: 1
@@ -29,14 +52,68 @@ export default function Header() {
                     status === 'loading'
                         ? <Skeleton variant="rectangular" width={220} height={60} />
                         : status === "authenticated"
-                            ? <NextLink href="/user" title={t('profile')}>
-                                <Box display="flex" gap={2} alignItems="center">
+                            // TODO: PROFILE MENU
+                            ? <>
+                                <Box
+                                    component="section"
+                                    aria-controls={menuOpen ? 'header-menu' : undefined}
+                                    aria-haspopup="true"
+                                    aria-expanded={menuOpen ? 'true' : undefined}
+                                    onClick={handleClick}
+                                    sx={{ cursor: "pointer" }}
+                                    tabIndex={0}
+                                    display="flex" gap={2} alignItems="center">
                                     <Typography>{session.user.username}</Typography>
                                     <Avatar alt="user picture" sx={{ bgcolor: 'primary.main' }}
                                         src={session.user.profile_picture ?? undefined}>{session.user.username[0].toUpperCase()}
                                     </Avatar>
                                 </Box>
-                            </NextLink>
+                                <HeaderMenu
+                                    id="header-menu"
+                                    anchorEl={anchorEl}
+                                    open={menuOpen}
+                                    onClose={handleClose}
+                                    MenuListProps={{
+                                        'aria-labelledby': 'header-button',
+                                    }}
+                                >
+                                    <MenuItem title={t("points")} selected={false}>
+                                        <ImageWrapper src={PusakaPoints}
+                                            alt="Pusaka points logo"
+                                            width={22} height={22}
+                                            style={{ marginRight: 14 }}
+                                        />
+                                        {session.user.pusaka_points} {t("menu.point")}
+                                    </MenuItem>
+                                    <Link href="/user" title={t("profile")} tabIndex={0}
+                                        sx={{ textDecoration: 'none', color: 'black' }}>
+                                        <MenuItem onClick={handleClose}>
+                                            <PersonOutlineIcon fontSize="medium" />
+                                            {t("menu.profile")}
+                                        </MenuItem>
+                                    </Link>
+                                    <MenuItem onClick={() => {
+                                        handleClose();
+                                        signOut({ callbackUrl: '/' });
+                                    }}
+                                        title={t("sign_out")}
+                                    >
+                                        <LogoutIcon fontSize="medium" />
+                                        {t("menu.sign_out")}
+                                    </MenuItem>
+                                    <Divider />
+                                    <ButtonGroup variant="text" aria-label="change language label" sx={{ ml: 1.5 }}>
+                                        <IconButton onClick={() => changeLocale("id")}
+                                            color="primary" title={t("menu.language.indonesian")}>
+                                            🇮🇩
+                                        </IconButton>
+                                        <IconButton  onClick={() => changeLocale("en")}
+                                        color="primary" title={t("menu.language.english")}>
+                                            🇺🇸
+                                        </IconButton>
+                                    </ButtonGroup>
+                                </HeaderMenu>
+                            </>
                             : <>
                                 <NextLink href="/register"><Typography>{t('register')}</Typography></NextLink>
                                 <NextLink href="/login"><Button size="large" variant="contained">{t('login')}</Button></NextLink>
@@ -44,9 +121,44 @@ export default function Header() {
                 }
 
             </Box>
-        </Box>
+        </Box >
     )
 }
+
+const HeaderMenu = styled((props: MenuProps) => (
+    <Menu
+        elevation={0}
+        anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'right',
+        }}
+        transformOrigin={{
+            vertical: 'top',
+            horizontal: 'right',
+        }}
+        sx={{ boxShadow: 1 }}
+        {...props}
+    />
+))(({ theme }) => ({
+    '& .MuiPaper-root': {
+        borderRadius: 6,
+        marginTop: theme.spacing(1),
+        minWidth: 180,
+        boxShadow:
+            'rgb(255, 255, 255) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px',
+        '& .MuiMenu-list': {
+            padding: '4px 0',
+        },
+
+        '& .MuiMenuItem-root': {
+            '& .MuiSvgIcon-root': {
+                marginRight: theme.spacing(1.5),
+            },
+
+        },
+
+    },
+}));
 
 type HeaderLinkProps = {
     href: string;
