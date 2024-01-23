@@ -129,21 +129,21 @@
     "button": "Take challenge"
   },
   "courses_selection": {
-    "title": "Belajar dari <red>Isu-Isu</red> Sekitar",
-    "cta": "Lihat isu lainnya",
+    "title": "Learn from <red>currently hot</red> issues",
+    "cta": "See other issues",
     "environment": {
-      "title": "Lingkungan",
-      "text": "Pelajari isu yang terkait lingkungan yang menjadi perhatian anak muda saat ini."
+      "title": "Environmental",
+      "text": "Learn about environmental issues that concern young people today."
     },
     "economy": {
-      "title": "Ekonomi",
-      "text": "Pelajari isu ekonomi dan perkembangannya serta dampaknya bagi masyarakat."
+      "title": "Economics",
+      "text": "Study economic issues and their development and impact on society."
     },
     "health": {
-      "title": "Kesehatan",
-      "text": "Pelajari isu kesehatan dan perkembangannya di lingkungan masyarakat."
+      "title": "Health",
+      "text": "Study health issues and their development in society."
     },
-    "button": "Pelajari"
+    "button": "Learn"
   },
   "program_selection": {
     "paid": "Free",
