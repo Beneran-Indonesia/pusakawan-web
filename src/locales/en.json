@@ -204,6 +204,8 @@
       "name": "Name",
       "email": "Email",
       "username": "Username",
+      "bio": "Description",
+      "dob": "Date of birth",
       "phone": "Phone number",
       "province": "Province",
       "island": "Island",

@@ -202,6 +202,8 @@
             "profile_picture": "Ubah foto profil anda",
             "name": "Nama",
             "email": "Email",
+            "bio": "Biodata",
+            "dob": "Ulang tahun",
             "username": "Username",
             "phone": "Nomor telfon",
             "province": "Provinsi",

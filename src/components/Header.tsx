@@ -77,7 +77,7 @@ export default function Header() {
                                         'aria-labelledby': 'header-button',
                                     }}
                                 >
-                                    <MenuItem onClick={handleClose} title={t("points")} selected={false}>
+                                    <MenuItem title={t("points")} selected={false}>
                                         <ImageWrapper src={PusakaPoints}
                                             alt="Pusaka points logo"
                                             width={22} height={22}

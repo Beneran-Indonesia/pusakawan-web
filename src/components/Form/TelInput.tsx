@@ -5,16 +5,15 @@ import { useTranslations } from 'next-intl';
 import { TelInputProps } from "@/types/form";
 
 export default function TelInput<T extends FieldValues>({ name, control, required }: TelInputProps<T>) {
-    const t = useTranslations('form.text_field.error');
-    const t2 = useTranslations('form.phone');
+    const t = useTranslations('form');
     return (
         <Controller
             name={name}
             control={control}
             rules={{
-                required: { value: required, message: t('required') },
-                minLength: { value: 4, message: t('min_length_phone') },
-                maxLength: { value: 19, message: t('max_length_phone')}
+                required: { value: required, message: t('text_field.error.required') },
+                minLength: { value: 4, message: t('text_field.error.min_length_phone') },
+                maxLength: { value: 19, message: t('text_field.error.max_length_phone')}
             }}
             render={({
                 field: { onChange, value },
@@ -28,7 +27,7 @@ export default function TelInput<T extends FieldValues>({ name, control, require
                     InputProps={{ sx: formControlRoot }}
                     defaultCountry="ID"
                     forceCallingCode
-                    title={t2('title')}
+                    title={t('phone.title')}
                     placeholder="8xx xxxx xxxx"
                     flagSize="small"
                     style={{ width: '100%'}}

@@ -97,6 +97,7 @@ type ExpectedJSON = {
 }
 
 export type {
+    FormProps,
     FormInputProps,
     ProfileInput,
     DropdownProps,

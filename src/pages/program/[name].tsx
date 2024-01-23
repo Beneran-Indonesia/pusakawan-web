@@ -242,8 +242,6 @@ export const getServerSideProps: GetServerSideProps<ClassDatas> = async (ctx) =>
     const classname = params!.name as string;
     const programDataReq = await getProgramData(classname as string);
 
-    // console.log(classname, programDataReq);
-
     if (!programDataReq || programDataReq.message.length === 0) {
         return { notFound: true };
     }

@@ -1,7 +1,7 @@
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import { Input } from "./Form/Input";
-import { SubmitHandler, UseFormRegister, useForm } from "react-hook-form";
+import { Control, SubmitHandler, UseFormRegister, useForm } from "react-hook-form";
 import { DropdownItems, ProfileInput } from "@/types/form";
 import TelInput from "./Form/TelInput";
 import EditIcon from '@mui/icons-material/EditOutlined';
@@ -11,11 +11,11 @@ import { useTranslations } from "next-intl";
 import { grade, religions } from "@/lib/constants";
 import RowRadio from "./Form/RowRadio";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { useRef, useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import { createBearerHeader } from '@/lib/utils';
 import DatePicker from './Form/Datepicker';
 import { useSession } from 'next-auth/react';
-import { styled } from '@mui/material/styles';
+import UploadImage from './Form/UploadImage';
 
 type UserData = ProfileInput & { profile_picture: string; };
 
@@ -29,19 +29,26 @@ type EditProfileProps = {
 export default function EditProfile({ setSnackbar, userData, accessToken, dropdownItems }: EditProfileProps) {
     const t = useTranslations('account.edit_profile');
     const [editLoading, setEditLoading] = useState(false);
+
+    const [profilePicture, setProfilePicture] = useState<null | File>(null);
     const { data: session, update } = useSession();
-    const { control, handleSubmit, watch, formState: { isDirty, dirtyFields }, register } = useForm<ProfileInput>({ defaultValues: { ...userData } });
+    const { control, handleSubmit, watch, formState: { isDirty, dirtyFields } } = useForm<ProfileInput>({ defaultValues: { ...userData } });
+
     const userCategory = watch('user_category');
+
     const onSubmit: SubmitHandler<ProfileInput> = async (data) => {
         setEditLoading(true);
         // If wanna be faster can put as a constant (below)
         const dirtyKeys = Object.keys(dirtyFields) as (keyof ProfileInput)[];
         const dirtyData = new FormData();
-        // I'm sorry for any but really i would rather not be dealing with this!
-        dirtyKeys.forEach((_, idx) => {
+        // Sorry.
+        dirtyKeys.forEach(async (_, idx) => {
             const key = dirtyKeys[idx];
             let val = data[key];
-            if (key in dropdownItems) {
+            if (key === "profile_picture") {
+                dirtyData.append("profile_picture", profilePicture!)
+                return;
+            } else if (key in dropdownItems) {
                 const dropdownData = dropdownItems[key as keyof DropdownItems];
                 val = dropdownData.find((dt) => {
                     if (key === "ethnicity") {
@@ -52,6 +59,7 @@ export default function EditProfile({ setSnackbar, userData, accessToken, dropdo
             }
             dirtyData.append(key, val as string)
         });
+
         try {
             const res = await api.patch('/user/edit-profile/',
                 dirtyData,
@@ -62,59 +70,26 @@ export default function EditProfile({ setSnackbar, userData, accessToken, dropdo
             if (res.status === 200) {
                 setSnackbar(true, true, t("edit_succeed"));
                 // Update session
+                if (res.data.profile_picture) {
+                    await update({ ...session, user: { ...data, profile_picture: res.data.profile_picture } });
+                    return;
+                }
                 await update({ ...session, user: data })
                 return;
             }
         } catch (e) {
-            setEditLoading(false);
             console.error("PROFILE FORM ERROR: ", e)
         }
         setEditLoading(false);
         setSnackbar(true, false, t("edit_failed"))
     };
 
+    const imagePreview = watch("profile_picture");
     const selectedProvinceId = watch("province");
+
     const selectedProvince = dropdownItems!.province.find(dt => dt.name === selectedProvinceId)?.name;
 
     const cityDistrict = dropdownItems!.city.filter(dt => dt.state_province === selectedProvince);
-
-    const [imagePreview, setImagePreview] = useState<string | null>(null);
-
-    const handleUploadedFile = (event) => {
-        const file = event.target.files[0];
-
-        const urlImage = URL.createObjectURL(file);
-
-        setImagePreview(urlImage);
-    };
-
-    const uploadImage = () => {
-        // Fetch the blob content
-        fetch(blobUrl)
-            .then(response => response.blob())
-            .then(blob => {
-                // Create FormData and append the blob
-                const formData = new FormData();
-                formData.append('file', blob, 'filename.jpg'); // 'file' is the key, you can change it to match your server's expectations
-
-                // Make Axios request with FormData
-                axios.post('your-api-endpoint', formData, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                        // Add any other headers as needed
-                    },
-                })
-                    .then(response => {
-                        console.log('Success:', response);
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                    });
-            })
-            .catch(error => {
-                console.error('Error fetching blob content:', error);
-            });
-    }
 
     return (
         <Box component="form" onSubmit={handleSubmit(onSubmit)}
@@ -122,16 +97,16 @@ export default function EditProfile({ setSnackbar, userData, accessToken, dropdo
             display="flex" gap={3} flexDirection="column" width="100%"
             borderRadius={8} boxShadow={1}
         >
-            <EditAvatar src={imagePreview ?? userData.profile_picture} register={register} handleUploadedFile={handleUploadedFile} />
-            <Input name="full_name" control={control} label="Name" required />
-            <Input name="username" control={control} label="Username" required />
-            <Input name="email" control={control} label="Email" required />
+            <EditAvatar src={imagePreview ?? userData.profile_picture} control={control} setProfilePicture={setProfilePicture} />
+            <Input name="full_name" control={control} label={t("name")} required />
+            <Input name="username" control={control} label={t("username")} required />
+            <Input name="email" control={control} label={t("email")} required />
             <TelInput name="phone_no" control={control} required={false} />
             {/* Bio */}
-            <Input name="bio" control={control} label="Bio" required={false} />
+            <Input name="bio" control={control} label={t("bio")} required={false} />
 
             {/* DoB */}
-            <DatePicker control={control} label="DoB" name="date_of_birth" required />
+            <DatePicker control={control} label={t("dob")} name="date_of_birth" required />
 
             {/* Gender */}
             <RowRadio name="gender" control={control}
@@ -257,50 +232,21 @@ export default function EditProfile({ setSnackbar, userData, accessToken, dropdo
     )
 }
 
-const VisuallyHiddenInput = styled('input')({
-    clip: 'rect(0 0 0 0)',
-    clipPath: 'inset(50%)',
-    height: 1,
-    overflow: 'hidden',
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    whiteSpace: 'nowrap',
-    width: 1,
-});
-
 type EditAvatarProps = {
     src: string;
-    register: UseFormRegister<ProfileInput>;
-    handleUploadedFile: (event: any) => void;
+    control: Control<ProfileInput>;
+    setProfilePicture: Dispatch<SetStateAction<File | null>>;
 }
 
-function EditAvatar({ src, register, handleUploadedFile }: EditAvatarProps) {
+function EditAvatar({ src, control, setProfilePicture }: EditAvatarProps) {
     const t = useTranslations("account.edit_profile");
-    const hiddenInputRef = useRef();
-
-    const { ref: registerRef, ...rest } = register("profile_picture");
-
-    const onUpload = () => {
-        hiddenInputRef.current.click();
-    };
 
     return (
-        <Box position="relative" width="fit-content" mb={3} onClick={onUpload}
+        <Box position="relative" width="fit-content" mb={3} component="label"
             title={t("profile_picture")} sx={{ cursor: "pointer" }}>
             <Avatar src={src} alt="user avatar" sx={{ height: 100, width: 100 }} />
             <span style={{ position: 'absolute', right: -5, top: -5 }}><EditIcon fontSize="large" /></span>
-            <VisuallyHiddenInput
-                type="file"
-                accept="image/jpg, image/jpeg, image/png"
-                {...rest}
-                name="profile_picture"
-                onChange={handleUploadedFile}
-                ref={(e) => {
-                    registerRef(e);
-                    hiddenInputRef.current = e;
-                }}
-            />
+            <UploadImage control={control} name="profile_picture" setProfilePicture={setProfilePicture} />
         </Box>
     )
 }
