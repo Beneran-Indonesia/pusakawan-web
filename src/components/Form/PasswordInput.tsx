@@ -30,7 +30,7 @@ export default function PasswordInput<T extends FieldValues>({ name, control, sh
                 field: { onChange, value },
                 fieldState: { error },
             }) => (
-                <FormControl variant="outlined" sx={formSx}>
+                <FormControl variant="outlined" sx={formSx} required>
                     <InputLabel htmlFor={confirmation ? "password-input-confirmation" : "password-input"}>{confirmation ? t('label.confirmation') : "Password"}</InputLabel>
                     <OutlinedInput
                         id={confirmation ? "password-input-confirmation" : "password-input"}

@@ -20,12 +20,28 @@ export default function DatePicker<T extends FieldValues>({ name, control, label
             }) => (
                 <MUIDatePicker
                     label={label}
-                    views={ name === 'year' ? ['year'] : ['year', 'month', 'day']}
+                    views={name === 'year' ? ['year'] : ['year', 'month', 'day']}
                     value={dayjs(value)}
                     onChange={onChange}
                     sx={{ width: '100%', mt: 1 }}
-                    
-                // onError={error? error?.message : null}
+                    slotProps={{
+                        textField: {
+                            variant: 'outlined',
+                            error: !!error,
+                            helperText: error?.message,
+                            required
+                        },
+                        desktopPaper: {
+                            sx: {
+                                boxShadow: 1
+                            }
+                        },
+                        mobilePaper: {
+                            sx: {
+                                boxShadow: 1
+                            }
+                        }
+                    }}
                 />
 
             )}

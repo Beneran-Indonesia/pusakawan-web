@@ -12,7 +12,7 @@ import { DropdownItems, ProfileInput } from '@/types/form';
 import Alert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
 import Head from 'next/head';
-import { getRandomCoursePicture, mockUserClass } from "@/lib/constants";
+import { getRandomCoursePicture } from "@/lib/constants";
 import ProfileClassCard from '@/components/Card/Profile';
 import { getEditProfileFields } from '@/lib/api';
 import { ProgramData } from '@/types/components';
@@ -135,7 +135,7 @@ export const getServerSideProps: GetServerSideProps<UserDatas> = async (ctx) => 
         } else {
             tabNumber = [1, 0];
         }
-    };
+    }
 
     const defaultReturn = { messages: (await import(`../../locales/${ctx.locale}.json`)).default, tabNumber, dropdownItems: undefined };
 

@@ -5,6 +5,7 @@ import NextAuth from "next-auth";
 import { createBearerHeader } from "@/lib/utils";
 import { ProfileInput } from "@/types/form";
 import { EnrolledProgram } from "@/types/components";
+import axios from "axios";
 
 const getMaxAgeDay = (days: number) => days * 24 * 3600;
 
@@ -40,9 +41,12 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
                             return { ...profile, enrolledPrograms, accessToken };
                         }
 
-                    } catch (e: any) {
-                        console.error('ERROR FIREBASE NEXTAUTH', e)
-                        throw Error(e.response.data.detail);
+                    } catch (e) {
+                        if (axios.isAxiosError(e)) {
+                            console.error("ERROR AXIOS FIREBASE NEXTAUTH", e);
+                            throw Error(e?.response?.data.detail);
+                        }
+                        console.error("ERROR FIREBASE NEXTAUTH", e);
                     }
                     return null;
                 }
@@ -66,9 +70,12 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
                             const enrolledPrograms = await getEnrolledPrograms(accessToken);
                             return { ...profile, enrolledPrograms, accessToken };
                         }
-                    } catch (e: any) {
+                    } catch (e) {
+                        if (axios.isAxiosError(e)) {
+                            console.error("ERROR AXIOS EMAIL NEXTAUTH", e);
+                            throw Error(e?.response?.data.detail);
+                        }
                         console.error("ERROR EMAIL NEXTAUTH", e);
-                        throw Error(e.response.data.detail);
                     }
                     // Return null if can't retrieve user or any error.
                     return null;
@@ -76,7 +83,7 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
             })
         ],
         callbacks: {
-            async jwt({ account, profile, trigger, session, user, token }) {
+            async jwt({ trigger, session, user, token }) {
                 if (user?.accessToken) {
                     // If user is authenticated
                     return { ...user, ...token };
@@ -110,8 +117,8 @@ async function getProfile(accessToken: string) {
         return false;
     } catch (e) {
         console.error("GET PROFILE ERROR", e);
-    };
-};
+    }
+}
 
 async function getEnrolledPrograms(accessToken: string) {
     try {
@@ -128,5 +135,5 @@ async function getEnrolledPrograms(accessToken: string) {
         return false;
     } catch (e) {
         console.error("GET ENROLLED PROGRAMS ERROR", e);
-    };
-};
+    }
+}

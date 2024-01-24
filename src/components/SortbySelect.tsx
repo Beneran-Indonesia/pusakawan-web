@@ -52,7 +52,7 @@ const CustomButton = React.forwardRef(function CustomButton(
   props: SelectRootSlotProps<string, false>,
   ref: React.ForwardedRef<HTMLButtonElement>,
 ) {
-  const { ownerState, ...other } = props;
+  const { ...other } = props;
   return (
     <button
       type="button"

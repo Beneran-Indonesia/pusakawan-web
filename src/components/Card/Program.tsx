@@ -3,7 +3,6 @@ import Typography from "@mui/material/Typography";
 import CardWrapper from "./Wrapper/Normal";
 import { useTranslations } from "next-intl";
 import { formatNumberToIdr } from "@/lib/utils";
-import Link from "next/link";
 
 type CardProps = {
     img: string;

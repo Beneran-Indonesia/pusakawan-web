@@ -1,5 +1,5 @@
 import '@/styles/globals.css'
-import type { AppContext, AppProps } from 'next/app'
+import type { AppProps } from 'next/app'
 import { NextIntlClientProvider } from 'next-intl';
 import { CacheProvider, EmotionCache } from "@emotion/react";
 import { ThemeProvider } from "@mui/material/styles";

@@ -1,5 +1,5 @@
 import { Control, FieldPath, FieldValues } from "react-hook-form";
-import { SxProps, Theme } from "@mui/material";
+import type { SxProps, Theme } from "@mui/material";
 
 interface FormProps<T extends FieldValues> {
     name: FieldPath<T>;
@@ -50,12 +50,6 @@ type DropdownProps = {
     items: DropdownItemsData[];
 }
 
-enum UserCategory {
-    MAHASISWA = 'MAHASISWA',
-    SISWA = 'SISWA',
-    PROFESSIONAL = 'PROFESSIONAL'
-}
-
 type DropdownProfileInput = {
     [K in keyof DropdownItems]: string;
 } & {
@@ -86,14 +80,6 @@ type ProfileInput = InputProfileInput & DropdownProfileInput & {
     accessToken: string;
     is_profile_complete: boolean;
     pusaka_points: number;
-}
-
-type ExpectedJSON = {
-    id: string;
-    name: string;
-    country?: string;
-    title?: string;
-    province?: string;
 }
 
 export type {

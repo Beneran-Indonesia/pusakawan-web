@@ -112,8 +112,7 @@ const StyledInput = styled('input')(
 `,
 );
 
-const StyledListbox = styled('ul')(
-  ({ theme }) => `
+const StyledListbox = styled('ul')(() => `
   box-sizing: border-box;
   margin: 12px 0;
   width: 24rem;
@@ -129,8 +128,7 @@ const StyledListbox = styled('ul')(
   `,
 );
 
-const StyledOption = styled('li')(
-  ({ theme }) => `
+const StyledOption = styled('li')(() => `
   list-style: none;
   padding: 16px;
   border-radius: 8px;

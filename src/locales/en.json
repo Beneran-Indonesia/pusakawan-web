@@ -55,11 +55,13 @@
         "email": "Email is not valid. Please check your spelling.",
         "required": "This column is required.",
         "min_length_password": "Password too short. Minimum 8 characters.",
-        "min_length_phone": "Number too short. Minimum 4 digit.",
+        "min_length_phone": "Number too short. Minimum 6 digit.",
         "max_length_phone": "Number too long. Maximum 12 digit.",
-        "number": {
-          "min": "Input only number above 1900."
-        }
+        "max": "You have exceeded 50 characters.",
+        "min": "Minimum of 3 characters.",
+        "fullname": "Full name has numbers or special characters. Please only insert alphabets.",
+        "username": "Username has illegal special characters. Please only use alphabets, numbers, and dash/underscore on your username."
+
       }
     },
     "phone": {
@@ -129,7 +131,7 @@
     "button": "Take challenge"
   },
   "courses_selection": {
-    "title": "Learn from <red>currently hot</red> issues",
+    "title": "Learn from our <red>programs</red>",
     "cta": "See other issues",
     "environment": {
       "title": "Environmental",

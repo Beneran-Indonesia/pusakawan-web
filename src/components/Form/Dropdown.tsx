@@ -16,7 +16,7 @@ export default function Dropdown({ name, control, items, label }: DropdownProps)
             render={({
                 field: { onChange, value },
             }) => (
-                <FormControl sx={{ m: 1, width: 380 }}>
+                <FormControl sx={{ m: 1, width: 380 }} required>
                     <InputLabel id={`select-label-${label}`}>{label}</InputLabel>
                     <Select
                         labelId={`select-label-${label}`}

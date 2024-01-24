@@ -1,5 +1,5 @@
 import BreadcrumbsWrapper from "@/components/Breadcrumbs";
-import { mockProgramData, programPagePicture } from "@/lib/constants";
+import { programPagePicture } from "@/lib/constants";
 import { BreadcrumbLinkProps, ProgramData, SortBy } from "@/types/components";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
@@ -20,7 +20,6 @@ import { getAllStorylinePrograms } from "@/lib/api";
 export default function ProgramPage({ programData }: InferGetServerSidePropsType<typeof getServerSideProps>) {
     const { data: session, status } = useSession()
     const authenticated = status === "authenticated";
-    const user = authenticated && { id: session!.user.id, sessionToken: session!.user.accessToken };
     const [filter, setFilter] = useState<SortBy>('ALL');
     const [currentData, setCurrentData] = useState(programData);
     const t = useTranslations('program')
@@ -74,7 +73,7 @@ export default function ProgramPage({ programData }: InferGetServerSidePropsType
                     {t('content.title')}
                 </Typography>
                 <Box display="flex" flexDirection="row" gap={3}>
-                    <Autocomplete classData={mockProgramData} />
+                    <Autocomplete classData={programData} />
                     <SortBySelect currentValue={filter} onChange={onFilterChange} />
                 </Box>
                 <Grid
@@ -102,7 +101,7 @@ function CoursesCard({ data }: CoursesCardProps) {
             {
                 data.length === 0
                 ? <Typography mt={4}>{t("empty")}</Typography>
-                : data.map((dt, idx) => (
+                : data.map((dt) => (
                     <Grid item
                         key={`course-card ${dt.title} ${dt.id}`}
                     >

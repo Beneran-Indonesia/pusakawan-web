@@ -7,10 +7,9 @@ import { cloneElement, forwardRef } from 'react';
 interface FadeProps {
   children: React.ReactElement;
   in?: boolean;
-  onClick?: any;
+  onClick?: any; // eslint-disable-line
   onEnter?: (node: HTMLElement, isAppearing: boolean) => void;
   onExited?: (node: HTMLElement, isAppearing: boolean) => void;
-  ownerState?: any;
 }
 
 const Fade = forwardRef<HTMLDivElement, FadeProps>(function Fade(props, ref) {
@@ -20,7 +19,6 @@ const Fade = forwardRef<HTMLDivElement, FadeProps>(function Fade(props, ref) {
     onClick,
     onEnter,
     onExited,
-    ownerState,
     ...other
   } = props;
   const style = useSpring({
@@ -28,12 +26,12 @@ const Fade = forwardRef<HTMLDivElement, FadeProps>(function Fade(props, ref) {
     to: { opacity: open ? 1 : 0 },
     onStart: () => {
       if (open && onEnter) {
-        onEnter(null as any, true);
+        onEnter(null as any, true); // eslint-disable-line
       }
     },
     onRest: () => {
       if (!open && onExited) {
-        onExited(null as any, true);
+        onExited(null as any, true); // eslint-disable-line
       }
     },
   });
@@ -46,7 +44,7 @@ const Fade = forwardRef<HTMLDivElement, FadeProps>(function Fade(props, ref) {
 });
 
 const style = {
-  position: 'absolute' as 'absolute',
+  position: 'absolute' as const,
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',

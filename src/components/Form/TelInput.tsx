@@ -12,7 +12,7 @@ export default function TelInput<T extends FieldValues>({ name, control, require
             control={control}
             rules={{
                 required: { value: required, message: t('text_field.error.required') },
-                minLength: { value: 4, message: t('text_field.error.min_length_phone') },
+                minLength: { value: 6, message: t('text_field.error.min_length_phone') },
                 maxLength: { value: 19, message: t('text_field.error.max_length_phone')}
             }}
             render={({
@@ -20,6 +20,7 @@ export default function TelInput<T extends FieldValues>({ name, control, require
                 fieldState: { error },
             }) => (
                 <MuiTelInput
+                required={required}
                     helperText={error ? error.message : null}
                     error={!!error}
                     value={value}

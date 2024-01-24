@@ -1,4 +1,3 @@
-import * as React from 'react';
 import Box from '@mui/material/Box';
 import LoadingButton from '@mui/lab/LoadingButton';
 import Snackbar from '@mui/material/Snackbar';
@@ -303,8 +302,8 @@ function TermsAndConditionModal({ open, handleClose }: TermsAndConditionModalPro
             aria-labelledby="terms and condition modal"
             aria-describedby="read terms and condition"
         >
-            <Box >
-                <iframe src="./assets/terms-and-condition.html"
+            <Box>
+                <iframe src="/assets/terms-and-condition.html"
                     style={{
                         width: '50%', height: "80vh",
                         position: 'absolute',
