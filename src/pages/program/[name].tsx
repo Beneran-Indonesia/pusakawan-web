@@ -22,7 +22,7 @@ import Alert from '@mui/material/Alert';
 import Tooltip from '@mui/material/Tooltip';
 import Snackbar from '@mui/material/Snackbar';
 import NoticeBar from "@/components/Notice";
-import { Link } from "@mui/material";
+import Link from '@mui/material/Link';
 
 export default function MockClass({ programData, moduleData }: InferGetServerSidePropsType<typeof getServerSideProps>) {
     const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);

@@ -6,6 +6,7 @@ import { footerInformation } from "@/lib/constants";
 import PhoneIcon from '@mui/icons-material/Phone';
 import PlaceIcon from '@mui/icons-material/Place';
 import Link from "next/link";
+import ChangeLanguageButtons from "./ChangeLanguage";
 
 export default function Footer() {
     const t = useTranslations("footer");
@@ -33,7 +34,7 @@ export default function Footer() {
                     color="white"
                     gap={10}
                 >
-                    <div aria-label="office address">
+                    <Box aria-label="office address">
                         <Typography component="h5" variant="h5" fontWeight={500} my={1}>
                             {t('office_location')}
                         </Typography>
@@ -43,8 +44,8 @@ export default function Footer() {
                                 {footerInformation.office.value}
                             </Typography>
                         </Box>
-                    </div>
-                    <div aria-label="contact number">
+                    </Box>
+                    <Box aria-label="contact number">
                         <Typography component="h5" variant="h5" fontWeight={500} my={1}>
                             {t('contact_us')}
                         </Typography>
@@ -54,7 +55,8 @@ export default function Footer() {
                                 {footerInformation.phone.value}
                             </Typography>
                         </Box>
-                    </div>
+                        <ChangeLanguageButtons sx={{ m: 0 }} />
+                    </Box>
                 </Box>
             </Box>
             <hr />

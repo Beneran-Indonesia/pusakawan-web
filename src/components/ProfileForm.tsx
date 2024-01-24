@@ -16,6 +16,7 @@ import { createBearerHeader } from '@/lib/utils';
 import DatePicker from './Form/Datepicker';
 import { useSession } from 'next-auth/react';
 import UploadImage from './Form/UploadImage';
+import dayjs from 'dayjs';
 
 type UserData = ProfileInput & { profile_picture: string; };
 
@@ -48,6 +49,9 @@ export default function EditProfile({ setSnackbar, userData, accessToken, dropdo
             if (key === "profile_picture") {
                 dirtyData.append("profile_picture", profilePicture!)
                 return;
+            } else if (key === "date_of_birth") {
+                dirtyData.append("date_of_birth", dayjs(val as string).format('YYYY-MM-DDTHH:mm'))
+                return;
             } else if (key in dropdownItems) {
                 const dropdownData = dropdownItems[key as keyof DropdownItems];
                 val = dropdownData.find((dt) => {
@@ -59,7 +63,6 @@ export default function EditProfile({ setSnackbar, userData, accessToken, dropdo
             }
             dirtyData.append(key, val as string)
         });
-
         try {
             const res = await api.patch('/user/edit-profile/',
                 dirtyData,
@@ -101,7 +104,7 @@ export default function EditProfile({ setSnackbar, userData, accessToken, dropdo
             <Input name="full_name" control={control} label={t("name")} required />
             <Input name="username" control={control} label={t("username")} required />
             <Input name="email" control={control} label={t("email")} required />
-            <TelInput name="phone_no" control={control} required={false} />
+            <TelInput name="phone_no" control={control} required />
             {/* Bio */}
             <Input name="bio" control={control} label={t("bio")} required={false} />
 

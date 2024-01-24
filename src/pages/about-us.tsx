@@ -1,4 +1,5 @@
-import React from 'react';
+/* eslint-disable */
+
 import { PDFDocument, StandardFonts, rgb } from 'pdf-lib'
 import MaintenancePage from '@/components/Maintenance';
 

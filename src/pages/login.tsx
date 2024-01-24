@@ -196,7 +196,7 @@ function LoginBox() {
                 </Typography>
                 <Typography component="h2" variant="h5">
                     {t.rich('description', {
-                        strong: (chunks) => <UnderlinedLink href="/register" title={t('to_register')}><strong>{chunks}</strong></UnderlinedLink>
+                        strong: (chunks) => <UnderlinedLink href="/register" sx={{ color: "primary.main", fontWeight: 600}} title={t('to_register')}>{chunks}</UnderlinedLink>
                     })}
                 </Typography>
             </div>
@@ -222,7 +222,7 @@ function LoginBox() {
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3, mt: 1 }}>
                     <CheckboxRememberMe control={control} />
                     <Link href="/reset-password" title={t('change_password')}>
-                        <Typography variant='caption' sx={{ textDecoration: 'underline' }}>
+                        <Typography variant='caption' sx={{ textDecoration: 'underline', color: "primary.main" }}>
                             {t('forgot_password')}
                         </Typography>
                     </Link>

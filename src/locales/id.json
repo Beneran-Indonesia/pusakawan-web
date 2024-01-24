@@ -55,11 +55,12 @@
                 "email": "Email tidak valid. Tolong periksa ejaan anda.",
                 "required": "Kolom ini perlu diisi.",
                 "min_length_password": "Password terlalu pendek. Minimum 8 karakter.",
-                "min_length_phone": "Nomor terlalu pendek. Minimum 4 digit.",
+                "min_length_phone": "Nomor terlalu pendek. Minimum 6 digit.",
                 "max_length_phone": "Nomor terlalu panjang. Maksimum 12 digit.",
-                "number": {
-                    "min": "Hanya menerima tahun diatas 1900."
-                }
+                "max": "Anda telah melebihi 50 karakter.",
+                "min": "Minimum 3 karakter.",
+                "fullname": "Nama lengkap memiliki angka atau karakter illegal. Harap masukkan huruf saja.",
+                "username": "Nama pengguna memiliki karakter yang ilegal. Harap hanya menggunakan huruf, angka, dan tanda hubung/garis bawah pada username Anda."
             }
         },
         "phone": {
@@ -129,7 +130,7 @@
         "button": "Ikut challenge"
     },
     "courses_selection": {
-        "title": "Belajar dari <red>Isu-Isu</red> Sekitar",
+        "title": "Belajar dari <red>Program</red> Kami",
         "cta": "Lihat isu lainnya",
         "environment": {
             "title": "Lingkungan",

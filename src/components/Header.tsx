@@ -8,13 +8,17 @@ import PusakawanLogo from "./PusakawanLogo";
 import NextLink from "next/link";
 import { signOut, useSession } from "next-auth/react";
 import { useState } from "react";
-import { ButtonGroup, Divider, IconButton, Link, Menu, MenuItem, MenuProps } from "@mui/material";
+import Divider from "@mui/material/Divider";
+import Link from "@mui/material/Link";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import type { MenuProps } from "@mui/material";
 import { styled } from '@mui/material/styles';
 import LogoutIcon from '@mui/icons-material/Logout';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import ImageWrapper from "./ImageWrapper";
 import PusakaPoints from "@svgs/logo.svg";
-import { useRouter } from "next/router";
+import ChangeLanguageButtons from "./ChangeLanguage";
 
 export default function Header() {
     const t = useTranslations('header');
@@ -29,10 +33,6 @@ export default function Header() {
     const handleClose = () => {
         setAnchorEl(null);
     };
-
-    const router = useRouter();
-
-    const changeLocale = (locale: "en" | "id") => router.push(router.asPath, router.asPath, { locale })
 
     return (
         <Box component="header" sx={{
@@ -102,16 +102,7 @@ export default function Header() {
                                         {t("menu.sign_out")}
                                     </MenuItem>
                                     <Divider />
-                                    <ButtonGroup variant="text" aria-label="change language label" sx={{ ml: 1.5 }}>
-                                        <IconButton onClick={() => changeLocale("id")}
-                                            color="primary" title={t("menu.language.indonesian")}>
-                                            🇮🇩
-                                        </IconButton>
-                                        <IconButton  onClick={() => changeLocale("en")}
-                                        color="primary" title={t("menu.language.english")}>
-                                            🇺🇸
-                                        </IconButton>
-                                    </ButtonGroup>
+                                    <ChangeLanguageButtons />
                                 </HeaderMenu>
                             </>
                             : <>

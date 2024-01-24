@@ -35,6 +35,7 @@ export default function RowRadio({ name, control, title, data }: RowRadioProps) 
                     }
                     <RadioGroup
                         row
+                        
                         aria-labelledby={`row-radio-${title}`}
                         name={`row-radio-group-${title}`}
                         value={value}

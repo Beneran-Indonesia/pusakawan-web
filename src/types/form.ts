@@ -1,5 +1,5 @@
 import { Control, FieldPath, FieldValues } from "react-hook-form";
-import { SxProps, Theme } from "@mui/material";
+import type { SxProps, Theme } from "@mui/material";
 
 interface FormProps<T extends FieldValues> {
     name: FieldPath<T>;

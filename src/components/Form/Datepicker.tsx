@@ -29,7 +29,18 @@ export default function DatePicker<T extends FieldValues>({ name, control, label
                             variant: 'outlined',
                             error: !!error,
                             helperText: error?.message,
+                            required
                         },
+                        desktopPaper: {
+                            sx: {
+                                boxShadow: 1
+                            }
+                        },
+                        mobilePaper: {
+                            sx: {
+                                boxShadow: 1
+                            }
+                        }
                     }}
                 />
 

@@ -1,10 +1,10 @@
-import Image from "next/image"
+import Image, { StaticImageData } from "next/image"
 import { CSSProperties } from "react";
 
 type ImageWrapperProps = {
     style?: CSSProperties;
     alt: string;
-    src: string;
+    src: string | StaticImageData;
     width?: number;
     height?: number;
     priority?: boolean
