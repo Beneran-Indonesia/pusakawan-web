@@ -1,4 +1,4 @@
-import { ModuleData, ProgramData } from "@/types/components";
+import { ProgramData } from "@/types/components";
 import { CSSProperties } from "react";
 
 const formControlRoot: CSSProperties = {
@@ -16,7 +16,7 @@ type FooterInformationObject = {
 
 function unsplash(id: string) {
     return `https://source.unsplash.com/${id}`;
-};
+}
 
 // DATAS
 
@@ -66,7 +66,7 @@ const grade = [
 
 // MOCK DATA
 const mockUserClass = [
-    { id: 0, title: 'Peran Pemerintah Dalam Penyelesain Kasus di Pulau Rempang', img: unsplash('Rfflri94rs8'), status: "FINISHED" as "FINISHED" },
+    { id: 0, title: 'Peran Pemerintah Dalam Penyelesain Kasus di Pulau Rempang', img: unsplash('Rfflri94rs8'), status: "FINISHED" as const },
 ];
 
 const mockClass = {

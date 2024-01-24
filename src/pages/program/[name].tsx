@@ -24,7 +24,7 @@ import Snackbar from '@mui/material/Snackbar';
 import NoticeBar from "@/components/Notice";
 import { Link } from "@mui/material";
 
-export default function MockClass({ classname, programData, moduleData }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+export default function MockClass({ programData, moduleData }: InferGetServerSidePropsType<typeof getServerSideProps>) {
     const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
 
     const [enrollLoading, setEnrollLoading] = useState(false);
@@ -86,7 +86,7 @@ export default function MockClass({ classname, programData, moduleData }: InferG
             setEnrollLoading(false)
             handleSnackbar(true, false, "Error occured. Sorry!");
         }
-    };
+    }
 
     const toggleModalOpen = () => setConfirmationModalOpen(!confirmationModalOpen);
 
@@ -231,7 +231,6 @@ type FormattedModule = {
 };
 
 type ClassDatas = {
-    classname: string;
     programData: ProgramData;
     moduleData: FormattedModule[];
     messages: string;
@@ -261,11 +260,10 @@ export const getServerSideProps: GetServerSideProps<ClassDatas> = async (ctx) =>
     } else {
         modules = moduleData.message.map((mdl: ModuleData) =>
             ({ title: mdl.title, href: process.env.BUCKET_URL + mdl.storyline_path }));
-    };
+    }
 
     return {
         props: {
-            classname,
             programData,
             moduleData: modules,
             messages: (await import(`../../locales/${locale}.json`)).default,

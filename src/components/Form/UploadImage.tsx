@@ -17,7 +17,7 @@ const VisuallyHiddenInput = styled('input')({
 
 interface UploadImageProps<T extends FieldValues> extends FormProps<T> {
     setProfilePicture: Dispatch<SetStateAction<File | null>>;
-};
+}
 
 export default function UploadImage<T extends FieldValues>({ name, control, setProfilePicture }: UploadImageProps<T>) {
     return (

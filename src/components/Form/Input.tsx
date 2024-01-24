@@ -39,6 +39,6 @@ function Input<T extends FieldValues>({ name, control, label, required = true, a
             )}
         />
     );
-};
+}
 
 export { Input };

@@ -168,4 +168,4 @@ type HeaderLinkProps = {
 
 function HeaderLink({ href, children, title }: HeaderLinkProps) {
     return <Typography component="p"><NextLink title={title} href={href}>{children}</NextLink></Typography>
-};
+}

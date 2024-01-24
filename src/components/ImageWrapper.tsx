@@ -4,7 +4,7 @@ import { CSSProperties } from "react";
 type ImageWrapperProps = {
     style?: CSSProperties;
     alt: string;
-    src: any;
+    src: string;
     width?: number;
     height?: number;
     priority?: boolean

@@ -1,5 +1,5 @@
 import BreadcrumbsWrapper from "@/components/Breadcrumbs";
-import { mockProgramData, programPagePicture } from "@/lib/constants";
+import { programPagePicture } from "@/lib/constants";
 import { BreadcrumbLinkProps, ProgramData, SortBy } from "@/types/components";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
@@ -101,7 +101,7 @@ function CoursesCard({ data }: CoursesCardProps) {
             {
                 data.length === 0
                 ? <Typography mt={4}>{t("empty")}</Typography>
-                : data.map((dt, idx) => (
+                : data.map((dt) => (
                     <Grid item
                         key={`course-card ${dt.title} ${dt.id}`}
                     >
