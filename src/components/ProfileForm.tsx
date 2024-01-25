@@ -37,8 +37,6 @@ export default function EditProfile({ setSnackbar, userData, accessToken, dropdo
 
     const userCategory = watch('user_category');
 
-    console.log(session)
-
     const onSubmit: SubmitHandler<ProfileInput> = async (data) => {
         setEditLoading(true);
         // If wanna be faster can put as a constant (below)

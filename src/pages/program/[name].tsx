@@ -37,7 +37,7 @@ export default function MockClass({ programData, moduleData }: InferGetServerSid
     const router = useRouter();
 
     const userIsEnrolled = status === "authenticated" && session.user.enrolledPrograms.some((program) => program.id === programData.id);
-    
+
     const user = { id: session?.user.id, accessToken: session?.user.accessToken };
     const breadcrumbData: BreadcrumbLinkProps[] = [
         { href: '/', children: t('breadcrumbs.home'), title: t('breadcrumbs.home') },
@@ -80,7 +80,7 @@ export default function MockClass({ programData, moduleData }: InferGetServerSid
             setEnrollLoading(false)
             return;
         } catch (e) {
-            console.log("ENROLL USER ERROR:", e)
+            console.error("ENROLL USER ERROR:", e)
             setEnrollLoading(false)
             handleSnackbar(true, false, t("snackbar.error.client"));
         }
