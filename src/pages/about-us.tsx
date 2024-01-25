@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 import MaintenancePage from '@/components/Maintenance';
 
 function AboutPusakawan() {
@@ -7,7 +5,7 @@ function AboutPusakawan() {
         <MaintenancePage />
        
     );
-};
+}
 
 export async function getStaticProps({ locale }: { locale: "en" | "id" }) {
     return {
