@@ -20,7 +20,11 @@
         "title": "Kembali ke beranda"
     },
     "accordion": {
-        "module": "Modul yang perlu dipelajari",
+        "module": {
+            "title": "Modul yang perlu dipelajari",
+            "link_title_enrolled": "Pelajari modul ini sekarang",
+            "link_title_unenrolled": "Daftar ke program ini terlebih dahulu untuk mengakses modul ini"
+          },
         "assignment": "Tugas"
     },
     "class": {

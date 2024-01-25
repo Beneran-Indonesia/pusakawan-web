@@ -3,7 +3,8 @@
 import { PDFDocument, rgb } from "pdf-lib";
 import fontkit from '@pdf-lib/fontkit'
 import { NextApiRequest, NextApiResponse } from "next";
-import PDFTemplate from "@public/Template Certificate.pdf";
+import fs from 'fs';
+import path from 'path';
 import { getSession } from "next-auth/react";
 
 type ResponseData = {
@@ -39,16 +40,16 @@ type GenerateCertificateProps = {
 }
 
 async function generateCertificate({ studentName, programName, programID }: GenerateCertificateProps): Promise<Uint8Array> {
-    const certificatePDF = "/assets/Template Certificate.pdf";
-    const certificatePDFBytes = await fetch(certificatePDF).then((res) => res.arrayBuffer());
+
+    const certificatePDFBytes = await fetch(getPath("Template Certificate.pdf")).then((res) => res.arrayBuffer());
 
     const pdf = await PDFDocument.load(certificatePDFBytes);
 
     pdf.registerFontkit(fontkit);
 
-    const beauRivage = await fetch("/assets/BeauRivage.ttf").then((res) => res.arrayBuffer());
-    const poppinsLight = await fetch("/assets/PoppinsLight.ttf").then((res) => res.arrayBuffer());
-    const poppinsRegular = await fetch("/assets/PoppinsRegular.ttf").then((res) => res.arrayBuffer());
+    const beauRivage = await fetch(getPath("BeauRivage.ttf")).then((res) => res.arrayBuffer());
+    const poppinsLight = await fetch(getPath("PoppinsLight.ttf")).then((res) => res.arrayBuffer());
+    const poppinsRegular = await fetch(getPath("PoppinsRegular.ttf")).then((res) => res.arrayBuffer());
 
     const beauRivageFont = await pdf.embedFont(beauRivage);
     const poppinsLightFont = await pdf.embedFont(poppinsLight);
@@ -94,3 +95,5 @@ async function generateCertificate({ studentName, programName, programID }: Gene
     return pdfBytes;
 
 }
+
+const getPath = (filename: string) => path.join(process.cwd(), 'public', 'assets', 'certificate', filename);

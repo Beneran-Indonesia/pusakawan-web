@@ -30,8 +30,8 @@
       "@images/*": [
         "./public/assets/images/*"
       ],
-      "@public/*": [
-        "./public/assets/*",
+      "@certificate/*": [
+        "./public/assets/certificate/*",
       ]
     }
   },

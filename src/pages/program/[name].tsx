@@ -37,6 +37,7 @@ export default function MockClass({ programData, moduleData }: InferGetServerSid
     const router = useRouter();
 
     const userIsEnrolled = status === "authenticated" && session.user.enrolledPrograms.some((program) => program.id === programData.id);
+    
     const user = { id: session?.user.id, accessToken: session?.user.accessToken };
     const breadcrumbData: BreadcrumbLinkProps[] = [
         { href: '/', children: t('breadcrumbs.home'), title: t('breadcrumbs.home') },

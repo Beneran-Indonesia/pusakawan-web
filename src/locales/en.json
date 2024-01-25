@@ -20,7 +20,11 @@
     "title": "Go back to home"
   },
   "accordion": {
-    "module": "Module that needs to be learnt",
+    "module": {
+      "title": "Module that needs to be learnt",
+      "link_title_enrolled": "Learn this module now",
+      "link_title_unenrolled": "Register to this program to unlock this module"
+    },
     "assignment": "Assignment"
   },
   "class": {

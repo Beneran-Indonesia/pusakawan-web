@@ -17,16 +17,18 @@ type ModuleAccordionProps = {
 export default function ModuleAccordion({ isModule, description, items, userIsEnrolled }: ModuleAccordionProps) {
     const t = useTranslations('accordion');
     return (
-        <ClassAccordion id={4} isModule={isModule} title={t(isModule ? 'module' : 'assignment')}>
+        <ClassAccordion id={4} isModule={isModule} title={t(isModule ? 'module.title' : 'assignment')}>
             <Typography mb={2}>{description}</Typography>
             {
-                items && items.map((dt) => 
-                <Link component={NextLink} href={userIsEnrolled ? dt.href : "#"} variant='h5' fontWeight={500}
-                    underline="always" aria-current={undefined} key={dt.title}
-                    sx={!userIsEnrolled ? { pointerEvents: 'none'} : undefined}
-                    >
-                    {dt.title}
-                </Link>)
+                items && items.map((dt) =>
+                    <span key={dt.title} title={t(userIsEnrolled ? "module.link_title_enrolled" : "module.link_title_unenrolled")}>
+                        <Link component={NextLink} href={userIsEnrolled ? dt.href : "#"}
+                            variant='h5' fontWeight={500} underline="always"
+                            sx={!userIsEnrolled ? { pointerEvents: 'none' } : undefined}
+                        >
+                            {dt.title}
+                        </Link>
+                    </span>)
             }
         </ClassAccordion>
     )
