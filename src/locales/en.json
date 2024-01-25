@@ -1,4 +1,8 @@
 {
+  "notice_bar": {
+    "default": "<red>Warning:</red> You have not completed your profile. Please complete your profile <link>here</link> in order to register for programs.",
+    "profile": "<red>Warning:</red> You have not completed your profile. Please complete your profile here."
+  },
   "error_page": {
     "404": {
       "title": "Page Not Found",
@@ -21,7 +25,13 @@
   },
   "class": {
     "overview": {
-      "notice_bar": "<red>Warning:</red> You have not completed your profile. Please complete your profile <link>here</link> in order to register for programs.",
+      "snackbar": {
+        "success": "You have enrolled!",
+        "error": {
+          "server": "Server error occured. Please contact the administrator. Sorry for the inconvenience.",
+          "client": "Client error occured. Please contact the administrator. Sorry for the inconvenience."
+        }
+      },
       "breadcrumbs": {
         "home": "Home",
         "program": "Program"
@@ -261,7 +271,6 @@
       "all": "All",
       "paid": "Paid",
       "free": "Free"
-    },
-    "notice_bar": "<red>Warning:</red> You have not completed your profile. Please complete your profile <link>here</link> in order to register for programs."
+    }
   }
 }

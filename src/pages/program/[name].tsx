@@ -21,8 +21,7 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import Alert from '@mui/material/Alert';
 import Tooltip from '@mui/material/Tooltip';
 import Snackbar from '@mui/material/Snackbar';
-import NoticeBar from "@/components/Notice";
-import Link from '@mui/material/Link';
+import ProfileNotCompleteNotice from "@/components/ProfileNotCompleteNotice";
 
 export default function MockClass({ programData, moduleData }: InferGetServerSidePropsType<typeof getServerSideProps>) {
     const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
@@ -49,9 +48,7 @@ export default function MockClass({ programData, moduleData }: InferGetServerSid
     const userProfileNotCompleted = !session?.user.is_profile_complete;
 
     const { title, description, banners, pusaka_points: pusakaPoints, price } = programData;
-    // storyline path is the folder to the storyline in s3.
 
-    // works but doesn't refresh user session
     async function enrollUser(userId: number, programId: number, sessionToken: string) {
         setEnrollLoading(true)
         try {
@@ -62,7 +59,7 @@ export default function MockClass({ programData, moduleData }: InferGetServerSid
             setEnrollLoading(false)
             if (res.status === 201) {
                 setEnrollLoading(false);
-                handleSnackbar(true, true, "You have enrolled!");
+                handleSnackbar(true, true, t("snackbar.success"));
 
                 const programId = res.data.program;
                 const enrolledProgram = (await getProgram(programId))?.message;
@@ -74,17 +71,17 @@ export default function MockClass({ programData, moduleData }: InferGetServerSid
                     });
                     return { status: res.status, message: res.data };
                 }
-                
+
                 throw new Error("Failed to fetch enrolled program details");
             }
 
-            handleSnackbar(true, false, "Error occured. Sorry!");
+            handleSnackbar(true, false, t("snackbar.error.server"));
             setEnrollLoading(false)
             return;
         } catch (e) {
             console.log("ENROLL USER ERROR:", e)
             setEnrollLoading(false)
-            handleSnackbar(true, false, "Error occured. Sorry!");
+            handleSnackbar(true, false, t("snackbar.error.client"));
         }
     }
 
@@ -92,18 +89,7 @@ export default function MockClass({ programData, moduleData }: InferGetServerSid
 
     return (
         <>
-            {
-                !userIsUnauthenticated
-                    ? userProfileNotCompleted
-                        ? <NoticeBar>
-                            {t.rich('notice_bar', {
-                                'red': (chunks) => <Box component="span" color="primary.main">{chunks}</Box>,
-                                'link': (chunks) => <Link href="/user">{chunks}</Link>,
-                            })}
-                        </NoticeBar>
-                        : null
-                    : null
-            }
+            <ProfileNotCompleteNotice />
             <Box sx={{
                 pt: 4,
                 background: `linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url(${banners[0].image})`,
@@ -253,10 +239,12 @@ export const getServerSideProps: GetServerSideProps<ClassDatas> = async (ctx) =>
         programData = { ...programData, banners: defaultBanner };
     }
     const moduleData = await getModuleData(programId.toString());
+
     let modules;
 
     if (!moduleData) {
         modules = [{ title: "", href: "" }]
+
     } else {
         modules = moduleData.message.map((mdl: ModuleData) =>
             ({ title: mdl.title, href: process.env.BUCKET_URL + mdl.storyline_path }));

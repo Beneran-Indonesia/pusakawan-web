@@ -10,19 +10,15 @@ import { useState } from "react";
 import ProgramCard from "@/components/Card/Program";
 import Autocomplete from "@/components/Autocomplete";
 import SortBySelect from "@/components/SortbySelect";
-import NoticeBar from "@/components/Notice";
-import Link from "@mui/material/Link";
 import { databaseToUrlFormatted } from "@/lib/utils";
-import { useSession } from "next-auth/react";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { getAllStorylinePrograms } from "@/lib/api";
+import ProfileNotCompleteNotice from "@/components/ProfileNotCompleteNotice";
 
 export default function ProgramPage({ programData }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-    const { data: session, status } = useSession()
-    const authenticated = status === "authenticated";
     const [filter, setFilter] = useState<SortBy>('ALL');
     const [currentData, setCurrentData] = useState(programData);
-    const t = useTranslations('program')
+    const t = useTranslations('program');
     const breadcrumbData: BreadcrumbLinkProps[] = [{ children: t('header.breadcrumbs.home'), href: '/' }, { children: t('header.breadcrumbs.program'), href: '/program', active: true }];
     const onFilterChange = (filterChange: SortBy) => {
         setFilter(filterChange);
@@ -36,19 +32,7 @@ export default function ProgramPage({ programData }: InferGetServerSidePropsType
                 <title>Program</title>
             </Head>
             {/* Header part */}
-            {
-                authenticated
-                    ?
-                    !session!.user.is_profile_complete
-                        ? <NoticeBar>
-                            {t.rich('notice_bar', {
-                                'red': (chunks) => <Box component="span" color="primary.main">{chunks}</Box>,
-                                'link': (chunks) => <Link href="/user">{chunks}</Link>,
-                            })}
-                        </NoticeBar>
-                        : null
-                    : null
-            }
+            <ProfileNotCompleteNotice />
             <Box display="flex" px={25.5} py={7} flexDirection="column" justifyContent="space-between"
                 sx={{
                     background: `linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,.5)), url('${programPagePicture}')`,
@@ -100,20 +84,20 @@ function CoursesCard({ data }: CoursesCardProps) {
         <>
             {
                 data.length === 0
-                ? <Typography mt={4}>{t("empty")}</Typography>
-                : data.map((dt) => (
-                    <Grid item
-                        key={`course-card ${dt.title} ${dt.id}`}
-                    >
-                        <ProgramCard
-                            img={dt.banners[0]?.image}
-                            title={dt.title}
-                            price={dt.price!}
-                            href={`/program/${databaseToUrlFormatted(dt.title)}/`}
-                            programId={dt.id}
-                        />
-                    </Grid>
-                ))
+                    ? <Typography mt={4}>{t("empty")}</Typography>
+                    : data.map((dt) => (
+                        <Grid item
+                            key={`course-card ${dt.title} ${dt.id}`}
+                        >
+                            <ProgramCard
+                                img={dt.banners[0]?.image}
+                                title={dt.title}
+                                price={dt.price!}
+                                href={`/program/${databaseToUrlFormatted(dt.title)}/`}
+                                programId={dt.id}
+                            />
+                        </Grid>
+                    ))
             }
         </>
     )

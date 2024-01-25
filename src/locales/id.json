@@ -1,4 +1,8 @@
 {
+    "notice_bar": {
+      "default": "<red>Perhatian:</red> Anda belum melengkapi profil anda. Tolong lengkapi profil anda <link>disini</link> untuk mendaftar di program.",
+      "profile": "<red>Perhatian:</red> Anda belum melengkapi profil anda. Tolong lengkapi profil anda disini."
+    },
     "error_page": {
         "404": {
             "title": "Halaman Tidak Ditemukan",
@@ -21,7 +25,13 @@
     },
     "class": {
         "overview": {
-            "notice_bar": "<red>Perhatian:</red> Anda belum melengkapi profil anda. Tolong lengkapi profil anda <link>disini</link> untuk mendaftar di program.",
+            "snackbar": {
+                "success": "Anda telah terdaftar!",
+                "error": {
+                  "server": "Terjadi error server. Tolong hubungi administrator. Maaf atas ketidaknyamanannya!",
+                  "client": "Terjadi error client. Tolong hubungi administrator. Maaf atas ketidaknyamanannya!"
+                }
+              },
             "breadcrumbs": {
                 "home": "Beranda",
                 "program": "Program"
@@ -259,7 +269,6 @@
             "all": "Semua",
             "paid": "Berbayar",
             "free": "Gratis"
-        },
-        "notice_bar": "<red>Perhatian:</red> Anda belum melengkapi profil anda. Tolong lengkapi profil anda <link>disini</link> untuk mendaftar di program."
+        }
     }
 }
