@@ -253,7 +253,6 @@ type EditAvatarProps = {
 
 function EditAvatar({ src, control, setProfilePicture }: EditAvatarProps) {
     const t = useTranslations("account.edit_profile");
-
     return (
         <Box position="relative" width="fit-content" mb={3} component="label"
             title={t("profile_picture")} sx={{ cursor: "pointer" }}>

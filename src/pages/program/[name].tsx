@@ -23,7 +23,7 @@ import Tooltip from '@mui/material/Tooltip';
 import Snackbar from '@mui/material/Snackbar';
 import ProfileNotCompleteNotice from "@/components/ProfileNotCompleteNotice";
 
-export default function MockClass({ programData, moduleData }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+export default function MockClass({ programData, moduleData, assignment }: InferGetServerSidePropsType<typeof getServerSideProps>) {
     const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
 
     const [enrollLoading, setEnrollLoading] = useState(false);
@@ -160,9 +160,9 @@ export default function MockClass({ programData, moduleData }: InferGetServerSid
                     <Typography variant="h5" component="h5" fontWeight={600}>{t('description')}</Typography>
                     <Typography mb={2}>{description}</Typography>
                     {/* Apparently no description.. */}
-                    <Accordion isModule={true} description={undefined} items={moduleData} userIsEnrolled={userIsEnrolled} />
+                    <Accordion isModule={true} items={moduleData} userIsEnrolled={userIsEnrolled} />
 
-                    {/* <Accordion isModule={false} description={undefined} items={assignment?.items} /> */}
+                    <Accordion isModule={false} items={assignment} userIsEnrolled={userIsEnrolled} />
                 </Box>
 
             </Container>
@@ -221,6 +221,7 @@ type ClassDatas = {
     programData: ProgramData;
     moduleData: FormattedModule[];
     messages: string;
+    assignment: string | null;
 };
 
 export const getServerSideProps: GetServerSideProps<ClassDatas> = async (ctx) => {
@@ -239,22 +240,26 @@ export const getServerSideProps: GetServerSideProps<ClassDatas> = async (ctx) =>
         const defaultBanner = [{ id: 1, image: getRandomCoursePicture() }];
         programData = { ...programData, banners: defaultBanner };
     }
-    const moduleData = await getModuleData(programId.toString());
+    const moduleRes = await getModuleData(programId.toString());
 
-    let modules;
+    let modules = [{ title: "", href: "" }];
+    let assignment = null;
 
-    if (!moduleData) {
-        modules = [{ title: "", href: "" }]
-
-    } else {
-        modules = moduleData.message.map((mdl: ModuleData) =>
+    if (moduleRes) {
+        const moduleData = moduleRes.message;
+        modules = moduleData.map((mdl: ModuleData) =>
             ({ title: mdl.title, href: process.env.BUCKET_URL + mdl.storyline_path }));
+        if (moduleData.additional_url) {
+            assignment = moduleData.additional_url;
+        }
     }
+
 
     return {
         props: {
             programData,
             moduleData: modules,
+            assignment,
             messages: (await import(`../../locales/${locale}.json`)).default,
         }
     }
