@@ -31,6 +31,7 @@ export default function MockClass({ programData, moduleData, assignment }: Infer
 
     const handleSnackbar = (open: boolean, success: boolean, message: string) => setSnackbarOpen({ open, success, message });
     const handleSnackbarClose = () => setSnackbarOpen({ ...snackbarOpen, open: false })
+    const toggleModalOpen = () => setConfirmationModalOpen(!confirmationModalOpen);
 
     const { data: session, status, update } = useSession();
     const t = useTranslations('class.overview');
@@ -70,12 +71,15 @@ export default function MockClass({ programData, moduleData, assignment }: Infer
                         ...session!,
                         user: { enrolledPrograms: [...session!.user.enrolledPrograms, ...enrolledProgram] },
                     });
+                    toggleModalOpen();
                     return { status: res.status, message: res.data };
+
                 }
 
                 throw new Error("Failed to fetch enrolled program details");
             }
 
+            toggleModalOpen();
             handleSnackbar(true, false, t("snackbar.error.server"));
             setEnrollLoading(false)
             return;
@@ -85,8 +89,6 @@ export default function MockClass({ programData, moduleData, assignment }: Infer
             handleSnackbar(true, false, t("snackbar.error.client"));
         }
     }
-
-    const toggleModalOpen = () => setConfirmationModalOpen(!confirmationModalOpen);
 
     return (
         <>
@@ -221,7 +223,7 @@ type ClassDatas = {
     programData: ProgramData;
     moduleData: FormattedModule[];
     messages: string;
-    assignment: string | null;
+    assignment: string[] | null;
 };
 
 export const getServerSideProps: GetServerSideProps<ClassDatas> = async (ctx) => {
@@ -247,13 +249,15 @@ export const getServerSideProps: GetServerSideProps<ClassDatas> = async (ctx) =>
 
     if (moduleRes) {
         const moduleData = moduleRes.message;
-        modules = moduleData.map((mdl: ModuleData) =>
-            ({ title: mdl.title, href: process.env.BUCKET_URL + mdl.storyline_path }));
-        if (moduleData.additional_url) {
-            assignment = moduleData.additional_url;
-        }
-    }
+        modules = moduleData.map((mdl: ModuleData) => ({
+            title: mdl.title,
+            href: process.env.BUCKET_URL + mdl.storyline_path
+        }));
 
+        assignment = moduleData
+            .filter((mdl: ModuleData) => mdl.additional_url)
+            .map((mdl: ModuleData) => mdl.additional_url);
+    }
 
     return {
         props: {
