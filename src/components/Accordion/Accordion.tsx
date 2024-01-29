@@ -3,32 +3,34 @@ import ClassAccordion from "./Wrapper";
 import Link from "@mui/material/Link";
 import NextLink from "next/link";
 
+type Items = { title: string; href: string };
+
 type ModuleAccordionProps = {
     userIsEnrolled: boolean;
 } & (
-        | { isModule: true; items: { title: string; href: string }[] }
-        | { isModule: false; items: null | string }
+        | { isModule: true; items: Items[] }
+        | { isModule: false; items: null | string[] }
     );
 
 export default function ModuleAccordion({ isModule, items, userIsEnrolled }: ModuleAccordionProps) {
     const t = useTranslations('accordion');
+    console.log("ACCORDION: ", items)
     return (
         <ClassAccordion id={4} isModule={isModule} title={t(isModule ? 'module.title' : 'assignment')}>
-            {
-                items
-                    ? <>
-                        {
-                            typeof items === "string"
-                                ? <AccordionItem userIsEnrolled={userIsEnrolled} href={items} title={t("assignment") + " 1"} />
-                                : items.map((dt) =>
-                                    <AccordionItem userIsEnrolled={userIsEnrolled} href={dt.href} title={dt.title} key={dt.title} />
-                                )
-                        }
-                    </>
-                    : null
-            }
-
+            {items && (
+                <>
+                {items.map((item, idx) => (
+                        <AccordionItem
+                            userIsEnrolled={userIsEnrolled}
+                            href={isModule ? (item as Items).href : item as string}
+                            title={isModule ? (item as Items).title : t('assignment') + ` ${idx + 1}`}
+                            key={isModule ? (item as Items).title : `assignment${idx}`}
+                        />
+                    ))}
+                </>
+            )}
         </ClassAccordion>
+
     )
 }
 

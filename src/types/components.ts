@@ -19,6 +19,7 @@ type ModuleData = {
     id: number;
     title: string;
     storyline_path: string;
+    additional_url: string;
     description: string;
     pretest: null | string;
     posttest: null | string;
