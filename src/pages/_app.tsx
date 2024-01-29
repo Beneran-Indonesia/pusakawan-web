@@ -1,4 +1,5 @@
 import '@/styles/globals.css'
+import "/node_modules/flag-icons/css/flag-icons.min.css";
 import type { AppProps } from 'next/app'
 import { NextIntlClientProvider } from 'next-intl';
 import { CacheProvider, EmotionCache } from "@emotion/react";

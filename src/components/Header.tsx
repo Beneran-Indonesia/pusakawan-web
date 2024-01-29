@@ -18,7 +18,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import ImageWrapper from "./ImageWrapper";
 import PusakaPoints from "@svgs/logo.svg";
-import ChangeLanguageButtons from "./ChangeLanguage";
+import ChangeLanguageButtons from "./LanguageSwitcher";
 
 export default function Header() {
     const t = useTranslations('header');

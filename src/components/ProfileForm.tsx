@@ -61,6 +61,9 @@ export default function EditProfile({ setSnackbar, userData, accessToken, dropdo
                     return dt.name === val;
                 })!.id;
             }
+            if (!data.country) {
+                dirtyData.append("country", "1")
+            }
             dirtyData.append(key, val as string)
         });
         try {
@@ -74,10 +77,17 @@ export default function EditProfile({ setSnackbar, userData, accessToken, dropdo
                 setSnackbar(true, true, t("edit_succeed"));
                 // Update session
                 if (res.data.profile_picture) {
-                    await update({ ...session, user: { ...data, profile_picture: res.data.profile_picture } });
+                    await update({
+                        ...session,
+                        user: {
+                            ...data,
+                            profile_picture: res.data.profile_picture,
+                            is_profile_complete: res.data.is_profile_complete
+                        }
+                    });
                     return;
                 }
-                await update({ ...session, user: data })
+                await update({ ...session, user: { ...data, is_profile_complete: res.data.is_profile_complete } })
                 return;
             }
         } catch (e) {
@@ -109,7 +119,7 @@ export default function EditProfile({ setSnackbar, userData, accessToken, dropdo
             <Input name="bio" control={control} label={t("bio")} required={false} />
 
             {/* DoB */}
-            <DatePicker control={control} label={t("dob")} name="date_of_birth" required />
+            <DatePicker control={control} label={t("dob")} name="date_of_birth" required={true} />
 
             {/* Gender */}
             <RowRadio name="gender" control={control}
@@ -243,7 +253,6 @@ type EditAvatarProps = {
 
 function EditAvatar({ src, control, setProfilePicture }: EditAvatarProps) {
     const t = useTranslations("account.edit_profile");
-
     return (
         <Box position="relative" width="fit-content" mb={3} component="label"
             title={t("profile_picture")} sx={{ cursor: "pointer" }}>

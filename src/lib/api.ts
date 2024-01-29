@@ -31,7 +31,7 @@ async function getAllStorylinePrograms() {
         })
         return { status: res.status, message: res.data };
     } catch (e) {
-        console.log("GET ALL STORYLINE PROGRAM ERROR:", e)
+        console.error("GET ALL STORYLINE PROGRAM ERROR:", e)
     }
 }
 
@@ -46,7 +46,7 @@ const getModuleData = async (id: string) => {
         })
         return { status: res.status, message: res.data };
     } catch (e) {
-        console.log("GET CLASS OVERVIEW DATA ERROR:", e)
+        console.error("GET CLASS OVERVIEW DATA ERROR:", e)
     }
 }
 
@@ -61,7 +61,7 @@ async function getProgram(id: number) {
         })
         return { status: res.status, message: res.data };
     } catch (e) {
-        console.log("GET PROGRAM DATA ERROR:", e)
+        console.error("GET PROGRAM DATA ERROR:", e)
     }
 }
 
@@ -76,7 +76,7 @@ async function getProgramData (classname: string) {
         })
         return { status: res.status, message: res.data };
     } catch (e) {
-        console.log("GET PROGRAM DATA ERROR:", e)
+        console.error("GET PROGRAM DATA ERROR:", e)
     }
 }
 

@@ -6,7 +6,7 @@ import { footerInformation } from "@/lib/constants";
 import PhoneIcon from '@mui/icons-material/Phone';
 import PlaceIcon from '@mui/icons-material/Place';
 import Link from "next/link";
-import ChangeLanguageButtons from "./ChangeLanguage";
+import ChangeLanguageButtons from "./LanguageSwitcher";
 
 export default function Footer() {
     const t = useTranslations("footer");

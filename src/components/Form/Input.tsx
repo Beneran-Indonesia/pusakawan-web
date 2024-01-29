@@ -32,7 +32,7 @@ function Input<T extends FieldValues>({ name, control, label, required = true, a
             rules={{
                 pattern,
                 required: { value: required, message: t('required') },
-                maxLength: name === "username" || name === "full_name" ? { value: 50, message: t("max") } : undefined,
+                maxLength: name === "username" ? { value: 25, message: t("max") } : name === "full_name" ? { value: 50, message: t("max") } : undefined,
                 minLength: name === "username" || name === "full_name" ? { value: 3, message: t("min") } : undefined,
                 ...rules,
             }}
@@ -41,7 +41,7 @@ function Input<T extends FieldValues>({ name, control, label, required = true, a
                 fieldState: { error },
             }) => (
                 <TextField
-                required={required}
+                    required={required}
                     multiline={name === 'bio' ? true : false}
                     rows={name === 'bio' ? 4 : undefined}
                     id={name}

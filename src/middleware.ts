@@ -7,10 +7,9 @@ export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
   // Getting current user's token credentials
   const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+  // console.log(token);
   const loggedIn = token !== null;
-  // if (pathname === '/' && !loggedIn) {
-  //   return NextResponse.redirect(new URL('/on-development', req.url));
-  // }
+  
   // Redirect user to / if user is not logged in
   if ((pathname === '/user' || pathname === 'reset-password') && !loggedIn) {
     return NextResponse.redirect(new URL('/login', req.url))

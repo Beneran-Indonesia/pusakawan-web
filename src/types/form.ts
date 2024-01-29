@@ -80,6 +80,7 @@ type ProfileInput = InputProfileInput & DropdownProfileInput & {
     accessToken: string;
     is_profile_complete: boolean;
     pusaka_points: number;
+    country?: string;
 }
 
 export type {

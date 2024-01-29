@@ -16,6 +16,7 @@ import { getRandomCoursePicture } from "@/lib/constants";
 import ProfileClassCard from '@/components/Card/Profile';
 import { getEditProfileFields } from '@/lib/api';
 import { ProgramData } from '@/types/components';
+import ProfileNotCompleteNotice from '@/components/ProfileNotCompleteNotice';
 
 export default function UserHome({ enrolledPrograms, dropdownItems, userData, tabNumber }: InferGetServerSidePropsType<typeof getServerSideProps>) {
     const t = useTranslations('account');
@@ -42,6 +43,7 @@ export default function UserHome({ enrolledPrograms, dropdownItems, userData, ta
             <Head>
                 <title>Profile</title>
             </Head>
+            <ProfileNotCompleteNotice type="profile" />
             <Container maxWidth="lg" sx={{ mt: 5, mb: 5 }}>
                 <Snackbar open={snackbarOpen.open} autoHideDuration={6000} onClose={handleSnackbarClose}>
                     <Alert onClose={handleSnackbarClose} severity={snackbarOpen.success ? "success" : "error"} sx={{ width: '100%' }}>
@@ -89,7 +91,7 @@ export default function UserHome({ enrolledPrograms, dropdownItems, userData, ta
                                                     src={dt?.banners ? dt.banners[0].image : getRandomCoursePicture()}
                                                     status="ONGOING"
                                                     title={dt.title} />
-                                            ) : null
+                                            ) : <EmptyTab />
                                     }
                                 </TabPanel>
                                 <TabPanel value={currentClassTabNumber} index={1}>

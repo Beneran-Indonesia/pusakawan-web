@@ -29,6 +29,9 @@
       ],
       "@images/*": [
         "./public/assets/images/*"
+      ],
+      "@certificate/*": [
+        "./public/assets/certificate/*",
       ]
     }
   },

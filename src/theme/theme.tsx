@@ -1,5 +1,5 @@
 import { ThemeOptions, createTheme } from "@mui/material/styles";
-import PoppinsFont from "./font";
+import { PoppinsFont } from "./font";
 import type { } from '@mui/lab/themeAugmentation';
 import NextLink from 'next/link';
 import { Ref, forwardRef } from 'react';
