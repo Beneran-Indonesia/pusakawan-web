@@ -24,8 +24,6 @@ export default function ModuleLearn({ moduleData, programData }: InferGetServerS
     const iframeRef = useRef<HTMLIFrameElement>(null);
     const [currentModule, setCurrentModule] = useState<ModuleData>(moduleData[0]);
 
-    const buttonDisabled = true;
-
     const { title, banners } = programData;
 
     const makeIframeFullscreen = () => {
