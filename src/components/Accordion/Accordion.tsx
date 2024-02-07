@@ -14,7 +14,6 @@ type ModuleAccordionProps = {
 
 export default function ModuleAccordion({ isModule, items, userIsEnrolled }: ModuleAccordionProps) {
     const t = useTranslations('accordion');
-    console.log("ACCORDION: ", items)
     return (
         <ClassAccordion id={4} isModule={isModule} title={t(isModule ? 'module.title' : 'assignment')}>
             {items && (
@@ -30,7 +29,6 @@ export default function ModuleAccordion({ isModule, items, userIsEnrolled }: Mod
                 </>
             )}
         </ClassAccordion>
-
     )
 }
 
@@ -45,7 +43,7 @@ function AccordionItem({ userIsEnrolled, href, title }: AccordionItemProps) {
     return (
         <span title={t(userIsEnrolled ? "module.link_title_enrolled" : "module.link_title_unenrolled")}>
             <Link component={NextLink} href={userIsEnrolled ? href : "#"}
-                variant='h5' fontWeight={500} underline="always"
+                variant='h5' fontWeight={500} underline="always" 
                 sx={!userIsEnrolled ? { pointerEvents: 'none' } : undefined}
             >
                 {title}

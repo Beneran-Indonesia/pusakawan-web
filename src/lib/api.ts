@@ -41,7 +41,7 @@ const getModuleData = async (id: string) => {
         const res = await api.get("/storyline/", {
             params: {
                 program: id,
-                status: "ACTIVE"
+                status: "ACTIVE",
             }
         })
         return { status: res.status, message: res.data };
