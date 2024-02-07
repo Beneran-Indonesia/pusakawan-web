@@ -15,6 +15,11 @@ type ProgramData = {
     // paid: boolean;
 }
 
+type SimpleModuleData = {
+    title: string;
+    href: string;
+};
+
 type ModuleData = {
     id: number;
     title: string;
@@ -46,6 +51,7 @@ type EnrolledProgram = {
 }
 
 export type {
+    SimpleModuleData,
     BreadcrumbLinkProps,
     ProgramData,
     SortBy,

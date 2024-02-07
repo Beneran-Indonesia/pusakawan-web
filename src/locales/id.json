@@ -274,5 +274,17 @@
             "paid": "Berbayar",
             "free": "Gratis"
         }
+    },
+    "module": {
+      "buttons": {
+        "fullscreen": "Lihat modul dengan fullscreen",
+        "next": "Pergi ke materi selanjutnya",
+        "previous": "Pergi ke materi sebelumnya"
+      },
+      "breadcrumbs": {
+          "home": "Beranda",
+          "program": "Program",
+          "learn": "Materi"
+      }
     }
 }

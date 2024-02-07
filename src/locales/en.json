@@ -75,7 +75,6 @@
         "min": "Minimum of 3 characters.",
         "fullname": "Full name has numbers or special characters. Please only insert alphabets.",
         "username": "Username has illegal special characters. Please only use alphabets, numbers, and dash/underscore on your username."
-
       }
     },
     "phone": {
@@ -275,6 +274,18 @@
       "all": "All",
       "paid": "Paid",
       "free": "Free"
+    }
+  },
+  "module": {
+    "buttons": {
+      "fullscreen": "Go to fullscreen",
+      "next": "Go to next section",
+      "previous": "Go to previous section"
+    },
+    "breadcrumbs": {
+      "home": "Home",
+      "program": "Program",
+      "learn": "Modules"
     }
   }
 }
