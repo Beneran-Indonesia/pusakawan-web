@@ -63,6 +63,7 @@ export default function ModuleLearn({ moduleData, programData }: InferGetServerS
                 height="70vh"
                 px={20}
                 my={3}
+                mb={6}
             >
                 <Box flex="20%" bgcolor="white">
                     <List sx={{ maxHeight: 360, overflow: 'auto', borderTop: "1px solid lightgrey", borderBottom: "1px solid lightgrey" }}>
@@ -77,7 +78,7 @@ export default function ModuleLearn({ moduleData, programData }: InferGetServerS
                         }
                     </List>
                 </Box>
-                <Box flex="80%" position="relative" mx={3}>
+                <Box flex="80%" position="relative" mx={3} mb={0}>
                     {/* Iframe */}
                     <iframe
                         ref={iframeRef}
