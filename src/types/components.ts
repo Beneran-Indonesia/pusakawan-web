@@ -15,6 +15,11 @@ type ProgramData = {
     // paid: boolean;
 }
 
+type SimpleModuleData = {
+    title: string;
+    href: string;
+};
+
 type ModuleData = {
     id: number;
     title: string;
@@ -43,12 +48,24 @@ type SortBy = 'ALL' | 'PAID' | 'FREE';
 
 type EnrolledProgram = {
     enrolledPrograms: ProgramData[]
+};
+
+type TestData = {
+    question: string;
+    choice_a: string;
+    choice_b: string;
+    choice_c: string;
+    choice_d: string;
+    answer: "choice_a" | "choice_b" | "choice_c" | "choice_d";
+    score?: number; // default: 100
 }
 
 export type {
+    SimpleModuleData,
     BreadcrumbLinkProps,
     ProgramData,
     SortBy,
     ModuleData,
-    EnrolledProgram
+    EnrolledProgram,
+    TestData
 }

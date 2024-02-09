@@ -7,6 +7,8 @@ import PhoneIcon from '@mui/icons-material/Phone';
 import PlaceIcon from '@mui/icons-material/Place';
 import Link from "next/link";
 import ChangeLanguageButtons from "./LanguageSwitcher";
+import EmailIcon from '@mui/icons-material/Email';
+import { ReactNode } from "react";
 
 export default function Footer() {
     const t = useTranslations("footer");
@@ -38,29 +40,39 @@ export default function Footer() {
                         <Typography component="h5" variant="h5" fontWeight={500} my={1}>
                             {t('office_location')}
                         </Typography>
-                        <Box display="flex" gap={1}>
-                            <a rel="noreferrer" target="_blank" href={footerInformation.office.href}><PlaceIcon /></a>
-                            <Typography>
-                                {footerInformation.office.value}
-                            </Typography>
-                        </Box>
+                        <FooterChild label="address maps" icon={<PlaceIcon />} href={footerInformation.office.href} value={footerInformation.office.value} />
                     </Box>
-                    <Box aria-label="contact number">
+                    <Box aria-label="contact">
                         <Typography component="h5" variant="h5" fontWeight={500} my={1}>
                             {t('contact_us')}
                         </Typography>
-                        <Box display="flex" gap={1}>
-                            <a rel="noreferrer" target="_blank" href={footerInformation.phone.href}><PhoneIcon /></a>
-                            <Typography>
-                                {footerInformation.phone.value}
-                            </Typography>
-                        </Box>
+                        <FooterChild label="phone number" icon={<PhoneIcon />} href={footerInformation.phone.href} value={footerInformation.phone.value} />
+                        <FooterChild label="email address" icon={<EmailIcon />} href={footerInformation.email.href} value={footerInformation.email.value} />
                         <ChangeLanguageButtons sx={{ m: 0 }} />
+                        {/* <Typography>Syarat ketentuan</Typography> */}
                     </Box>
                 </Box>
             </Box>
             <hr />
             <Typography variant="h5" component="p" my="75px" ml="auto">Copyrights &#169; {currentYear} <Link href='https://beneranindonesia.id/'>Beneran Indonesia</Link></Typography>
+        </Box>
+    )
+}
+
+type FooterChildProps = {
+    icon: ReactNode;
+    href: string;
+    value: string;
+    label: string;
+}
+
+function FooterChild({ icon, href, value, label }: FooterChildProps) {
+    return (
+        <Box aria-label={label} display="flex" gap={1}>
+            <a rel="noreferrer" target="_blank" href={href}>{icon}</a>
+            <Typography>
+                {value}
+            </Typography>
         </Box>
     )
 }

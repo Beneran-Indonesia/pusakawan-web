@@ -2,8 +2,8 @@ import Accordion from "@/components/Accordion/Accordion";
 import BreadcrumbsWrapper from "@/components/Breadcrumbs";
 import ImageWrapper from "@/components/ImageWrapper";
 import api, { getModuleData, getProgram, getProgramData } from "@/lib/api";
-import { createBearerHeader, formatNumberToIdr } from "@/lib/utils";
-import { BreadcrumbLinkProps, ModuleData, ProgramData } from "@/types/components";
+import { createBearerHeader, formatNumberToIdr, urlToDatabaseFormatted } from "@/lib/utils";
+import { BreadcrumbLinkProps, ModuleData, ProgramData, SimpleModuleData } from "@/types/components";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
@@ -22,8 +22,9 @@ import Alert from '@mui/material/Alert';
 import Tooltip from '@mui/material/Tooltip';
 import Snackbar from '@mui/material/Snackbar';
 import ProfileNotCompleteNotice from "@/components/ProfileNotCompleteNotice";
+import Head from "next/head";
 
-export default function MockClass({ programData, moduleData, assignment }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+export default function NameClass({ classname, programData, moduleData, assignment }: InferGetServerSidePropsType<typeof getServerSideProps>) {
     const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
 
     const [enrollLoading, setEnrollLoading] = useState(false);
@@ -92,6 +93,9 @@ export default function MockClass({ programData, moduleData, assignment }: Infer
 
     return (
         <>
+        <Head>
+            <title>{classname}</title>
+        </Head>
             <ProfileNotCompleteNotice />
             <Box sx={{
                 pt: 4,
@@ -100,7 +104,6 @@ export default function MockClass({ programData, moduleData, assignment }: Infer
                 height: 345, position: 'relative'
             }} >
                 <Container>
-
                     <BreadcrumbsWrapper breadcrumbData={breadcrumbData} />
                 </Container>
                 <BlurBox />
@@ -214,22 +217,18 @@ function BlurBox() {
     )
 }
 
-type FormattedModule = {
-    title: string;
-    href: string;
-};
-
 type ClassDatas = {
+    classname: string;
     programData: ProgramData;
-    moduleData: FormattedModule[];
+    moduleData: SimpleModuleData[];
     messages: string;
-    assignment: string[] | null;
+    assignment: SimpleModuleData[] | null;
 };
 
 export const getServerSideProps: GetServerSideProps<ClassDatas> = async (ctx) => {
-    const { locale, params } = ctx;
-    const classname = params!.name as string;
-    const programDataReq = await getProgramData(classname as string);
+    const { locale, params, resolvedUrl } = ctx;
+    const classname = urlToDatabaseFormatted(params!.name as string);
+    const programDataReq = await getProgramData(classname);
 
     if (!programDataReq || programDataReq.message.length === 0) {
         return { notFound: true };
@@ -248,23 +247,24 @@ export const getServerSideProps: GetServerSideProps<ClassDatas> = async (ctx) =>
     let assignment = null;
 
     if (moduleRes) {
-        const moduleData = moduleRes.message;
-        modules = moduleData.map((mdl: ModuleData) => ({
+        const moduleData = moduleRes.message as ModuleData[];
+        modules = moduleData.map((mdl) => ({
             title: mdl.title,
-            href: process.env.BUCKET_URL + mdl.storyline_path
+            href: resolvedUrl + "/learn"
         }));
 
         assignment = moduleData
-            .filter((mdl: ModuleData) => mdl.additional_url)
-            .map((mdl: ModuleData) => mdl.additional_url);
+            .filter((mdl) => mdl.additional_url)
+            .map((mdl) => ({ title: mdl.title, href: mdl.additional_url }));
     }
 
     return {
         props: {
+            classname,
             programData,
             moduleData: modules,
             assignment,
-            messages: (await import(`../../locales/${locale}.json`)).default,
+            messages: (await import(`../../../locales/${locale}.json`)).default,
         }
     }
 }

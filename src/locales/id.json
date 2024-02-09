@@ -1,7 +1,7 @@
 {
     "notice_bar": {
-      "default": "<red>Perhatian:</red> Anda belum melengkapi profil anda. Tolong lengkapi profil anda <link>disini</link> untuk mendaftar di program.",
-      "profile": "<red>Perhatian:</red> Anda belum melengkapi profil anda. Tolong lengkapi profil anda disini."
+        "default": "<red>Perhatian:</red> Anda belum melengkapi profil anda. Tolong lengkapi profil anda <link>disini</link> untuk mendaftar di program.",
+        "profile": "<red>Perhatian:</red> Anda belum melengkapi profil anda. Tolong lengkapi profil anda disini."
     },
     "error_page": {
         "404": {
@@ -24,7 +24,7 @@
             "title": "Modul yang perlu dipelajari",
             "link_title_enrolled": "Pelajari modul ini sekarang",
             "link_title_unenrolled": "Daftar ke program ini terlebih dahulu untuk mengakses modul ini"
-          },
+        },
         "assignment": "Tugas"
     },
     "class": {
@@ -32,10 +32,10 @@
             "snackbar": {
                 "success": "Anda telah terdaftar!",
                 "error": {
-                  "server": "Terjadi error server. Tolong hubungi administrator. Maaf atas ketidaknyamanannya!",
-                  "client": "Terjadi error client. Tolong hubungi administrator. Maaf atas ketidaknyamanannya!"
+                    "server": "Terjadi error server. Tolong hubungi administrator. Maaf atas ketidaknyamanannya!",
+                    "client": "Terjadi error client. Tolong hubungi administrator. Maaf atas ketidaknyamanannya!"
                 }
-              },
+            },
             "breadcrumbs": {
                 "home": "Beranda",
                 "program": "Program"
@@ -274,5 +274,19 @@
             "paid": "Berbayar",
             "free": "Gratis"
         }
+    },
+    "module": {
+        "buttons": {
+            "fullscreen": "Lihat modul dengan fullscreen",
+            "next": "Pergi ke materi selanjutnya",
+            "previous": "Pergi ke materi sebelumnya"
+        },
+        "breadcrumbs": {
+            "home": "Beranda",
+            "program": "Program",
+            "learn": "Materi"
+        },
+        "learn": "Materi",
+        "assignment": "Tugas"
     }
 }

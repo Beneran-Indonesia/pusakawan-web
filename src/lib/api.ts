@@ -35,13 +35,13 @@ async function getAllStorylinePrograms() {
     }
 }
 
-const getModuleData = async (id: string) => {
+const getModuleData = async (programId: string) => {
     // const res = await mockClassOverviews.filter((dt) => dt.title.toLowerCase() === urlToDatabaseFormatted(name.toLowerCase()));
     try {
         const res = await api.get("/storyline/", {
             params: {
-                program: id,
-                status: "ACTIVE"
+                program: programId,
+                status: "ACTIVE",
             }
         })
         return { status: res.status, message: res.data };

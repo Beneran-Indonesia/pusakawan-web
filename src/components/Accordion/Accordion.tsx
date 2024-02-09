@@ -9,28 +9,30 @@ type ModuleAccordionProps = {
     userIsEnrolled: boolean;
 } & (
         | { isModule: true; items: Items[] }
-        | { isModule: false; items: null | string[] }
+        | { isModule: false; items: null | ({ title: string; href: string } | undefined | null)[] }
     );
 
 export default function ModuleAccordion({ isModule, items, userIsEnrolled }: ModuleAccordionProps) {
     const t = useTranslations('accordion');
-    console.log("ACCORDION: ", items)
     return (
         <ClassAccordion id={4} isModule={isModule} title={t(isModule ? 'module.title' : 'assignment')}>
             {items && (
                 <>
-                {items.map((item, idx) => (
-                        <AccordionItem
-                            userIsEnrolled={userIsEnrolled}
-                            href={isModule ? (item as Items).href : item as string}
-                            title={isModule ? (item as Items).title : t('assignment') + ` ${idx + 1}`}
-                            key={isModule ? (item as Items).title : `assignment${idx}`}
-                        />
-                    ))}
+                    {items.map((item, idx) => {
+                        // making sure item exists
+                        return (
+                            item &&
+                            <AccordionItem
+                                userIsEnrolled={userIsEnrolled}
+                                href={item.href}
+                                title={isModule ? (item as Items).title : t('assignment') + `: ${item.title}`}
+                                key={isModule ? (item as Items).title : `assignment${idx}`}
+                            />
+                        )
+                    })}
                 </>
             )}
         </ClassAccordion>
-
     )
 }
 

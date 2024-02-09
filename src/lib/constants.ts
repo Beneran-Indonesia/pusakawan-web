@@ -1,4 +1,4 @@
-import { ProgramData } from "@/types/components";
+import { ProgramData, TestData } from "@/types/components";
 import { CSSProperties } from "react";
 
 const formControlRoot: CSSProperties = {
@@ -43,6 +43,10 @@ const footerInformation: FooterInformationObject = {
         href: "https://wa.me/6281385432211",
         value: "+62 813-8543-2211"
     },
+    email: {
+        href: "mailto:info@beneranindonesia.id",
+        value: "info@beneranindonesia.id"
+    },
 };
 
 const programPagePicture = unsplash('5QgIuuBxKwM');
@@ -79,9 +83,36 @@ const mockClass = {
 const mockProgramData: ProgramData[] = [
     { id: 0, banners: [{ image: unsplash('M7ievVk4FzA'), id: 1 }], title: "Kebijakan Ekspor Impor", status: "ACTIVE", description: "", pusaka_points: 100, price: 15000 },
     { id: 1, banners: [{ image: unsplash("I-8e7wx2hao"), id: 1 }], title: "Permasalahan Dana Desa", status: "ACTIVE", description: "", pusaka_points: 100, price: 25000 },
-    { id: 2, banners: [{ image: unsplash('gMsnXqILjp4'), id: 1 }], title: "Rendahnya Daya Saing", status: "ACTIVE", description: "", pusaka_points: 100, price: 0},
+    { id: 2, banners: [{ image: unsplash('gMsnXqILjp4'), id: 1 }], title: "Rendahnya Daya Saing", status: "ACTIVE", description: "", pusaka_points: 100, price: 0 },
     { id: 3, banners: [{ image: unsplash('FvBVVf0ctnk'), id: 1 }], title: "Tantangan Globalisasi", status: "ACTIVE", description: "", pusaka_points: 100, price: 10000 },
     { id: 4, banners: [{ image: unsplash('xMh_ww8HN_Q'), id: 1 }], title: "Ketahanan Pangan", status: "ACTIVE", description: "", pusaka_points: 100, price: 0 },
+];
+
+const mockStorylineTest: TestData[] = [
+    {
+        question: "Perekonomian Indonesia pernah mengalami resesi pada tahun...?",
+        choice_a: "1945",
+        choice_b: "1998",
+        choice_c: "2009",
+        choice_d: "2021",
+        answer: "choice_b"
+    },
+    {
+        question: "Sistem ekonomi yang dianut oleh Indonesia adalah....?",
+        choice_a: "Komando",
+        choice_b: "Tradisional",
+        choice_c: "Terpusat",
+        choice_d: "Pancasila",
+        answer: "choice_d"
+    },
+    {
+        question: "Indonesia mengalami pertumbuhan ekonomi paling signifikan pada tahun...",
+        choice_a: "1980",
+        choice_b: "1990",
+        choice_c: "2000",
+        choice_d: "2014",
+        answer: "choice_c"
+    },
 ]
 
 // const mockClassOverviewOne: ModuleData = {
@@ -137,6 +168,16 @@ const mockProgramData: ProgramData[] = [
 //     mockClassOverviewOne, mockClassOverviewTwo
 // ]
 
+// const mockModuleData = [{
+//     id: 0,
+//     title: "First",
+//     href: "https://pusaka-api-bucket-dev.s3.ap-southeast-1.amazonaws.com/media/storyline/Klik%20disini/story_html5.html"
+// }, {
+//     id: 1,
+//     title: "Second",
+//     href: "https://pusaka-api-bucket-dev.s3.ap-southeast-1.amazonaws.com/media/Understanding+Your+Health+Care+Benefits/index.html"
+// }];
+
 export {
     formControlRoot,
     headlinePictures,
@@ -150,5 +191,6 @@ export {
     mockProgramData,
     programPagePicture,
     // mockClassOverviews,
-    getRandomCoursePicture
+    getRandomCoursePicture,
+    mockStorylineTest
 };
