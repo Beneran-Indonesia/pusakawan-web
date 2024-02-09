@@ -217,7 +217,7 @@ type ClassDatas = {
     programData: ProgramData;
     moduleData: SimpleModuleData[];
     messages: string;
-    assignment: string[] | null;
+    assignment: SimpleModuleData[] | null;
 };
 
 export const getServerSideProps: GetServerSideProps<ClassDatas> = async (ctx) => {
@@ -250,7 +250,7 @@ export const getServerSideProps: GetServerSideProps<ClassDatas> = async (ctx) =>
 
         assignment = moduleData
             .filter((mdl) => mdl.additional_url)
-            .map((mdl) => mdl.additional_url);
+            .map((mdl) => ({ title: mdl.title, href: mdl.additional_url }));
     }
 
     return {

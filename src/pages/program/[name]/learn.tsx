@@ -22,7 +22,7 @@ import { urlToDatabaseFormatted } from "@/lib/utils";
 import ListSubheader from "@mui/material/ListSubheader";
 
 
-export default function ModuleLearn({ moduleData, programData, testData }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+export default function ModuleLearn({ moduleData, programData, testData, assignment }: InferGetServerSidePropsType<typeof getServerSideProps>) {
     const t = useTranslations("module");
     const router = useRouter();
     const iframeRef = useRef<HTMLIFrameElement>(null);
@@ -85,6 +85,21 @@ export default function ModuleLearn({ moduleData, programData, testData }: Infer
                                     </ListItemButton>
                                 </ListItem>
                             )
+                        }
+                        {/* assignment */}
+                        {
+                            assignment && <>
+                                <ListSubheader sx={{ fontSize: "1.2rem", fontWeight: 600, color: "black" }}>{t("assignment")}</ListSubheader>
+                                {
+                                    assignment.map((ass) =>
+                                        <ListItem disablePadding key={ass.title}>
+                                            <ListItemButton href={ass.href}>
+                                                <ListItemText primary={t("assignment") + `: ${ass.title}`} />
+                                            </ListItemButton>
+                                        </ListItem>
+                                    )
+                                }
+                            </>
                         }
                         {/* posttest */}
                         {
@@ -192,7 +207,7 @@ type ModuleDatas = {
     programData: ProgramData;
     moduleData: SimpleModuleData[];
     testData?: SimplerModuleData[];
-    tugas: null | SimpleModuleData[];
+    assignment: null | SimpleModuleData[];
 }
 
 export const getServerSideProps: GetServerSideProps<ModuleDatas> = async (ctx) => {
@@ -234,7 +249,7 @@ export const getServerSideProps: GetServerSideProps<ModuleDatas> = async (ctx) =
 
     const formattedModuleData = moduleData.map((mdl) => ({ id: mdl.id, href: process.env.BUCKET_URL + mdl.storyline_path, title: mdl.title }))
 
-    const assignments = moduleData
+    const assignment = moduleData
         .filter((mdl) => mdl.additional_url)
         .map((mdl) => ({ title: mdl.title, id: mdl.id, href: mdl.additional_url }));
 
@@ -251,10 +266,10 @@ export const getServerSideProps: GetServerSideProps<ModuleDatas> = async (ctx) =
     return {
         props: {
             messages: (await import(`../../../locales/${locale}.json`)).default,
-            testData: [{ title: "pretest", href: "/pretest" }, { title: "posttest", href: "/posttest" }],
+            // testData: [{ title: "pretest", href: "/pretest" }, { title: "posttest", href: "/posttest" }],
             moduleData: formattedModuleData,
             programData,
-            tugas: assignments.length > 0 ? assignments : null
+            assignment: assignment.length > 0 ? assignment : null
         }
     }
 }

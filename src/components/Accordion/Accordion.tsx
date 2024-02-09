@@ -9,7 +9,7 @@ type ModuleAccordionProps = {
     userIsEnrolled: boolean;
 } & (
         | { isModule: true; items: Items[] }
-        | { isModule: false; items: null | (string | undefined | null)[] }
+        | { isModule: false; items: null | ({ title: string; href: string } | undefined | null)[] }
     );
 
 export default function ModuleAccordion({ isModule, items, userIsEnrolled }: ModuleAccordionProps) {
@@ -20,13 +20,15 @@ export default function ModuleAccordion({ isModule, items, userIsEnrolled }: Mod
                 <>
                     {items.map((item, idx) => {
                         // making sure item exists
-                        item &&
+                        return (
+                            item &&
                             <AccordionItem
                                 userIsEnrolled={userIsEnrolled}
-                                href={isModule ? (item as Items).href : item as string}
-                                title={isModule ? (item as Items).title : t('assignment') + ` ${idx + 1}`}
+                                href={item.href}
+                                title={isModule ? (item as Items).title : t('assignment') + `: ${item.title}`}
                                 key={isModule ? (item as Items).title : `assignment${idx}`}
                             />
+                        )
                     })}
                 </>
             )}
