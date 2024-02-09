@@ -17,6 +17,8 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
+import { getSession } from "next-auth/react";
+import { urlToDatabaseFormatted } from "@/lib/utils";
 
 export default function ModuleLearn({ moduleData, programData }: InferGetServerSidePropsType<typeof getServerSideProps>) {
     const t = useTranslations("module");
@@ -158,9 +160,28 @@ type ModuleDatas = {
 
 export const getServerSideProps: GetServerSideProps<ModuleDatas> = async (ctx) => {
     const { locale, params } = ctx;
-    const classname = params!.name as string;
+    const classname = urlToDatabaseFormatted(params!.name as string);
 
     const programDataReq = await getProgramData(classname as string);
+
+    // checks if program exists
+    if (!programDataReq || programDataReq.message.length === 0) {
+        return ({ notFound: true })
+    }
+
+    const session = await getSession(ctx);
+
+    // checks if user is logged in
+    if (!session) {
+        return ({ notFound: true })
+    }
+
+    const { enrolledPrograms } = session.user;
+
+    // checks if user is enrolled in this program
+    if (!enrolledPrograms.find((program) => program.title === classname)) {
+        return ({ notFound: true })
+    }
 
     const mockModuleData = [{
         id: 0,

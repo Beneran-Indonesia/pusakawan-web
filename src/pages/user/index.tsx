@@ -35,7 +35,7 @@ export default function UserHome({ enrolledPrograms, dropdownItems, userData, ta
         setCurrentClassTabNumber(newValue);
     };
 
-    const handleSnackbar = (open: boolean, success: boolean, message: string) => setSnackbarOpen({ open, success, message });
+const handleSnackbar = (open: boolean, success: boolean, message: string) => setSnackbarOpen({ open, success, message });
     const handleSnackbarClose = () => setSnackbarOpen({ ...snackbarOpen, open: false })
 
     return (

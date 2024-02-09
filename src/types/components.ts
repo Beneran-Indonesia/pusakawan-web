@@ -48,6 +48,16 @@ type SortBy = 'ALL' | 'PAID' | 'FREE';
 
 type EnrolledProgram = {
     enrolledPrograms: ProgramData[]
+};
+
+type TestData = {
+    question: string;
+    choice_a: string;
+    choice_b: string;
+    choice_c: string;
+    choice_d: string;
+    answer: "choice_a" | "choice_b" | "choice_c" | "choice_d";
+    score?: number; // default: 100
 }
 
 export type {
@@ -56,5 +66,6 @@ export type {
     ProgramData,
     SortBy,
     ModuleData,
-    EnrolledProgram
+    EnrolledProgram,
+    TestData
 }
