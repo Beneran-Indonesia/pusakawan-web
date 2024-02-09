@@ -20,6 +20,7 @@ import ListItemText from "@mui/material/ListItemText";
 import { getSession } from "next-auth/react";
 import { urlToDatabaseFormatted } from "@/lib/utils";
 import ListSubheader from "@mui/material/ListSubheader";
+import Head from "next/head";
 
 
 export default function ModuleLearn({ moduleData, programData, testData, assignment }: InferGetServerSidePropsType<typeof getServerSideProps>) {
@@ -49,6 +50,9 @@ export default function ModuleLearn({ moduleData, programData, testData, assignm
 
     return (
         <>
+        <Head>
+            <title>Learn at Pusakawan</title>
+        </Head>
             <Box sx={{
                 pt: 4,
                 background: `linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url(${banners[0].image})`,
@@ -252,16 +256,6 @@ export const getServerSideProps: GetServerSideProps<ModuleDatas> = async (ctx) =
     const assignment = moduleData
         .filter((mdl) => mdl.additional_url)
         .map((mdl) => ({ title: mdl.title, id: mdl.id, href: mdl.additional_url }));
-
-    const mockModuleData = [{
-        id: 0,
-        title: "First",
-        href: "https://pusaka-api-bucket-dev.s3.ap-southeast-1.amazonaws.com/media/storyline/Klik%20disini/story_html5.html"
-    }, {
-        id: 1,
-        title: "Second",
-        href: "https://pusaka-api-bucket-dev.s3.ap-southeast-1.amazonaws.com/media/Understanding+Your+Health+Care+Benefits/index.html"
-    }];
 
     return {
         props: {

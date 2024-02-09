@@ -168,6 +168,16 @@ const mockStorylineTest: TestData[] = [
 //     mockClassOverviewOne, mockClassOverviewTwo
 // ]
 
+// const mockModuleData = [{
+//     id: 0,
+//     title: "First",
+//     href: "https://pusaka-api-bucket-dev.s3.ap-southeast-1.amazonaws.com/media/storyline/Klik%20disini/story_html5.html"
+// }, {
+//     id: 1,
+//     title: "Second",
+//     href: "https://pusaka-api-bucket-dev.s3.ap-southeast-1.amazonaws.com/media/Understanding+Your+Health+Care+Benefits/index.html"
+// }];
+
 export {
     formControlRoot,
     headlinePictures,

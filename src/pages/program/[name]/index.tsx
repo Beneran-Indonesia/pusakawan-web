@@ -2,7 +2,7 @@ import Accordion from "@/components/Accordion/Accordion";
 import BreadcrumbsWrapper from "@/components/Breadcrumbs";
 import ImageWrapper from "@/components/ImageWrapper";
 import api, { getModuleData, getProgram, getProgramData } from "@/lib/api";
-import { createBearerHeader, formatNumberToIdr } from "@/lib/utils";
+import { createBearerHeader, formatNumberToIdr, urlToDatabaseFormatted } from "@/lib/utils";
 import { BreadcrumbLinkProps, ModuleData, ProgramData, SimpleModuleData } from "@/types/components";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -22,8 +22,9 @@ import Alert from '@mui/material/Alert';
 import Tooltip from '@mui/material/Tooltip';
 import Snackbar from '@mui/material/Snackbar';
 import ProfileNotCompleteNotice from "@/components/ProfileNotCompleteNotice";
+import Head from "next/head";
 
-export default function NameClass({ programData, moduleData, assignment }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+export default function NameClass({ classname, programData, moduleData, assignment }: InferGetServerSidePropsType<typeof getServerSideProps>) {
     const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
 
     const [enrollLoading, setEnrollLoading] = useState(false);
@@ -92,6 +93,9 @@ export default function NameClass({ programData, moduleData, assignment }: Infer
 
     return (
         <>
+        <Head>
+            <title>{classname}</title>
+        </Head>
             <ProfileNotCompleteNotice />
             <Box sx={{
                 pt: 4,
@@ -214,6 +218,7 @@ function BlurBox() {
 }
 
 type ClassDatas = {
+    classname: string;
     programData: ProgramData;
     moduleData: SimpleModuleData[];
     messages: string;
@@ -222,8 +227,8 @@ type ClassDatas = {
 
 export const getServerSideProps: GetServerSideProps<ClassDatas> = async (ctx) => {
     const { locale, params, resolvedUrl } = ctx;
-    const classname = params!.name as string;
-    const programDataReq = await getProgramData(classname as string);
+    const classname = urlToDatabaseFormatted(params!.name as string);
+    const programDataReq = await getProgramData(classname);
 
     if (!programDataReq || programDataReq.message.length === 0) {
         return { notFound: true };
@@ -255,6 +260,7 @@ export const getServerSideProps: GetServerSideProps<ClassDatas> = async (ctx) =>
 
     return {
         props: {
+            classname,
             programData,
             moduleData: modules,
             assignment,
