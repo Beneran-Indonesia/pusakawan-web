@@ -9,7 +9,7 @@ type ModuleAccordionProps = {
     userIsEnrolled: boolean;
 } & (
         | { isModule: true; items: Items[] }
-        | { isModule: false; items: null | string[] }
+        | { isModule: false; items: null | (string | undefined | null)[] }
     );
 
 export default function ModuleAccordion({ isModule, items, userIsEnrolled }: ModuleAccordionProps) {
@@ -18,14 +18,16 @@ export default function ModuleAccordion({ isModule, items, userIsEnrolled }: Mod
         <ClassAccordion id={4} isModule={isModule} title={t(isModule ? 'module.title' : 'assignment')}>
             {items && (
                 <>
-                {items.map((item, idx) => (
-                        <AccordionItem
-                            userIsEnrolled={userIsEnrolled}
-                            href={isModule ? (item as Items).href : item as string}
-                            title={isModule ? (item as Items).title : t('assignment') + ` ${idx + 1}`}
-                            key={isModule ? (item as Items).title : `assignment${idx}`}
-                        />
-                    ))}
+                    {items.map((item, idx) => {
+                        // making sure item exists
+                        item &&
+                            <AccordionItem
+                                userIsEnrolled={userIsEnrolled}
+                                href={isModule ? (item as Items).href : item as string}
+                                title={isModule ? (item as Items).title : t('assignment') + ` ${idx + 1}`}
+                                key={isModule ? (item as Items).title : `assignment${idx}`}
+                            />
+                    })}
                 </>
             )}
         </ClassAccordion>
@@ -43,7 +45,7 @@ function AccordionItem({ userIsEnrolled, href, title }: AccordionItemProps) {
     return (
         <span title={t(userIsEnrolled ? "module.link_title_enrolled" : "module.link_title_unenrolled")}>
             <Link component={NextLink} href={userIsEnrolled ? href : "#"}
-                variant='h5' fontWeight={500} underline="always" 
+                variant='h5' fontWeight={500} underline="always"
                 sx={!userIsEnrolled ? { pointerEvents: 'none' } : undefined}
             >
                 {title}

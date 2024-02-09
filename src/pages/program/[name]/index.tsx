@@ -221,7 +221,7 @@ type ClassDatas = {
 };
 
 export const getServerSideProps: GetServerSideProps<ClassDatas> = async (ctx) => {
-    const { locale, params } = ctx;
+    const { locale, params, resolvedUrl } = ctx;
     const classname = params!.name as string;
     const programDataReq = await getProgramData(classname as string);
 
@@ -242,15 +242,15 @@ export const getServerSideProps: GetServerSideProps<ClassDatas> = async (ctx) =>
     let assignment = null;
 
     if (moduleRes) {
-        const moduleData = moduleRes.message;
-        modules = moduleData.map((mdl: ModuleData) => ({
+        const moduleData = moduleRes.message as ModuleData[];
+        modules = moduleData.map((mdl) => ({
             title: mdl.title,
-            href: process.env.BUCKET_URL + mdl.storyline_path
+            href: resolvedUrl + "/learn"
         }));
 
         assignment = moduleData
-            .filter((mdl: ModuleData) => mdl.additional_url)
-            .map((mdl: ModuleData) => mdl.additional_url);
+            .filter((mdl) => mdl.additional_url)
+            .map((mdl) => mdl.additional_url);
     }
 
     return {

@@ -7,10 +7,10 @@ import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 import { useRef, useState } from "react"
 import { useTranslations } from "next-intl";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next/types";
-import { BreadcrumbLinkProps, ProgramData, SimpleModuleData } from "@/types/components";
+import { BreadcrumbLinkProps, ModuleData, ProgramData, SimpleModuleData as SimplerModuleData } from "@/types/components";
 import Container from "@mui/material/Container";
 import { useRouter } from "next/router";
-import { getProgramData } from "@/lib/api";
+import { getModuleData, getProgramData } from "@/lib/api";
 import BreadcrumbsWrapper from "@/components/Breadcrumbs";
 import Typography from "@mui/material/Typography";
 import List from "@mui/material/List";
@@ -19,14 +19,17 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import { getSession } from "next-auth/react";
 import { urlToDatabaseFormatted } from "@/lib/utils";
+import ListSubheader from "@mui/material/ListSubheader";
 
-export default function ModuleLearn({ moduleData, programData }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+
+export default function ModuleLearn({ moduleData, programData, testData }: InferGetServerSidePropsType<typeof getServerSideProps>) {
     const t = useTranslations("module");
     const router = useRouter();
     const iframeRef = useRef<HTMLIFrameElement>(null);
-    const [currentModule, setCurrentModule] = useState<ModuleData>(moduleData[0]);
+    const testAvailable = testData && testData.length !== 0;
+    const [currentModule, setCurrentModule] = useState<SimpleModuleData>(moduleData[0]);
 
-    const { title, banners } = programData;
+    const { title: programTitle, banners } = programData;
 
     const makeIframeFullscreen = () => {
         if (!iframeRef.current) return;
@@ -42,6 +45,8 @@ export default function ModuleLearn({ moduleData, programData }: InferGetServerS
         { href: router.pathname, children: t('breadcrumbs.learn'), title: t('breadcrumbs.learn'), active: true },
     ];
 
+    const { title, href, id } = currentModule;
+
     return (
         <>
             <Box sx={{
@@ -56,7 +61,7 @@ export default function ModuleLearn({ moduleData, programData }: InferGetServerS
                 <BlurBox />
             </Box>
             <Container sx={{ mt: -11, position: 'relative', mb: 7 }}>
-                <Typography variant='h2' component='h2' fontWeight={600}>{title}</Typography>
+                <Typography variant='h2' component='h2' fontWeight={600}>{programTitle}</Typography>
             </Container>
             <Box
                 display="flex"
@@ -67,14 +72,23 @@ export default function ModuleLearn({ moduleData, programData }: InferGetServerS
             >
                 <Box flex="20%" bgcolor="white">
                     <List sx={{ maxHeight: 360, overflow: 'auto', borderTop: "1px solid lightgrey", borderBottom: "1px solid lightgrey" }}>
+                        {/* pretest */}
+                        {
+                            testAvailable && <TestListItem pre selected={title === "pretest"} onChange={() => setCurrentModule(moduleData[0])} />
+                        }
+                        <ListSubheader sx={{ fontSize: "1.2rem", fontWeight: 600, color: "black" }}>{t("learn")}</ListSubheader>
                         {
                             moduleData.map((mdl) =>
                                 <ListItem disablePadding key={mdl.title}>
-                                    <ListItemButton selected={mdl.id === currentModule.id} onClick={() => setCurrentModule(mdl)}>
+                                    <ListItemButton selected={mdl.id === id} onClick={() => setCurrentModule(mdl)}>
                                         <ListItemText primary={mdl.title} />
                                     </ListItemButton>
                                 </ListItem>
                             )
+                        }
+                        {/* posttest */}
+                        {
+                            testAvailable && <TestListItem pre={false} selected={title === "posttest"} onChange={() => setCurrentModule(moduleData[moduleData.length])} />
                         }
                     </List>
                 </Box>
@@ -82,7 +96,7 @@ export default function ModuleLearn({ moduleData, programData }: InferGetServerS
                     {/* Iframe */}
                     <iframe
                         ref={iframeRef}
-                        src={currentModule.href}
+                        src={href}
                         title="Click here"
                         width="100%"
                         height="100%"
@@ -110,7 +124,7 @@ export default function ModuleLearn({ moduleData, programData }: InferGetServerS
                                 <FullscreenIcon />
                             </IconButton>
                             {/* Previous button */}
-                            <IconButton disabled={currentModule.id === moduleData[0].id}
+                            <IconButton disabled={id === moduleData[0].id}
                                 onClick={() => {
                                     const currentIndex = moduleData.indexOf(currentModule);
                                     const previousIndex = (currentIndex - 1 + moduleData.length) % moduleData.length;
@@ -119,7 +133,7 @@ export default function ModuleLearn({ moduleData, programData }: InferGetServerS
                                 <ArrowCircleLeftIcon />
                             </IconButton>
                             {/* Next button */}
-                            <IconButton disabled={currentModule.id === moduleData[moduleData.length - 1].id}
+                            <IconButton disabled={id === moduleData[moduleData.length - 1].id}
                                 onClick={() => {
                                     const currentIndex = moduleData.indexOf(currentModule);
                                     const nextIndex = (currentIndex + 1) % moduleData.length;
@@ -133,6 +147,27 @@ export default function ModuleLearn({ moduleData, programData }: InferGetServerS
             </Box>
         </>
 
+    )
+}
+
+type TestListItemProps = {
+    pre: boolean;
+    selected: boolean;
+    onChange: () => void;
+}
+
+function TestListItem({ pre, selected, onChange }: TestListItemProps) {
+    const title = pre ? "Pre-test" : "Post-test"
+    return (
+        <ListItem disablePadding>
+            <ListItemButton selected={selected} onClick={onChange} >
+                <ListItemText primaryTypographyProps={{
+                    style: {
+                        fontSize: "1.2rem", fontWeight: 600
+                    }
+                }} primary={title} />
+            </ListItemButton>
+        </ListItem>
     )
 }
 
@@ -150,12 +185,14 @@ function BlurBox() {
     )
 }
 
-type ModuleData = ({ id: number } & SimpleModuleData);
+type SimpleModuleData = ({ id: number } & SimplerModuleData);
 
 type ModuleDatas = {
     messages: string;
     programData: ProgramData;
-    moduleData: ModuleData[];
+    moduleData: SimpleModuleData[];
+    testData?: SimplerModuleData[];
+    tugas: null | SimpleModuleData[];
 }
 
 export const getServerSideProps: GetServerSideProps<ModuleDatas> = async (ctx) => {
@@ -183,6 +220,24 @@ export const getServerSideProps: GetServerSideProps<ModuleDatas> = async (ctx) =
         return ({ notFound: true })
     }
 
+    // get module and assignments
+    const programData = programDataReq!.message[0] as ProgramData;
+
+    const moduleDataReq = await getModuleData(programData.id.toString());
+
+    // should not be possible but just in case :)
+    if (!moduleDataReq || moduleDataReq.message.length === 0) {
+        return ({ notFound: true });
+    }
+
+    const moduleData = moduleDataReq!.message as ModuleData[];
+
+    const formattedModuleData = moduleData.map((mdl) => ({ id: mdl.id, href: process.env.BUCKET_URL + mdl.storyline_path, title: mdl.title }))
+
+    const assignments = moduleData
+        .filter((mdl) => mdl.additional_url)
+        .map((mdl) => ({ title: mdl.title, id: mdl.id, href: mdl.additional_url }));
+
     const mockModuleData = [{
         id: 0,
         title: "First",
@@ -196,8 +251,10 @@ export const getServerSideProps: GetServerSideProps<ModuleDatas> = async (ctx) =
     return {
         props: {
             messages: (await import(`../../../locales/${locale}.json`)).default,
-            moduleData: mockModuleData,
-            programData: programDataReq!.message[0] as ProgramData
+            testData: [{ title: "pretest", href: "/pretest" }, { title: "posttest", href: "/posttest" }],
+            moduleData: formattedModuleData,
+            programData,
+            tugas: assignments.length > 0 ? assignments : null
         }
     }
 }
