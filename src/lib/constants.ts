@@ -37,7 +37,7 @@ const getRandomCoursePicture = () => coursesPictures[Math.random() * 2 | 0];
 const footerInformation: FooterInformationObject = {
     office: {
         href: "https://maps.app.goo.gl/q5ukmMxaRno5uw7d8",
-        value: "Jln. Cimanuk no 49A, Cideng, Kec Gambir Kota Jakarta Pusat"
+        value: "Jl. Cimanuk no 49A, Cideng, Kec Gambir Kota Jakarta Pusat"
     },
     phone: {
         href: "https://wa.me/6281385432211",
