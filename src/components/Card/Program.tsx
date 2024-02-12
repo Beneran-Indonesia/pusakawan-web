@@ -7,7 +7,7 @@ import { formatNumberToIdr } from "@/lib/utils";
 type CardProps = {
     img: string;
     title: string;
-    programId: number;
+    // programId: number;
     // null price means that it's free ( not paid )
     price: number | null;
     href: string;
