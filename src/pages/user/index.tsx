@@ -17,6 +17,7 @@ import ProfileClassCard from '@/components/Card/Profile';
 import { getEditProfileFields } from '@/lib/api';
 import { ProgramData } from '@/types/components';
 import ProfileNotCompleteNotice from '@/components/ProfileNotCompleteNotice';
+import { useDesktopRatio } from '@/lib/hooks';
 
 export default function UserHome({ enrolledPrograms, dropdownItems, userData, tabNumber }: InferGetServerSidePropsType<typeof getServerSideProps>) {
     const t = useTranslations('account');
@@ -35,8 +36,9 @@ export default function UserHome({ enrolledPrograms, dropdownItems, userData, ta
         setCurrentClassTabNumber(newValue);
     };
 
-const handleSnackbar = (open: boolean, success: boolean, message: string) => setSnackbarOpen({ open, success, message });
+    const handleSnackbar = (open: boolean, success: boolean, message: string) => setSnackbarOpen({ open, success, message });
     const handleSnackbarClose = () => setSnackbarOpen({ ...snackbarOpen, open: false })
+    const isDesktopRatio = useDesktopRatio();
 
     return (
         <>
@@ -63,7 +65,7 @@ const handleSnackbar = (open: boolean, success: boolean, message: string) => set
                     handleChange={handleChangeVerticalTab}
                     labels={[t('vertical_tab.profile'), t('vertical_tab.class')]}
                 >
-                    <Box ml={5} width="100%">
+                    <Box ml={isDesktopRatio ? 5 : 0} width="100%">
                         {/* Profile panel */}
                         <TabPanel value={currentTabNumber} index={0}>
                             {
