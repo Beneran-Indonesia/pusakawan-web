@@ -30,6 +30,7 @@ export async function getStaticProps({ locale }: { locale: "en" | "id" }) {
         messages: (await import(`../locales/${locale}.json`)).default,
         programs: programsReq.message.slice(0, 3)
       },
+      revalidate: 1200
     };
   }
   return {

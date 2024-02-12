@@ -48,7 +48,7 @@ function CoursesCard({ data }: { data: undefined | ProgramData[] }) {
             gap={12}
         >
             {
-                !data && coursesKey.map((cKey, idx) => (
+                data?.length === 0 && coursesKey.map((cKey, idx) => (
                     <Card
                         key={cKey}
                         title={t(`${cKey}.title`)}

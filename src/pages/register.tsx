@@ -2,8 +2,6 @@ import Box from '@mui/material/Box';
 import LoadingButton from '@mui/lab/LoadingButton';
 import Snackbar from '@mui/material/Snackbar';
 import { useState } from 'react';
-import LogoWrapper from '@/components/ImageWrapper';
-import GoogleSVG from '@tplogos/google.svg';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { useForm, SubmitHandler } from "react-hook-form";
@@ -129,40 +127,6 @@ function SignupForm({ setSnackbarOpen }: SignupFormProps) {
         setLoading(false);
     };
 
-    const registerWithGoogle = async () => {
-        setLoading(true);
-        const accessToken = await signUpWithGoogle();
-        if (!accessToken) {
-            setLoading(false);
-            setSnackbarOpen('snackbar.failed');
-            return;
-        }
-        signIn('firebase', { redirect: false, accessToken })
-            .then((dt) => {
-                setLoading(false);
-                if (dt === undefined) {
-                    setError("email", { type: "custom", message: "" })
-                    setError("password", { type: "custom", message: "" })
-                    setSnackbarOpen('snackbar.failed');
-                    return;
-                }
-                if (dt.error) {
-                    setError("email", { type: "custom", message: "" });
-                    setError("password", { type: "custom", message: "" });
-                    const error = dt.error;
-                    if (error.charAt(0) === 'P') {
-                        setSnackbarOpen('snackbar.credentials_exists');
-                        return;
-                    }
-                    setSnackbarOpen('snackbar.failed');
-                    return;
-                }
-                router.push('/user')
-            })
-            .catch((e) => console.error("FIREBASE REGISTER CLIENT ERROR:", e));
-        setLoading(false);
-    };
-
     return (
         <Box component="form" onSubmit={handleSubmit(onSubmit)}
             display="flex" gap={3} flexDirection="column" width="100%"
@@ -214,25 +178,6 @@ function SignupForm({ setSnackbarOpen }: SignupFormProps) {
             >
                 {t('title')}
             </LoadingButton>
-            <Typography variant="subtitle2" sx={{ textAlign: 'center' }}>
-                {t('or')}
-            </Typography>
-            <LoadingButton
-                loading={loading}
-                aria-label={t('google') + ' google'}
-                type="button"
-                fullWidth
-                variant="contained"
-                color="monochrome"
-                sx={{ textTransform: 'none', color: 'black' }}
-                onClick={registerWithGoogle}
-                disabled={!tcChecked}
-            >
-                <span style={{ display: 'inline-flex', gap: '0.4rem', alignItems: 'center' }}>
-                    {t('google')}
-                    <LogoWrapper src={GoogleSVG} alt="Google Logo" style={loading ? { display: 'none' } : undefined} />
-                </span>
-            </LoadingButton>
         </Box>
     )
 }
@@ -246,8 +191,6 @@ import TelInput from '@/components/Form/TelInput';
 import { useRouter } from 'next/router';
 import { AxiosError } from 'axios';
 import Head from 'next/head';
-import { signUpWithGoogle } from '@/lib/firebase';
-import { signIn } from 'next-auth/react';
 
 type TermsAndConditionProps = {
     checked: boolean;
