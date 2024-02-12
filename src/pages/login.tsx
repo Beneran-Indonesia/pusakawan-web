@@ -255,7 +255,7 @@ function LoginBox() {
                         fullWidth
                         variant="contained"
                         color="monochrome"
-                        sx={{ textTransform: 'none', color: 'black' }}
+                        sx={{ textTransform: 'none', color: 'black', boxShadow: 1 }}
                         onClick={firebaseAuth}
                     // disabled={true}
                     >

@@ -22,6 +22,7 @@ const BoxBackground: React.CSSProperties = {
 export default function SignUp() {
     const t = useTranslations('register');
     const [snackbarOpen, setSnackbarOpen] = useState<false | string>(false);
+    const isDesktopRatio = useDesktopRatio();
     return (
         <>
             <Head>
@@ -41,7 +42,7 @@ export default function SignUp() {
                 }}
             >
                 <HomeButton sx={{ position: 'absolute', top: '3%', left: '15%' }} />
-                <Container component="main" maxWidth="xs" sx={{ mt: 7 }}>
+                <Container component="main" maxWidth="xs" sx={{ mt: isDesktopRatio ? 7 : 10 }}>
                     <Typography component="h1" variant="h4" fontWeight={500} textTransform="capitalize">
                         {t('title')}
                     </Typography>
@@ -191,6 +192,7 @@ import TelInput from '@/components/Form/TelInput';
 import { useRouter } from 'next/router';
 import { AxiosError } from 'axios';
 import Head from 'next/head';
+import { useDesktopRatio } from '@/lib/hooks';
 
 type TermsAndConditionProps = {
     checked: boolean;
