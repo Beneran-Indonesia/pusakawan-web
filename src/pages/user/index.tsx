@@ -87,7 +87,7 @@ export default function UserHome({ enrolledPrograms, dropdownItems, userData, ta
                             >
                                 <TabPanel value={currentClassTabNumber} index={0}>
                                     {
-                                        enrolledPrograms
+                                    enrolledPrograms && enrolledPrograms.length > 0
                                             ? enrolledPrograms.map((dt) =>
                                                 <ProfileClassCard key={dt.title + dt.id}
                                                     src={dt?.banners ? dt.banners[0].image : getRandomCoursePicture()}
