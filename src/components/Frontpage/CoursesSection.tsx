@@ -43,12 +43,15 @@ export default function CoursesSection({ programs }: { programs?: ProgramData[];
 function CoursesCard({ data }: { data: undefined | ProgramData[] }) {
     const t = useTranslations('courses_selection');
     return (
+        <Box sx={{
+            overflowX: "auto",
+            whiteSpace: "nowrap"
+        }}>
         <Box
-            display="flex"
+            display="inline-flex"
             gap={12}
-            overflow="scroll"
         >
-            {
+           {
                 data?.length === 0 && coursesKey.map((cKey, idx) => (
                     <Card
                         key={cKey}
@@ -69,6 +72,7 @@ function CoursesCard({ data }: { data: undefined | ProgramData[] }) {
                     />
                 ))
             }
+        </Box>
         </Box>
     )
 }
