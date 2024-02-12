@@ -46,6 +46,7 @@ function CoursesCard({ data }: { data: undefined | ProgramData[] }) {
         <Box
             display="flex"
             gap={12}
+            overflow="scroll"
         >
             {
                 data?.length === 0 && coursesKey.map((cKey, idx) => (

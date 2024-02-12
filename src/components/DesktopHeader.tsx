@@ -49,7 +49,6 @@ export default function Header() {
                     status === 'loading'
                         ? <Skeleton variant="rectangular" width={220} height={60} />
                         : status === "authenticated"
-                            // TODO: PROFILE MENU
                             ? <>
                                 <Box
                                     component="section"

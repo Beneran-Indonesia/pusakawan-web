@@ -39,7 +39,7 @@ export default function DetailPanel() {
                         {
                             isDesktopRatio
                             ? <ImageWrapper src={DetailPanelPictureDesktop} alt="illustration students studying" width={461} height={294} style={{ marginBottom: '2rem' }} />
-                            : <ImageWrapper src={DetailPanelPictureMobile} alt="illustration students studying" width={348} height={212} style={{ marginBottom: '2rem' }} />
+                            : <ImageWrapper src={DetailPanelPictureMobile} alt="illustration students studying" width={340} height={212} style={{ marginBottom: '2rem' }} />
                         }
                         
                         <Box
