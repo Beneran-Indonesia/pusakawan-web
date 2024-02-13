@@ -237,7 +237,7 @@
         "student": "Student",
         "scholar": "University student"
       },
-      "button": "Edit Profile",
+      "button": "Save Profile",
       "edit_failed": "Server error, edit profile failed. Sorry!",
       "edit_succeed": "Your profile has been edited.",
       "user_category": "Profession",
