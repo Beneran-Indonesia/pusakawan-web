@@ -41,7 +41,7 @@ export default function TabWrapper({ vertical, labels, currentTabNumber, handleC
                 {
                     labels.map((label) =>
                         <Tab label={label} key={`vertical tab ${label}`}
-                            sx={!vertical ? { mr: 10, } : undefined}
+                            sx={!vertical ? { mr: 10, } : { maxWidth: "unset"}}
                             {...a11yProps}
                         />)
                 }

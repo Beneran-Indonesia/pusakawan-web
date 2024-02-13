@@ -236,7 +236,7 @@
                 "student": "Siswa",
                 "scholar": "Mahasiswa"
             },
-            "button": "Edit Profil",
+            "button": "Simpan Profil",
             "edit_failed": "Gangguan server, edit profil gagal. Maaf!",
             "edit_succeed": "Profil anda berhasil diedit.",
             "user_category": "Profesi",
