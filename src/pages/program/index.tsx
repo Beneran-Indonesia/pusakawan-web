@@ -14,6 +14,7 @@ import { databaseToUrlFormatted } from "@/lib/utils";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { getAllStorylinePrograms } from "@/lib/api";
 import ProfileNotCompleteNotice from "@/components/ProfileNotCompleteNotice";
+import { useDesktopRatio } from "@/lib/hooks";
 
 export default function ProgramPage({ programData }: InferGetServerSidePropsType<typeof getServerSideProps>) {
     const [filter, setFilter] = useState<SortBy>('ALL');
@@ -26,6 +27,7 @@ export default function ProgramPage({ programData }: InferGetServerSidePropsType
         else if (filterChange === 'FREE') setCurrentData(currentData.filter((dt) => !dt.price));
         else if (filterChange === 'PAID') setCurrentData(currentData.filter((dt) => dt.price));
     };
+    const isDesktopRatio = useDesktopRatio();
     return (
         <>
             <Head>
@@ -33,7 +35,7 @@ export default function ProgramPage({ programData }: InferGetServerSidePropsType
             </Head>
             {/* Header part */}
             <ProfileNotCompleteNotice />
-            <Box display="flex" px={25.5} py={7} flexDirection="column" justifyContent="space-between"
+            <Box display="flex" px={isDesktopRatio ? 25.5 : 2} py={7} flexDirection="column" justifyContent="space-between"
                 sx={{
                     background: `linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,.5)), url('${programPagePicture}')`,
                     backgroundRepeat: "no-repeat", backgroundSize: 'cover', backgroundPosition: '0 45%'
@@ -48,12 +50,14 @@ export default function ProgramPage({ programData }: InferGetServerSidePropsType
                 </Typography>
             </Box>
             {/* Content part */}
-            <Box display="flex" flexDirection="column" alignItems="center" py={6} px={24} gap={3}
+            <Box display="flex" flexDirection="column" alignItems="center" py={isDesktopRatio ? 6 : 3} px={isDesktopRatio ? 24 : 5} gap={3}
                 borderRadius="1.5rem 1.5rem 0rem 0rem"
                 bgcolor="white"
                 marginTop="-20px"
             >
-                <Typography variant="h4" component="h4" fontWeight={600}>
+                <Typography variant="h4" component="h4" fontWeight={600}
+                textAlign={isDesktopRatio ? "left" : "center"}
+                >
                     {t('content.title')}
                 </Typography>
                 <Box display="flex" flexDirection="row" gap={3}>
@@ -94,7 +98,7 @@ function CoursesCard({ data }: CoursesCardProps) {
                                 title={dt.title}
                                 price={dt.price!}
                                 href={`/program/${databaseToUrlFormatted(dt.title)}/`}
-                                // programId={dt.id}
+                            // programId={dt.id}
                             />
                         </Grid>
                     ))

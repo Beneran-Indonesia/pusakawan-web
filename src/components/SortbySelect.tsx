@@ -76,7 +76,7 @@ const StyledButton = styled(CustomButton, { shouldForwardProp: () => true })(
   border: none;
   position: relative;
   box-sizing: border-box;
-  min-width: 150px;
+  min-width: ${theme.breakpoints.up("md") ? "100px" : "150px"};
   padding: 0.75rem 1rem;
   border-radius: 100px;
   text-align: left;

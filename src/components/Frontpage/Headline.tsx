@@ -7,6 +7,7 @@ import { useTranslations } from "next-intl";
 import ImageWrapper from "../ImageWrapper";
 import { headlinePictures } from "@/lib/constants";
 import Circle from "@svgs/circle.svg";
+import { useDesktopRatio } from "@/lib/hooks";
 
 type LeftRightPx = `${number}px` | `-${number}px`;
 type CircleBackgroundProps = {
@@ -24,15 +25,14 @@ function CircleBackground({ top, bottom, left, right, color }: CircleBackgroundP
             alt="circle background"
             width={366}
             height={266}
-            // TODO: fix this color
             style={{ position: 'absolute', top, bottom, left, right, color }} />
     )
 }
 
 export default function Headline() {
     const t = useTranslations('headline');
+    const isDesktopRatio = useDesktopRatio();
     return (
-        // TODO: Hover button doesnt work figure out why
         <div style={{ position: 'relative', overflow: 'hidden' }}>
             <CircleBackground left="-93px" bottom="-110px" />
             <CircleBackground top="-100px" right="-200px" />
@@ -59,7 +59,9 @@ export default function Headline() {
                         display: 'flex',
                         flexDirection: 'column',
                         gap: 3,
-                        width: 428
+                        width: isDesktopRatio ? 428 : "fit-content",
+                        alignItems: isDesktopRatio ? "left" : "center",
+                        textAlign: isDesktopRatio ? "left" : "center",
                     }}>
                         <Typography component="h1" variant="h3" fontWeight={600}>
                             {t('title')}
@@ -67,11 +69,11 @@ export default function Headline() {
                         <Typography component="p" variant="h5">
                             {t('subtitle')}
                         </Typography>
-                        <Button href="/program" color="monochrome" size="small" variant="contained" sx={{ width: 'fit-content', color: 'black' }}>
+                        <Button href="/program" color="monochrome" size="small" variant="contained" sx={{ width: 'fit-content', color: 'black'}}>
                             {t('button')}
                         </Button>
                     </Box>
-                    <ImageWrapper src={headlinePictures[0]} alt="Pemilu" width={490} height={306} style={{ objectFit: 'cover' }} />
+                    <ImageWrapper src={headlinePictures[0]} alt="Pemilu" width={490} height={306} style={{ objectFit: 'cover', display: isDesktopRatio ? "block" : "none" }} />
                 </Container>
             </Grid>
         </div>

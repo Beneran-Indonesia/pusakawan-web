@@ -109,6 +109,11 @@ input:-webkit-autofill:active{
     color: black !important;
 } */
 
+html,
+body {
+  overflow-x: hidden;
+}
+
 strong {
   font-weight: 600;
 }

@@ -17,6 +17,7 @@ import DatePicker from './Form/Datepicker';
 import { useSession } from 'next-auth/react';
 import UploadImage from './Form/UploadImage';
 import dayjs from 'dayjs';
+import { useDesktopRatio } from '@/lib/hooks';
 
 type UserData = ProfileInput & { profile_picture: string; };
 
@@ -104,9 +105,11 @@ export default function EditProfile({ setSnackbar, userData, accessToken, dropdo
 
     const cityDistrict = dropdownItems!.city.filter(dt => dt.state_province === selectedProvince);
 
+    const isDesktopRatio = useDesktopRatio();
+
     return (
         <Box component="form" onSubmit={handleSubmit(onSubmit)}
-            px={20} py={6} alignItems="center" mx="auto" maxWidth={700}
+            px={isDesktopRatio ? 20 : 0} py={6} alignItems="center" mx="auto" maxWidth={700}
             display="flex" gap={3} flexDirection="column" width="100%"
             borderRadius={8} boxShadow={1}
         >

@@ -23,22 +23,25 @@ import UnderlinedLink from '@/components/UnderlinedLink';
 import { signUpWithGoogle } from '@/lib/firebase';
 import Link from 'next/link';
 import HomeButton from '@/components/HomeButton';
+import { useDesktopRatio } from '@/lib/hooks';
 
-const LoginContainer = styled(Container)({
-    display: 'flex',
-    justifyContent: 'space-evenly',
-    gap: 7.5,
-    padding: "5.625rem 6.25rem",
-    alignItems: 'center',
-    width: '75%',
-    height: '730px',
-    background: "linear-gradient(111deg, #EFD0D3 1.03%, rgba(239, 208, 211, 0.00) 100%)",
-    backdropFilter: "blur(8px)",
-    margin: 'auto',
-    borderRadius: '1rem'
-})
+const LoginContainer = styled(Container)(
+    ({ theme }) => ({
+        display: 'flex',
+        justifyContent: 'space-evenly',
+        gap: 7.5,
+        padding: theme.breakpoints.up("md") ? "2rem" : "5.625rem 6.25rem",
+        alignItems: 'center',
+        width: theme.breakpoints.up("md") ? '100%' : "75%",
+        height: '730px',
+        background: theme.breakpoints.up("md") ? "transparent" : "linear-gradient(111deg, #EFD0D3 1.03%, rgba(239, 208, 211, 0.00) 100%)",
+        backdropFilter: theme.breakpoints.up("md") ? "none" : "blur(8px)",
+        margin: 'auto',
+        borderRadius: '1rem'
+    }))
 
 export default function SignIn() {
+    const isDesktopRatio = useDesktopRatio();
     return (
         <>
             <Head>
@@ -65,7 +68,7 @@ export default function SignIn() {
                     <LogoWrapper
                         alt="Unsplash image"
                         src={UnsplashLogin}
-                        style={{ borderRadius: '1rem' }}
+                        style={{ borderRadius: '1rem', display: isDesktopRatio ? "block" : "none" }}
                         priority={true}
                     />
                     <LoginBox />
@@ -196,7 +199,7 @@ function LoginBox() {
                 </Typography>
                 <Typography component="h2" variant="h5">
                     {t.rich('description', {
-                        strong: (chunks) => <UnderlinedLink href="/register" sx={{ color: "primary.main", fontWeight: 600}} title={t('to_register')}>{chunks}</UnderlinedLink>
+                        strong: (chunks) => <UnderlinedLink href="/register" sx={{ color: "primary.main", fontWeight: 600 }} title={t('to_register')}>{chunks}</UnderlinedLink>
                     })}
                 </Typography>
             </div>
@@ -252,7 +255,7 @@ function LoginBox() {
                         fullWidth
                         variant="contained"
                         color="monochrome"
-                        sx={{ textTransform: 'none', color: 'black' }}
+                        sx={{ textTransform: 'none', color: 'black', boxShadow: 1 }}
                         onClick={firebaseAuth}
                     // disabled={true}
                     >

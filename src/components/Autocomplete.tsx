@@ -84,7 +84,7 @@ const StyledAutocompleteRoot = styled('div')(
   display: flex;
   gap: 0.5rem;
   overflow: hidden;
-  width: 24rem;
+  width: ${theme.breakpoints.up("md") ? "13rem" : "24rem"};
   height: 48px;
   box-shadow: ${theme.shadows[1]};
   align-items: center;

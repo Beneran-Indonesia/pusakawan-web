@@ -5,6 +5,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import { signOut } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
+import { useDesktopRatio } from '@/lib/hooks';
 
 function a11yProps(index: number) {
     return {
@@ -24,16 +25,17 @@ type VerticalTabProps = {
 
 export default function TabWrapper({ vertical, labels, currentTabNumber, handleChange, children, ariaLabel }: VerticalTabProps) {
     const t = useTranslations();
+    const isDesktopRatio = useDesktopRatio();
     return (
         <Box
-            sx={vertical ? { display: 'flex' } : undefined}
+            sx={vertical ? { display: 'flex', flexDirection: isDesktopRatio ? "row" : "column" } : undefined}
         >
             <Tabs
                 orientation={vertical ? "vertical" : "horizontal"}
                 value={currentTabNumber}
                 onChange={handleChange}
                 aria-label={ariaLabel ? ariaLabel : vertical ? "Profile vertical tab" : "Class tab"}
-                sx={!vertical ? { p: 0, } : { width: '20%' }}
+                sx={!vertical ? { p: 0, } : { width: isDesktopRatio ? '20%' : "100%", mb: 3 }}
                 TabIndicatorProps={vertical ? { sx: { left: 0 } } : undefined}
             >
                 {

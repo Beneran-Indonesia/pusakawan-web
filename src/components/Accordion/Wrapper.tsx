@@ -7,6 +7,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Box } from '@mui/system';
 import TextSnippetIcon from '@mui/icons-material/TextSnippet';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
+import { useDesktopRatio } from '@/lib/hooks';
 
 type ClassAccordionProps = {
     id: number; title: string; children: React.ReactNode; isModule: boolean;
@@ -29,13 +30,14 @@ export default function ClassAccordion({ id, title, children, isModule }: ClassA
     );
 }
 function AccordionTitle({ id, children, isModule }: { id: number; isModule: boolean; children: string }) {
+    const isDesktopRatio = useDesktopRatio();
     return <AccordionSummary
         expandIcon={<ExpandMoreIcon />}
         aria-controls={`panel${id}bh-content`}
         id={`panel${id}bh-header`}
         sx={{ py: 1, px: 2 }}
     >
-        <Box component="span" sx={{ width: '3%', flexShrink: 0 }}>
+        <Box component="span" sx={{ width: isDesktopRatio ? '3%' : "12%", flexShrink: 0 }}>
             {
                 isModule
                     ? <InsertDriveFileIcon />

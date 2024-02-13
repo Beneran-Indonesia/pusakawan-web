@@ -9,10 +9,12 @@ import Link from "next/link";
 import ChangeLanguageButtons from "./LanguageSwitcher";
 import EmailIcon from '@mui/icons-material/Email';
 import { ReactNode } from "react";
+import { useDesktopRatio } from "@/lib/hooks";
 
 export default function Footer() {
     const t = useTranslations("footer");
     const currentYear = new Date().getFullYear();
+    const isDesktopRatio = useDesktopRatio();
     return (
         <Box
             component="footer"
@@ -21,20 +23,23 @@ export default function Footer() {
                 flexDirection: 'column',
                 backgroundColor: 'primary.main',
                 color: "white",
-                px: "10rem"
+                px: isDesktopRatio ? "10rem" : "1rem"
             }}
         >
             <Box
                 display="flex"
-                my={10}
+                my={isDesktopRatio ? 10 : 4}
                 justifyContent="space-between"
+                flexDirection={isDesktopRatio ? "row" : "column"}
             // gap={20}
             >
                 <PusakawanLogo white={true} />
                 <Box
                     display="flex"
                     color="white"
-                    gap={10}
+                    gap={isDesktopRatio ? 10 : 2}
+                    flexDirection={isDesktopRatio ? "row" : "column"}
+                    mt={isDesktopRatio ? 0 : 2}
                 >
                     <Box aria-label="office address">
                         <Typography component="h5" variant="h5" fontWeight={500} my={1}>
@@ -48,13 +53,13 @@ export default function Footer() {
                         </Typography>
                         <FooterChild label="phone number" icon={<PhoneIcon />} href={footerInformation.phone.href} value={footerInformation.phone.value} />
                         <FooterChild label="email address" icon={<EmailIcon />} href={footerInformation.email.href} value={footerInformation.email.value} />
-                        <ChangeLanguageButtons sx={{ m: 0 }} />
+                        <ChangeLanguageButtons sx={{ m: 0, my: isDesktopRatio ? 0 : "0.5rem" }} />
                         {/* <Typography>Syarat ketentuan</Typography> */}
                     </Box>
                 </Box>
             </Box>
             <hr />
-            <Typography variant="h5" component="p" my="75px" ml="auto">Copyrights &#169; {currentYear} <Link href='https://beneranindonesia.id/'>Beneran Indonesia</Link></Typography>
+            <Typography variant="h5" component="p" my={isDesktopRatio ? "75px" : "32px"} ml="auto">Copyrights &#169; {currentYear} <Link href='https://beneranindonesia.id/'>Beneran Indonesia</Link></Typography>
         </Box>
     )
 }

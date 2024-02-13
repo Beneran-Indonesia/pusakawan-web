@@ -21,7 +21,7 @@
   },
   "accordion": {
     "module": {
-      "title": "Module that needs to be learnt",
+      "title": "Learning Module",
       "link_title_enrolled": "Learn this module now",
       "link_title_unenrolled": "Register to this program to unlock this module"
     },
@@ -42,7 +42,7 @@
       },
       "button": {
         "paid": "Paid",
-        "free": "Free registration"
+        "free": "Free enroll"
       },
       "description": "Program description",
       "materials": "Need to be learnt materials",
