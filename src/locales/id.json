@@ -42,10 +42,10 @@
             },
             "button": {
                 "paid": "Berbayar",
-                "free": "Pendaftaran gratis"
+                "free": "Daftar gratis"
             },
             "description": "Deskripsi program",
-            "materials": "Material yang perlu dipelajari",
+            "materials": "Materi pembelajaran",
             "assignment": "Tugas",
             "points": "Poin",
             "pusaka_points_details": "Pusaka Points adalah currency. Semakin banyak poin yang kamu punya, bisa kamu tukar dengan hadiah menarik. Yuk kumpulkan poinnya sebanyak mungkin!",

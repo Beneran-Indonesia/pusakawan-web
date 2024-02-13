@@ -26,6 +26,7 @@ import ChangeLanguageButtons from "./LanguageSwitcher";
 import LogoutIcon from '@mui/icons-material/Logout';
 import Button from "@mui/material/Button";
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
+import { useRouter } from 'next/router';
 
 export default function MobileHeader() {
     const t = useTranslations('header');
@@ -33,7 +34,7 @@ export default function MobileHeader() {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const anchorRef = React.useRef<HTMLButtonElement>(null);
     const { data: session, status } = useSession();
-
+    const router = useRouter();
 
     const handleToggle = () => setOpen((prevOpen) => !prevOpen);
 
@@ -70,7 +71,7 @@ export default function MobileHeader() {
                 >
                     <MenuIcon />
                 </IconButton>
-                <Box component="span" sx={{ flexGrow: 1 }}>
+                <Box component="span" sx={{ flexGrow: 1 }} onClick={() => router.push("/")}>
                     <PusakawanLogo />
                 </Box>
                 <div>
@@ -101,6 +102,11 @@ export default function MobileHeader() {
                         MenuListProps={{
                             'aria-labelledby': 'header-button',
                         }}
+                        sx={{
+                            "& .MuiMenuItem-root": {
+                                gap: "12px"
+                            }
+                        }}
                     >
                         {
                             status === "authenticated"
@@ -110,7 +116,6 @@ export default function MobileHeader() {
                                         <ImageWrapper src={PusakaPoints}
                                             alt="Pusaka points logo"
                                             width={22} height={22}
-                                            style={{ marginRight: 14 }}
                                         />
                                         {session.user.pusaka_points} {t("menu.point")}
                                     </MenuItem>
@@ -126,6 +131,7 @@ export default function MobileHeader() {
                                         signOut({ callbackUrl: '/' });
                                     }}
                                         title={t("sign_out")}
+                                        
                                     >
                                         <LogoutIcon fontSize="medium" />
                                         {t("menu.sign_out")}

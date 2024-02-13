@@ -23,6 +23,7 @@ import Tooltip from '@mui/material/Tooltip';
 import Snackbar from '@mui/material/Snackbar';
 import ProfileNotCompleteNotice from "@/components/ProfileNotCompleteNotice";
 import Head from "next/head";
+import { useDesktopRatio } from "@/lib/hooks";
 
 export default function NameClass({ classname, programData, moduleData, assignment }: InferGetServerSidePropsType<typeof getServerSideProps>) {
     const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
@@ -91,6 +92,8 @@ export default function NameClass({ classname, programData, moduleData, assignme
         }
     }
 
+    const isDesktopRatio = useDesktopRatio();
+
     return (
         <>
         <Head>
@@ -123,7 +126,7 @@ export default function NameClass({ classname, programData, moduleData, assignme
                             {
                                 userIsEnrolled
                                     ? null
-                                    : <Button variant="contained" size="medium" sx={{ textAlign: 'center', mr: 4 }}
+                                    : <Button variant="contained" size={"medium"} sx={{ textAlign: 'center', mr: isDesktopRatio ? 4 : 1 }}
                                         disabled={userIsUnauthenticated || userProfileNotCompleted}
                                         onClick={toggleModalOpen}
                                     >
@@ -157,7 +160,7 @@ export default function NameClass({ classname, programData, moduleData, assignme
                                 {pusakaPoints}{" "}
                                 {t('points')}
                             </Typography>
-                            <Tooltip title={t("pusaka_points_details")} arrow placement="top">
+                            <Tooltip title={t("pusaka_points_details")} arrow placement="top-end">
                                 <HelpOutlineIcon width={18} sx={{ ml: 'auto' }} />
                             </Tooltip>
                         </Box>
