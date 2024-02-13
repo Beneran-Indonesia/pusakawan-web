@@ -27,6 +27,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import Button from "@mui/material/Button";
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import { useRouter } from 'next/router';
+import { CircularProgress } from '@mui/material';
 
 export default function MobileHeader() {
     const t = useTranslations('header');
@@ -109,44 +110,46 @@ export default function MobileHeader() {
                         }}
                     >
                         {
-                            status === "authenticated"
-                                ?
-                                <>
-                                    <MenuItem title={t("points")} selected={false}>
-                                        <ImageWrapper src={PusakaPoints}
-                                            alt="Pusaka points logo"
-                                            width={22} height={22}
-                                        />
-                                        {session.user.pusaka_points} {t("menu.point")}
-                                    </MenuItem>
-                                    <Link href="/user" title={t("profile")} tabIndex={0}
-                                        sx={{ textDecoration: 'none', color: 'black' }}>
-                                        <MenuItem onClick={handleProfileMenuClose}>
-                                            <PersonOutlineIcon fontSize="medium" />
-                                            {t("menu.profile")}
+                            status === "loading"
+                                ? <CircularProgress color="primary" />
+                                : status === "authenticated"
+                                    ?
+                                    <Box>
+                                        <MenuItem title={t("points")} selected={false}>
+                                            <ImageWrapper src={PusakaPoints}
+                                                alt="Pusaka points logo"
+                                                width={22} height={22}
+                                            />
+                                            {session.user.pusaka_points} {t("menu.point")}
                                         </MenuItem>
-                                    </Link>
-                                    <MenuItem onClick={() => {
-                                        handleProfileMenuClose();
-                                        signOut({ callbackUrl: '/' });
-                                    }}
-                                        title={t("sign_out")}
-                                        
-                                    >
-                                        <LogoutIcon fontSize="medium" />
-                                        {t("menu.sign_out")}
-                                    </MenuItem>
-                                    <Divider />
-                                    <ChangeLanguageButtons />
-                                </>
-                                : <>
-                                    <MenuItem sx={{ justifyContent: "center" }}>
-                                        <NextLink href="/register"><Typography>{t('register')}</Typography></NextLink>
-                                    </MenuItem>
-                                    <MenuItem>
-                                        <Button size="small" variant="contained" href="/login">{t('login')}</Button>
-                                    </MenuItem>
-                                </>
+                                        <Link href="/user" title={t("profile")} tabIndex={0}
+                                            sx={{ textDecoration: 'none', color: 'black' }}>
+                                            <MenuItem onClick={handleProfileMenuClose}>
+                                                <PersonOutlineIcon fontSize="medium" />
+                                                {t("menu.profile")}
+                                            </MenuItem>
+                                        </Link>
+                                        <MenuItem onClick={() => {
+                                            handleProfileMenuClose();
+                                            signOut({ callbackUrl: '/' });
+                                        }}
+                                            title={t("sign_out")}
+
+                                        >
+                                            <LogoutIcon fontSize="medium" />
+                                            {t("menu.sign_out")}
+                                        </MenuItem>
+                                        <Divider />
+                                        <ChangeLanguageButtons />
+                                    </Box>
+                                    : <Box>
+                                        <MenuItem sx={{ justifyContent: "center" }}>
+                                            <NextLink href="/register"><Typography>{t('register')}</Typography></NextLink>
+                                        </MenuItem>
+                                        <MenuItem>
+                                            <Button size="small" variant="contained" href="/login">{t('login')}</Button>
+                                        </MenuItem>
+                                    </Box>
                         }
                     </HeaderMenu>
                 </div>
