@@ -1,3 +1,4 @@
+
 import Box from '@mui/material/Box';
 import LoadingButton from '@mui/lab/LoadingButton';
 import Snackbar from '@mui/material/Snackbar';
@@ -117,10 +118,12 @@ function SignupForm({ setSnackbarOpen }: SignupFormProps) {
                 const message = err.response.data;
                 const errorField = Object.keys(message)
                 if (errorField.includes('email')) {
-                    setError('email', { type: 'custom', message: t('error.email') })
+                    setError('email', { type: 'custom', message: t('error.email') });
+                    return;
                 }
                 if (errorField.includes('username')) {
-                    setError('username', { type: 'custom', message: t('error.username') })
+                    setError('username', { type: 'custom', message: t('error.username') });
+                    return;
                 }
             }
             setSnackbarOpen('snackbar.failed');
