@@ -32,8 +32,8 @@ export default function Pusakawan(props: MyAppProps) {
             <NextNProgress color="#AE1622" startPosition={0.3} stopDelayMs={400} height={4} />
             <Wrapper>
               <Component {...pageProps} />
-              <Analytics />
               <SpeedInsights />
+              <Analytics />
             </Wrapper>
           </SessionProvider>
         </NextIntlClientProvider>
