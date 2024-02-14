@@ -19,7 +19,7 @@ function Input<T extends FieldValues>({ name, control, label, required = true, a
         pattern = { value: /^\S+@\S+\.\S+$/, message: t('email') };
     } else if (name === "full_name") {
         // enforce full name to only have alphabets + spaces
-        pattern = { value: /^[a-zA-Z]+([\s][a-zA-Z]+)*$/, message: t("fullname") };
+        pattern = { value: /^\s?[a-zA-Z]+(?:\s+[a-zA-Z]+)*\s?$/, message: t("fullname") };
     } else if (name === "username") {
         // enforce username to start with an alphanumeric character. Special characters (_, , -) have to be followed by an alphanumeric character. The last character has to be an alphanumeric character.
         pattern = { value: /^[a-zA-Z0-9]+([_-]?[a-zA-Z0-9])*$/, message: t("username") };
