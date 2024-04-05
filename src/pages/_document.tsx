@@ -26,7 +26,9 @@ export default function MyDocument({ emotionStyleTags }: MyDocumentProps) {
         <meta name="description" content="Welcome to Pusakawan." />
         {emotionStyleTags}
       </Head>
-      <body>
+      {/* Might be breaking but the reason i put this was when i pressed menu header 
+      for some reason a padding right of value 17px appear out of nowhere. */}
+      <body style={{ padding: 0 }}>
         <Main />
         <NextScript />
       </body>

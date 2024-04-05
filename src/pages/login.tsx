@@ -101,8 +101,6 @@ function LoginBox() {
         const { email, password, remember } = data;
         signIn('email', {
             redirect: false,
-            // redirect: true,
-            // callbackUrl: "/",
             email,
             password,
             remember,
@@ -136,7 +134,7 @@ function LoginBox() {
                     return;
                 }
                 // If no error then go to main page
-                router.push('/')
+                router.back();
             })
             .catch((e) => {
                 setLoading(false);
@@ -176,8 +174,7 @@ function LoginBox() {
                     return;
                 }
                 // If succeeds go to /user
-                router.
-                    push('/user')
+                router.back();
             })
             .catch((e) => {
                 setLoading(false);
@@ -294,7 +291,6 @@ function CheckboxRememberMe({ control }: CheckboxRememberMeProps) {
         />
     )
 }
-
 
 export async function getStaticProps({ locale }: { locale: "en" | "id" }) {
     return {
