@@ -62,7 +62,7 @@ function CoursesCard({ data }: { data: undefined | ProgramData[] }) {
                 ))
             }
             {
-                data && data.map((dt) => (
+                data && data.slice(0, 3).map((dt) => (
                     <ProgramCard
                         key={dt.id + dt.title + "main-page"}
                         img={dt.banners[0].image}
