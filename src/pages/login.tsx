@@ -24,6 +24,7 @@ import { signUpWithGoogle } from '@/lib/firebase';
 import Link from 'next/link';
 import HomeButton from '@/components/HomeButton';
 import { useDesktopRatio } from '@/lib/hooks';
+// import { getCookies } from "cookies-next";
 
 const LoginContainer = styled(Container)(
     ({ theme }) => ({
@@ -34,7 +35,7 @@ const LoginContainer = styled(Container)(
         alignItems: 'center',
         width: theme.breakpoints.up("md") ? '100%' : "75%",
         height: '730px',
-        background: theme.breakpoints.up("md") ? "transparent" : "linear-gradient(111deg, #EFD0D3 1.03%, rgba(239, 208, 211, 0.00) 100%)",
+        background: theme.breakpoints.up("md") ? "linear-gradient(111deg, #EFD0D3 1.03%, rgba(239, 208, 211, 0.00) 100%)" : "transparent",
         backdropFilter: theme.breakpoints.up("md") ? "none" : "blur(8px)",
         margin: 'auto',
         borderRadius: '1rem'
@@ -133,7 +134,7 @@ function LoginBox() {
                     return;
                 }
                 // If no error then go to main page
-                router.push('/')
+                router.back();
             })
             .catch((e) => {
                 setLoading(false);
@@ -173,8 +174,7 @@ function LoginBox() {
                     return;
                 }
                 // If succeeds go to /user
-                router.
-                    push('/user')
+                router.back();
             })
             .catch((e) => {
                 setLoading(false);
@@ -190,7 +190,7 @@ function LoginBox() {
                 display: 'flex',
                 flexDirection: 'column',
                 gap: 3,
-                maxWidth: '21rem'
+                maxWidth: '21rem',
             }}
         >
             <div aria-label='title'>
