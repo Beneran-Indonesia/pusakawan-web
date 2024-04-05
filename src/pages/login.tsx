@@ -24,6 +24,7 @@ import { signUpWithGoogle } from '@/lib/firebase';
 import Link from 'next/link';
 import HomeButton from '@/components/HomeButton';
 import { useDesktopRatio } from '@/lib/hooks';
+// import { getCookies } from "cookies-next";
 
 const LoginContainer = styled(Container)(
     ({ theme }) => ({
@@ -34,7 +35,7 @@ const LoginContainer = styled(Container)(
         alignItems: 'center',
         width: theme.breakpoints.up("md") ? '100%' : "75%",
         height: '730px',
-        background: theme.breakpoints.up("md") ? "transparent" : "linear-gradient(111deg, #EFD0D3 1.03%, rgba(239, 208, 211, 0.00) 100%)",
+        background: theme.breakpoints.up("md") ? "linear-gradient(111deg, #EFD0D3 1.03%, rgba(239, 208, 211, 0.00) 100%)" : "transparent",
         backdropFilter: theme.breakpoints.up("md") ? "none" : "blur(8px)",
         margin: 'auto',
         borderRadius: '1rem'
@@ -99,7 +100,8 @@ function LoginBox() {
         setLoading(true);
         const { email, password, remember } = data;
         signIn('email', {
-            redirect: false,
+            redirect: true,
+            callbackUrl: "/",
             email,
             password,
             remember,
@@ -190,7 +192,7 @@ function LoginBox() {
                 display: 'flex',
                 flexDirection: 'column',
                 gap: 3,
-                maxWidth: '21rem'
+                maxWidth: '21rem',
             }}
         >
             <div aria-label='title'>
@@ -291,6 +293,7 @@ function CheckboxRememberMe({ control }: CheckboxRememberMeProps) {
         />
     )
 }
+
 
 export async function getStaticProps({ locale }: { locale: "en" | "id" }) {
     return {

@@ -1,5 +1,6 @@
 import Box from "@mui/material/Box";
 import ButtonGroup from "@mui/material/ButtonGroup";
+import CircularProgress from "@mui/material/CircularProgress";
 import IconButton from "@mui/material/IconButton";
 import FullscreenIcon from '@mui/icons-material/Fullscreen';
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
@@ -23,12 +24,13 @@ import ListSubheader from "@mui/material/ListSubheader";
 import Head from "next/head";
 
 
-export default function ModuleLearn({ moduleData, programData, testData, assignment }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+export default function ModuleLearn({ moduleData, programData, testData, assignments }: InferGetServerSidePropsType<typeof getServerSideProps>) {
     const t = useTranslations("module");
     const router = useRouter();
     const iframeRef = useRef<HTMLIFrameElement>(null);
     const testAvailable = testData && testData.length !== 0;
     const [currentModule, setCurrentModule] = useState<SimpleModuleData>(moduleData[0]);
+    const [iframeLoading, setIframeLoading] = useState(true);
 
     const { title: programTitle, banners } = programData;
 
@@ -50,9 +52,9 @@ export default function ModuleLearn({ moduleData, programData, testData, assignm
 
     return (
         <>
-        <Head>
-            <title>Learn at Pusakawan</title>
-        </Head>
+            <Head>
+                <title>Learn at Pusakawan</title>
+            </Head>
             <Box sx={{
                 pt: 4,
                 background: `linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url(${banners[0].image})`,
@@ -92,13 +94,13 @@ export default function ModuleLearn({ moduleData, programData, testData, assignm
                         }
                         {/* assignment */}
                         {
-                            assignment && <>
+                            assignments && <>
                                 <ListSubheader sx={{ fontSize: "1.2rem", fontWeight: 600, color: "black" }}>{t("assignment")}</ListSubheader>
                                 {
-                                    assignment.map((ass) =>
-                                        <ListItem disablePadding key={ass.title}>
-                                            <ListItemButton href={ass.href}>
-                                                <ListItemText primary={t("assignment") + `: ${ass.title}`} />
+                                    assignments.map((assignment) =>
+                                        <ListItem disablePadding key={assignment.title}>
+                                            <ListItemButton href={assignment.href} target="_blank">
+                                                <ListItemText primary={t("assignment") + `: ${assignment.title}`} />
                                             </ListItemButton>
                                         </ListItem>
                                     )
@@ -113,7 +115,9 @@ export default function ModuleLearn({ moduleData, programData, testData, assignm
                 </Box>
                 <Box flex="80%" position="relative" mx={3} mb={0}>
                     {/* Iframe */}
+                    {iframeLoading ? <CircularProgress /> : null}
                     <iframe
+                        onLoad={() => setIframeLoading(false)}
                         ref={iframeRef}
                         src={href}
                         title="Click here"
@@ -211,7 +215,7 @@ type ModuleDatas = {
     programData: ProgramData;
     moduleData: SimpleModuleData[];
     testData?: SimplerModuleData[];
-    assignment: null | SimpleModuleData[];
+    assignments: null | SimpleModuleData[];
 }
 
 export const getServerSideProps: GetServerSideProps<ModuleDatas> = async (ctx) => {
@@ -253,7 +257,7 @@ export const getServerSideProps: GetServerSideProps<ModuleDatas> = async (ctx) =
 
     const formattedModuleData = moduleData.map((mdl) => ({ id: mdl.id, href: process.env.BUCKET_URL + mdl.storyline_path, title: mdl.title }))
 
-    const assignment = moduleData
+    const assignments = moduleData
         .filter((mdl) => mdl.additional_url)
         .map((mdl) => ({ title: mdl.title, id: mdl.id, href: mdl.additional_url }));
 
@@ -263,7 +267,7 @@ export const getServerSideProps: GetServerSideProps<ModuleDatas> = async (ctx) =
             // testData: [{ title: "pretest", href: "/pretest" }, { title: "posttest", href: "/posttest" }],
             moduleData: formattedModuleData,
             programData,
-            assignment: assignment.length > 0 ? assignment : null
+            assignments: assignments.length > 0 ? assignments : null
         }
     }
 }
