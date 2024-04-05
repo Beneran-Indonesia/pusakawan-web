@@ -115,7 +115,7 @@ export default function ModuleLearn({ moduleData, programData, testData, assignm
                 </Box>
                 <Box flex="80%" position="relative" mx={3} mb={0}>
                     {/* Iframe */}
-                    {iframeLoading ? <CircularProgress /> : null}
+                    {iframeLoading ? <CircularProgress sx={{ position: "absolute", transform: "translate(50%,-50%)", top: "50%", right: "50%", zIndex: 2 }} /> : null}
                     <iframe
                         onLoad={() => setIframeLoading(false)}
                         ref={iframeRef}
@@ -123,7 +123,7 @@ export default function ModuleLearn({ moduleData, programData, testData, assignm
                         title="Click here"
                         width="100%"
                         height="100%"
-                        style={{ border: 0 }}
+                        style={{ position: "relative", border: 0, zIndex: 3 }}
                     ></iframe>
                     {/* Controls */}
                     <Box

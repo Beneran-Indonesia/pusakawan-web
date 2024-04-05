@@ -100,8 +100,9 @@ function LoginBox() {
         setLoading(true);
         const { email, password, remember } = data;
         signIn('email', {
-            redirect: true,
-            callbackUrl: "/",
+            redirect: false,
+            // redirect: true,
+            // callbackUrl: "/",
             email,
             password,
             remember,
