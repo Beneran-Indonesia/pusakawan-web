@@ -17,7 +17,7 @@ export default function ProgramCard({ img, title, price, href }: CardProps) {
     const t = useTranslations('program_selection');
     return (
         <CardWrapper alt={title} src={img}>
-            <Typography variant="h5" component="h5" fontWeight={500} mb={2}>{title}</Typography>
+            <Typography variant="h5" component="h5" fontWeight={500} mb={2} sx={{ whiteSpace: "break-spaces" }}>{title}</Typography>
             <Typography variant="h3" component="h3" mb={4} fontWeight={600}>
                 {!price
                     ? t('paid')
