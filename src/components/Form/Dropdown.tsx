@@ -25,16 +25,19 @@ export default function Dropdown({ name, control, items, label }: DropdownProps)
                         label={label}
                         onChange={onChange}
                         MenuProps={{
+                            disableScrollLock: true,
                             PaperProps: {
                                 sx: {
                                     boxShadow: 1,
                                     '& .MuiMenuItem-root': {
                                         py: 1,
-                                        px: 2,
+                                        // px: 2,
                                     },
                                 },
                             },
                         }}
+                    // MenuProps={{ }}
+                    inputProps={{ MenuProps: { disableScrollLock: true } }}
                     >
                         {
                             items.map((item) => {

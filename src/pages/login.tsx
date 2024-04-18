@@ -133,8 +133,10 @@ function LoginBox() {
                     setErrorMessage({ error: true, type: 'server', message: t('error.server') })
                     return;
                 }
-                // If no error then go to main page
-                router.back();
+                // If succeeds go back
+                if (dt.status === 200) {
+                    router.push("/program");
+                }
             })
             .catch((e) => {
                 setLoading(false);
@@ -173,8 +175,10 @@ function LoginBox() {
                     setErrorMessage({ error: true, type: 'server', message: t('error.server') })
                     return;
                 }
-                // If succeeds go to /user
-                router.back();
+                // If succeeds go back
+                if (dt.status === 200) {
+                    router.push("/program");
+                }
             })
             .catch((e) => {
                 setLoading(false);

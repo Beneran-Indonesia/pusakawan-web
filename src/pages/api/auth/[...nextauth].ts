@@ -5,7 +5,7 @@ import NextAuth from "next-auth";
 import { createBearerHeader } from "@/lib/utils";
 import { ProfileInput } from "@/types/form";
 import { EnrolledProgram } from "@/types/components";
-import axios from "axios";
+import { isAxiosError } from "axios";
 
 const getMaxAgeDay = (days: number) => days * 24 * 3600;
 
@@ -42,7 +42,7 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
                         }
 
                     } catch (e) {
-                        if (axios.isAxiosError(e)) {
+                        if (isAxiosError(e)) {
                             console.error("ERROR AXIOS FIREBASE NEXTAUTH", e);
                             throw Error(e?.response?.data.detail);
                         }
@@ -71,7 +71,7 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
                             return { ...profile, enrolledPrograms, accessToken };
                         }
                     } catch (e) {
-                        if (axios.isAxiosError(e)) {
+                        if (isAxiosError(e)) {
                             console.error("ERROR AXIOS EMAIL NEXTAUTH", e);
                             throw Error(e?.response?.data.detail);
                         }
