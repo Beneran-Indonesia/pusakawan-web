@@ -114,6 +114,7 @@ export default function Header() {
 
 const HeaderMenu = styled((props: MenuProps) => (
     <Menu
+        
         elevation={0}
         anchorOrigin={{
             vertical: 'bottom',
@@ -125,6 +126,7 @@ const HeaderMenu = styled((props: MenuProps) => (
         }}
         sx={{ boxShadow: 1 }}
         {...props}
+        disableScrollLock={true}
     />
 ))(({ theme }) => ({
     '& .MuiPaper-root': {
