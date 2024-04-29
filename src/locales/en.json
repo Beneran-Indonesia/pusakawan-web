@@ -129,14 +129,14 @@
     "contact_us": "Contact us"
   },
   "detail_panel": {
-    "title": "Belajar kewarganegaraan yang interaktif",
+    "title": "Civic studies that are interactive",
     "detail_one": {
-      "title": "Materi yang diberikan mudah untuk dipahami",
-      "detail": "Materi dibawakan dengan cara yang sederhana serta  tidak membosankan."
+      "title": "Easy to understand materials",
+      "detail": "Materials are presented in a simple yet not boring ways"
     },
     "detail_two": {
-      "title": "Berlatih pola pikir yang membangun",
-      "detail": "Berlatih cara berpikir seperti problem solving, critical thinking, decision making, dan analytical thinking dengan mengerjakan tantangan yang ada."
+      "title": "Practice a constructive thinking",
+      "detail": "Practice constructive ways of thinking such as problem solving, critical thinking, decision making, and analytical thinking by finishing challenges."
     }
   },
   "banner": {
