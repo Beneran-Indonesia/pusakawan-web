@@ -38,7 +38,7 @@
       },
       "breadcrumbs": {
         "home": "Home",
-        "program": "Program"
+        "program": "Programs"
       },
       "button": {
         "paid": "Paid",
@@ -101,7 +101,7 @@
   "header": {
     "pusakawan": "Back to Pusakawan",
     "challenge": "Challenge",
-    "program": "Program",
+    "program": "Programs",
     "register": "Register",
     "login": "Login",
     "profile": "See profile",
@@ -256,7 +256,7 @@
     "header": {
       "breadcrumbs": {
         "home": "Home",
-        "program": "Program"
+        "program": "Programs"
       },
       "title": "Level up your <red>skills</red> by learning through our programs"
     },
@@ -284,7 +284,7 @@
     },
     "breadcrumbs": {
       "home": "Home",
-      "program": "Program",
+      "program": "Programs",
       "learn": "Modules"
     },
     "learn": "Modules",

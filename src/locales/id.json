@@ -38,7 +38,7 @@
             },
             "breadcrumbs": {
                 "home": "Beranda",
-                "program": "Program"
+                "program": "Programs"
             },
             "button": {
                 "paid": "Berbayar",
@@ -101,7 +101,7 @@
     "header": {
         "pusakawan": "Kembali ke Pusakawan",
         "challenge": "Tantangan",
-        "program": "Program",
+        "program": "Programs",
         "register": "Daftar",
         "login": "Masuk",
         "profile": "Lihat profil",
@@ -255,7 +255,7 @@
         "header": {
             "breadcrumbs": {
                 "home": "Beranda",
-                "program": "Program"
+                "program": "Programs"
             },
             "title": "Perdalam <red>kemampuanmu</red> dengan mempelajari program kami"
         },
@@ -283,7 +283,7 @@
         },
         "breadcrumbs": {
             "home": "Beranda",
-            "program": "Program",
+            "program": "Programs",
             "learn": "Materi"
         },
         "learn": "Materi",

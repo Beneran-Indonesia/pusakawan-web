@@ -56,7 +56,7 @@ function CoursesCard({ data }: { data: undefined | ProgramData[] }) {
             textAlign: "left",
             paddingX: isDesktopRatio ? 0 : "3rem",
         }}>
-
+            {/* This is placeholder card fallback in case data is not retreived lol */}
             {
                 data?.length === 0 && coursesKey.map((cKey, idx) => (
                     <Card
@@ -67,6 +67,7 @@ function CoursesCard({ data }: { data: undefined | ProgramData[] }) {
                     />
                 ))
             }
+            {/* This is the real card. For now just retrieve the first 3 that was given */}
             {
                 data && data.slice(0, 3).map((dt) => (
                     <ProgramCard
