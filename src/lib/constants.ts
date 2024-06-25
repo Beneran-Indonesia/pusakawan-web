@@ -49,7 +49,7 @@ const footerInformation: FooterInformationObject = {
     },
 };
 
-const programPagePicture = unsplash('5QgIuuBxKwM');
+const programPagePicture =  "https://pusaka-api-bucket-dev.s3.ap-southeast-1.amazonaws.com/media/unsplash_r_-zzXrnzxI.png"; // now isnt working unsplash('5QgIuuBxKwM');
 
 // PROFILE
 

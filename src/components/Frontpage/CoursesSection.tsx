@@ -8,6 +8,7 @@ import UnderlinedLink from '@/components/UnderlinedLink';
 import { ProgramData } from "@/types/components";
 import ProgramCard from "../Card/Program";
 import { databaseToUrlFormatted } from "@/lib/utils";
+import { useDesktopRatio } from "@/lib/hooks";
 
 const coursesKey = [
     "environment",
@@ -17,14 +18,16 @@ const coursesKey = [
 
 export default function CoursesSection({ programs }: { programs?: ProgramData[]; }) {
     const t = useTranslations('courses_selection')
+    const isDesktopRatio = useDesktopRatio();
     return (
         <Box
             display="flex"
             flexDirection="column"
-            alignItems="center"
+            textAlign="center"
             justifyContent="center"
             gap={5}
             bgcolor="secondary.main"
+            alignItems={isDesktopRatio ? "center": "normal"}
             py={6}
         >
             <Typography fontWeight={600} variant="h4" component="h4">{t.rich('title', {
@@ -42,16 +45,19 @@ export default function CoursesSection({ programs }: { programs?: ProgramData[];
 
 function CoursesCard({ data }: { data: undefined | ProgramData[] }) {
     const t = useTranslations('courses_selection');
+    const isDesktopRatio = useDesktopRatio();
     return (
         <Box sx={{
             overflowX: "auto",
-            whiteSpace: "nowrap"
+            whiteSpace: "nowrap",
+            display: "flex",
+            flexDirection: "row",
+            gap: isDesktopRatio ? 12 : 8,
+            textAlign: "left",
+            paddingX: isDesktopRatio ? 0 : "3rem",
         }}>
-        <Box
-            display="inline-flex"
-            gap={12}
-        >
-           {
+            {/* This is placeholder card fallback in case data is not retreived lol */}
+            {
                 data?.length === 0 && coursesKey.map((cKey, idx) => (
                     <Card
                         key={cKey}
@@ -61,6 +67,7 @@ function CoursesCard({ data }: { data: undefined | ProgramData[] }) {
                     />
                 ))
             }
+            {/* This is the real card. For now just retrieve the first 3 that was given */}
             {
                 data && data.slice(0, 3).map((dt) => (
                     <ProgramCard
@@ -72,7 +79,6 @@ function CoursesCard({ data }: { data: undefined | ProgramData[] }) {
                     />
                 ))
             }
-        </Box>
         </Box>
     )
 }

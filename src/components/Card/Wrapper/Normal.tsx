@@ -10,7 +10,7 @@ type CardProps = {
 export default function CardWrapper({ src, alt, children }: CardProps) {
     return (
         <Box maxWidth={300} position="relative" border="1px solid #CCC"
-            borderRadius="1rem" bgcolor="white" boxShadow={1}
+            borderRadius="1rem" bgcolor="white" boxShadow={1} flex="0 0 auto"
         >
             <BlurBox />
             <ImageWrapper src={src} alt={alt} width={299} height={130} style={{ borderTopRightRadius: '1rem', borderTopLeftRadius: '1rem', objectFit: 'cover' }} />

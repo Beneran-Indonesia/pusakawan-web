@@ -28,7 +28,7 @@ export default function MyDocument({ emotionStyleTags }: MyDocumentProps) {
       </Head>
       {/* Might be breaking but the reason i put this was when i pressed menu header 
       for some reason a padding right of value 17px appear out of nowhere. */}
-      <body style={{ paddingRight: "0px !important" }}>
+      <body>
         <Main />
         <NextScript />
       </body>
