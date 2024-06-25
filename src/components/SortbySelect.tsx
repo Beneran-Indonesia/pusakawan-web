@@ -52,7 +52,8 @@ const CustomButton = React.forwardRef(function CustomButton(
   props: SelectRootSlotProps<string, false>,
   ref: React.ForwardedRef<HTMLButtonElement>,
 ) {
-  const { ...other } = props;
+  // eslint-disable-next-line unused-imports/no-unused-vars
+  const { ownerState, ...other } = props;
   return (
     <button
       type="button"
