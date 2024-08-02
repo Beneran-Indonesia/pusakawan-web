@@ -1,38 +1,92 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+[Pusakawan Website](https://pusakawan.id/en)
 
-## Getting Started
+![Pusakawan Logo](./public/pusakawan.svg)
 
-First, run the development server:
+# Introduction
+Hi! I'm Sarah. The sole developer for this project. I will be documentating Pusakawan Web with these outlines:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+* General good-to-knows
+* Frameworks
+* Project structure
+* Philosophy during writing code
+* Notes
+* End-words
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Hope this documentation will help you get the general idea of the project.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+## General good-to-knows
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+We are using Next 13.4 with `src` directory. We don't have local API. Development API url is: `https://develop-pusaka.ap-southeast-1.elasticbeanstalk.com/` using Django Rest API that is hosted on AWS EB.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+This project uses `Typescript`, `pnpm`, and `node v18.17.1`.
+This project is deployed on `Vercel` using Beni's Vercel account.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Our database uses PostgreSQL (also hosted in AWS) with Firebase for Google Authentication and realtime database (only for chatting, game answers and group states)
 
-## Learn More
+## Frameworks
 
-To learn more about Next.js, take a look at the following resources:
+#### UI-related
+* MUI Material
+* MUI Icons
+* MUI Base (for Autocomplete and Select)
+* MUI Lab (for LoadingButton only)
+* React-Spring (for Modal animation)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+#### Not UI-related
+* axios: API related
+* next-auth: client auth-related
+* next-intl: client internationalization
+* react-hook-form: form related with types
+* pdf-lib: for auto-generate certification
+* vercel analytics and vercel speed-insight
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+#### Utils-related
+* dayjs: for Datepicker-calendar in MUI
+* mui-tel-input, flag-icons: phone number input
+* nextjs-progressbar: loading progressbar when directing to another route on top of website
+* sharp: image-sharpening related
 
-## Deploy on Vercel
+## Project structure
+* ./public  
+  Logos are here
+  * assets  
+  Images, SVG, third party logos, certificate, and Terms and condition page is here.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+* ./src  
+  middleware is here
+  * components  
+  styled components are here. I 99% of the time uses styled components.
+  * lib  
+  api call functions, constants, hooks, utils and firebase init
+  * locales  
+  a long page of ID/EN localization (i am not modularing any of it)
+  * styles  
+  one component had to use CSS
+  * theme  
+  MUI theming
+  * types  
+  my type is smart nerdy guys who share hobbies with me :heart_eyes:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Philosophy
+1. Don't modularize if it's only gonna be used one time. Instead, put it on a different function on the same page.
+2. Space and categorize the logic-part of your code. 
+3. Type your shit. Properly.
+
+## Notes
+Most of your UI-related designing will use MUI Material. If UI design doesn't match the already-existing resources in MUI Material, just use MUI Base.  
+DO NOT use other UI framework.
+
+We use `Poppins` from Next Font.
+
+`<Link />` is MUI Link component integrated with Next.js Link. Read `theme.ts` for more overrides.
+
+Some pictures' source is from unsplash.
+
+Our courses is hosted from a public bucket in AWS. So you can actually see other courses because there's no account-payment check yet.
+
+Also, the only **hook** you have is ratio-related because headers and certain design change.
+
+## End words
+I'm a straight-forward person. So I expect my codes to also be straighforward.  
+Hope this helps.   
+If you need any questions, Telegram me at @sarahT04.
