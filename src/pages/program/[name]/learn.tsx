@@ -19,12 +19,12 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import { getSession } from "next-auth/react";
-import { urlToDatabaseFormatted } from "@/lib/utils";
+import { urlToDatabaseFormatted, formatStorylineHrefQuery } from "@/lib/utils";
 import ListSubheader from "@mui/material/ListSubheader";
 import Head from "next/head";
 
 
-export default function ModuleLearn({ moduleData, programData, testData, assignments }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+export default function ModuleLearn({ userData, moduleData, programData, testData, assignments }: InferGetServerSidePropsType<typeof getServerSideProps>) {
     const t = useTranslations("module");
     const router = useRouter();
     const iframeRef = useRef<HTMLIFrameElement>(null);
@@ -119,7 +119,7 @@ export default function ModuleLearn({ moduleData, programData, testData, assignm
                     <iframe
                         onLoad={() => setIframeLoading(false)}
                         ref={iframeRef}
-                        src={href}
+                        src={formatStorylineHrefQuery(href, userData)}
                         title="Click here"
                         width="100%"
                         height="100%"
@@ -216,23 +216,27 @@ type ModuleDatas = {
     moduleData: SimpleModuleData[];
     testData?: SimplerModuleData[];
     assignments: null | SimpleModuleData[];
+    userData: { token: string, name: string, email: string }
 }
 
 export const getServerSideProps: GetServerSideProps<ModuleDatas> = async (ctx) => {
     const { locale, params } = ctx;
+
+    const session = await getSession(ctx);
+
+    // checks if user is logged in
+    if (!session) {
+        return ({ notFound: true })
+    }
+
+    // const userId = session.user.id;
+
     const classname = urlToDatabaseFormatted(params!.name as string);
 
     const programDataReq = await getProgramData(classname as string);
 
     // checks if program exists
     if (!programDataReq || programDataReq.message.length === 0) {
-        return ({ notFound: true })
-    }
-
-    const session = await getSession(ctx);
-
-    // checks if user is logged in
-    if (!session) {
         return ({ notFound: true })
     }
 
@@ -263,6 +267,11 @@ export const getServerSideProps: GetServerSideProps<ModuleDatas> = async (ctx) =
 
     return {
         props: {
+            userData: {
+                token: session.user.accessToken,
+                name: session.user.full_name,
+                email: session.user.email
+            },
             messages: (await import(`../../../locales/${locale}.json`)).default,
             // testData: [{ title: "pretest", href: "/pretest" }, { title: "posttest", href: "/posttest" }],
             moduleData: formattedModuleData,
