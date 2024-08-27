@@ -11,7 +11,7 @@ const headers = {
 const api = axios.create({
     baseURL: process.env.NEXT_PUBLIC_API_URL,
     httpsAgent: new Agent({
-        rejectUnauthorized: process.env.PRODUCTION ? true : false
+        rejectUnauthorized: process.env.NEXT_PUBLIC_PRODUCTION ? true : false
     }),
     headers
 })
