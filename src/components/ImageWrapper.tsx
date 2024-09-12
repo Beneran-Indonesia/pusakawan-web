@@ -7,10 +7,11 @@ type ImageWrapperProps = {
     src: string | StaticImageData;
     width?: number;
     height?: number;
-    priority?: boolean
+    priority?: boolean;
+    unoptimized?: boolean;
 }
 
-function ImageWrapper({ src, alt, style, width, height, priority = false }: ImageWrapperProps) {
+function ImageWrapper({ src, alt, style, width, height, priority = false, unoptimized=true }: ImageWrapperProps) {
     return (
         <Image
             src={src}
@@ -19,6 +20,7 @@ function ImageWrapper({ src, alt, style, width, height, priority = false }: Imag
             width={width}
             height={height}
             priority={priority}
+            unoptimized={unoptimized}
         />
     )
 }
