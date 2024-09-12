@@ -32,7 +32,17 @@ const nextConfig = {
     defaultLocale: 'id'
   },
   images: {
-    domains: ["source.unsplash.com", "pusaka-api-bucket-dev.s3.amazonaws.com"]
+    remotePatterns: [{
+      protocol: 'https',
+      hostname: 'pusaka-api-bucket-dev.s3.ap-southeast-1.amazonaws.com',
+      port: '',
+      pathname: '/media/**'
+    }, {
+      protocol: 'https',
+      hostname: 'source.unsplash.com',
+      port: '',
+      pathname: '/**'
+    }],
   },
 };
 
