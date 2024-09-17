@@ -127,7 +127,8 @@ function SignupForm({ setSnackbarOpen }: SignupFormProps) {
                 }
             }
             setSnackbarOpen('snackbar.failed');
-        }
+            setLoading(false);
+    }
         setLoading(false);
     };
 
