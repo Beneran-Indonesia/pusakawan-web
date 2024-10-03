@@ -102,8 +102,8 @@ export default function Header() {
                                 </HeaderMenu>
                             </>
                             : <>
-                                <NextLink href="/register"><Typography>{t('register')}</Typography></NextLink>
-                                <NextLink href="/login"><Button size="large" variant="contained">{t('login')}</Button></NextLink>
+                                <NextLink href="/signin"><Button size="large" variant="contained">{t('register')}</Button></NextLink>
+                                <NextLink href="/signin"><Button size="large" variant="outlined">{t('login')}</Button></NextLink>
                             </>
                 }
 
