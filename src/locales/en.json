@@ -81,14 +81,14 @@
       "title": "Insert phone number"
     }
   },
-  "login": {
-    "title": "Login",
-    "description": "Have no account? Register <strong>here</strong>.",
+  "signin": {
+    "title": "Login/Register",
+    "description": "Don't have an account? You can register directly using <strong>Google Account</strong>.",
     "remember_me": "Remember me",
     "forgot_password": "Forgot password?",
     "change_password": "Change password",
     "or": "Or",
-    "google": "Login with",
+    "google": "Login with Google",
     "to_register": "Create an account",
     "error": {
       "server": "Server error. Can not log you in.",
@@ -96,7 +96,13 @@
       "account_disabled": "Account has been disabled, please contact administrator.",
       "email_not_verified": "Email has not been verified. Please verify your email.",
       "credentials_exists": "Please use email and password to continue login."
+    },
+    "tnc": {
+        "title": "See our terms and conditions",
+        "by_registering": "By registering, you agree to our",
+        "tnc": "Terms and Conditions Pusakawan"
     }
+    
   },
   "header": {
     "pusakawan": "Back to Pusakawan",
@@ -163,30 +169,6 @@
   "program_selection": {
     "paid": "Free",
     "button": "Start learning"
-  },
-  "register": {
-    "title": "Account register",
-    "description": "Already have an account? Login <strong>here</strong>.",
-    "to_login": "Login to your account",
-    "google": "Register with",
-    "or": "or",
-    "terms_and_condition": "I have read and agree to the applicable terms",
-    "terms_and_condition_link": "Pusakawan's terms and conditions",
-    "see": "See ",
-    "approve": "I agree",
-    "error": {
-      "password_not_same_confirmation": "Password is not the same",
-      "email": "This email has been registered",
-      "username": "This username has been registered"
-    },
-    "form_labels": {
-      "full_name": "Full name"
-    },
-    "snackbar": {
-      "succeed": "Register successful",
-      "failed": "Server error occured. Please contact administrator.",
-      "credentials_exists": "Please use email and password to continue login."
-    }
   },
   "reset-password": {
     "button": "Reset password",

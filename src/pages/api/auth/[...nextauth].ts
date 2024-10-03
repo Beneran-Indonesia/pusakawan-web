@@ -51,36 +51,6 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
                     return null;
                 }
             }),
-            CredentialsProvider({
-                id: "email",
-                name: 'email',
-                credentials: {
-                    email: { label: "Email", placeholder: "doe@example.com", type: "email" },
-                    password: { label: "Password", type: "password" },
-                },
-                async authorize(credentials) {
-                    const { email, password } = credentials!;
-                    try {
-                        const conn = await api.post("/auth/login/", {
-                            email, password
-                        })
-                        if (conn.status === 200) {
-                            const accessToken = conn.data.tokens.access;
-                            const profile = await getProfile(accessToken);
-                            const enrolledPrograms = await getEnrolledPrograms(accessToken);
-                            return { ...profile, enrolledPrograms, accessToken };
-                        }
-                    } catch (e) {
-                        if (isAxiosError(e)) {
-                            console.error("ERROR AXIOS EMAIL NEXTAUTH", e);
-                            throw Error(e?.response?.data.detail);
-                        }
-                        console.error("ERROR EMAIL NEXTAUTH", e);
-                    }
-                    // Return null if can't retrieve user or any error.
-                    return null;
-                }
-            })
         ],
         callbacks: {
             async jwt({ trigger, session, user, token }) {

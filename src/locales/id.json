@@ -81,14 +81,14 @@
             "title": "Masukkan nomor telfon"
         }
     },
-    "login": {
-        "title": "Masuk",
-        "description": "Kalau kamu belum memiliki akun yang terdaftar, kamu bisa mendaftarnya <strong>disini</strong>",
+    "signin": {
+        "title": "Login/Register",
+        "description": "Belum memiliki akun? Kamu bisa mendaftar langsung melalui <strong>Akun Google.</strong>",
         "remember_me": "Ingat saya",
         "forgot_password": "Lupa password?",
         "change_password": "Ganti password",
         "or": "Atau",
-        "google": "Masuk dengan",
+        "google": "Masuk dengan Google",
         "to_register": "Bikin akun",
         "error": {
             "server": "Server error. Tidak bisa memasukkan anda.",
@@ -96,6 +96,11 @@
             "account_disabled": "Akun telah di nonaktifkan, tolong kontak administrator.",
             "email_not_verified": "Email belum di-verify. Tolong periksa email anda.",
             "credentials_exists": "Tolong gunakan email dan password untuk masuk."
+        },
+        "tnc": {
+            "title": "Lihat Syarat dan Ketentuan Pusakawan",
+            "by_registering": "Dengan mendaftar, kamu telah menyetujui",
+            "tnc": "Syarat dan Ketentuan Pusakawan"
         }
     },
     "header": {
@@ -163,30 +168,6 @@
     "program_selection": {
         "paid": "Gratis",
         "button": "Mulai pelajari"
-    },
-    "register": {
-        "title": "Daftar akun",
-        "description": "Sudah punya akun? Masuk <strong>disini</strong>.",
-        "to_login": "Login ke akun anda",
-        "google": "Daftar dengan",
-        "or": "Atau",
-        "terms_and_condition": "Saya sudah membaca dan menyetujui ketentuan yang berlaku",
-        "terms_and_condition_link": "Syarat dan ketentuan Pusakawan",
-        "see": "Lihat ",
-        "approve": "Saya menyetujui",
-        "error": {
-            "password_not_same_confirmation": "Password tidak sama",
-            "email": "Email ini sudah terdaftar",
-            "username": "Username ini telah terdaftar"
-        },
-        "form_labels": {
-            "full_name": "Nama panjang"
-        },
-        "snackbar": {
-            "succeed": "Registrasi sukses",
-            "failed": "Terjadi error di server. Tolong kontak administrator.",
-            "credentials_exists": "Anda sudah mempunyai akun. Tolong gunakan email dan password untuk masuk."
-        }
     },
     "reset-password": {
         "button": "Ubah password",
