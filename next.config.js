@@ -43,7 +43,14 @@ const nextConfig = {
       hostname: 'source.unsplash.com',
       port: '',
       pathname: '/**'
-    }],
+    },
+    {
+      protocol: 'https',
+      // Can we use ENV here? split BUCKET_URL https:// [1]
+      hostname: 'pusaka-api-bucket-dev.s3.amazonaws.com',
+      port: '',
+      pathname: '/media/**'
+    }, ],
   },
 };
 

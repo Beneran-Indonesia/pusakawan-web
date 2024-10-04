@@ -19,6 +19,7 @@ import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import ImageWrapper from "./ImageWrapper";
 import PusakaPoints from "@svgs/logo.svg";
 import ChangeLanguageButtons from "./LanguageSwitcher";
+import HeaderLink from "./HeaderLink";
 
 export default function Header() {
     const t = useTranslations('header');
@@ -148,13 +149,3 @@ const HeaderMenu = styled((props: MenuProps) => (
 
     },
 }));
-
-type HeaderLinkProps = {
-    href: string;
-    children: string;
-    title?: string;
-};
-
-function HeaderLink({ href, children, title }: HeaderLinkProps) {
-    return <Typography component="p"><NextLink title={title} href={href}>{children}</NextLink></Typography>
-}

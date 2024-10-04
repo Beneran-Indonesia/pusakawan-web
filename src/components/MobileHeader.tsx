@@ -6,17 +6,15 @@ import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import Menu, { MenuProps } from "@mui/material/Menu";
+import MenuList from "@mui/material/MenuList";
+import MenuItem from "@mui/material/MenuItem";
 import PusakawanLogo from "./PusakawanLogo";
 import ClickAwayListener from "@mui/material/ClickAwayListener";
 import Grow from "@mui/material/Grow";
 import Paper from "@mui/material/Paper";
 import Popper from "@mui/material/Popper";
-import MenuList from "@mui/material/MenuList";
-import Typography from "@mui/material/Typography";
-import NextLink from "next/link";
 import { useTranslations } from "next-intl";
 import { signOut, useSession } from "next-auth/react";
-import MenuItem from "@mui/material/MenuItem";
 import { styled } from "@mui/material/styles";
 import ImageWrapper from "./ImageWrapper";
 import PusakaPoints from "@svgs/logo.svg";
@@ -28,6 +26,7 @@ import Button from "@mui/material/Button";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import { useRouter } from "next/router";
 import { CircularProgress } from "@mui/material";
+import HeaderLink from "./HeaderLink";
 
 export default function MobileHeader() {
   const t = useTranslations("header");
@@ -253,21 +252,6 @@ function MenuOpen({
   );
 }
 
-type HeaderLinkProps = {
-  href: string;
-  children: string;
-  title?: string;
-};
-
-function HeaderLink({ href, children, title }: HeaderLinkProps) {
-  return (
-    <Typography component="p">
-      <NextLink title={title} href={href}>
-        {children}
-      </NextLink>
-    </Typography>
-  );
-}
 
 const HeaderMenu = styled((props: MenuProps) => (
   <Menu
