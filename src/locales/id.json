@@ -91,6 +91,7 @@
         "google": "Masuk dengan Google",
         "to_register": "Bikin akun",
         "error": {
+            "client": "Client error. Tidak bisa memasukkan anda.",
             "server": "Server error. Tidak bisa memasukkan anda.",
             "invalid_credentials": "Username atau password tidak cocok.",
             "account_disabled": "Akun telah di nonaktifkan, tolong kontak administrator.",
@@ -101,8 +102,13 @@
             "title": "Lihat Syarat dan Ketentuan Pusakawan",
             "by_registering": "Dengan mendaftar, kamu telah menyetujui",
             "tnc": "Syarat dan Ketentuan Pusakawan"
+        },
+        "switch_page": {
+          "email": "Atau masuk dengan email disini.",
+          "google": "Atau masuk dengan Google disini."
         }
     },
+    
     "header": {
         "pusakawan": "Kembali ke Pusakawan",
         "challenge": "Tantangan",

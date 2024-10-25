@@ -91,6 +91,7 @@
     "google": "Login with Google",
     "to_register": "Create an account",
     "error": {
+      "client": "Client error. Can not log you in.",
       "server": "Server error. Can not log you in.",
       "invalid_credentials": "Username or password doesn't match.",
       "account_disabled": "Account has been disabled, please contact administrator.",
@@ -101,8 +102,11 @@
         "title": "See our terms and conditions",
         "by_registering": "By registering, you agree to our",
         "tnc": "Terms and Conditions Pusakawan"
+    },
+    "switch_page": {
+      "email": "Or login with email here.",
+      "google": "Or sign in with Google here."
     }
-    
   },
   "header": {
     "pusakawan": "Back to Pusakawan",
