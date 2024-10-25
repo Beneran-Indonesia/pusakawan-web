@@ -10,8 +10,8 @@ import { CssBaseline } from '@mui/material';
 import Wrapper from '@/components/Wrapper';
 import { SessionProvider } from 'next-auth/react';
 import NextNProgress from 'nextjs-progressbar';
-import { Analytics } from '@vercel/analytics/react';
-import { SpeedInsights } from '@vercel/speed-insights/next';
+// import { Analytics } from '@vercel/analytics/react';
+// import { SpeedInsights } from '@vercel/speed-insights/next';
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -32,8 +32,8 @@ export default function Pusakawan(props: MyAppProps) {
             <NextNProgress color="#AE1622" startPosition={0.3} stopDelayMs={400} height={4} />
             <Wrapper>
               <Component {...pageProps} />
-              <SpeedInsights />
-              <Analytics />
+              {/* <SpeedInsights />
+              <Analytics /> */}
             </Wrapper>
           </SessionProvider>
         </NextIntlClientProvider>

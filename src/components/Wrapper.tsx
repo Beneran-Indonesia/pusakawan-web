@@ -10,7 +10,7 @@ export default function Wrapper({ children }: { children: React.ReactNode }) {
     const router = useRouter();
     const isDesktopRatio = useDesktopRatio();
     const { pathname } = router;
-    if (pathname === '/login' || pathname === '/register' || pathname === '/on-development' || pathname === '/reset-password') {
+    if (pathname === '/signin' || pathname === '/on-development' || pathname === '/reset-password') {
         return children;
     }
     return (

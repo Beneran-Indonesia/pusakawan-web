@@ -11,10 +11,10 @@ export async function middleware(req: NextRequest) {
   
   // Redirect user to / if user is not logged in
   if ((pathname === '/user' || pathname === 'reset-password') && !loggedIn) {
-    return NextResponse.redirect(new URL('/login', req.url))
+    return NextResponse.redirect(new URL('/signin', req.url))
   }
   // Redirect user to /user if user is logged in
-  if ((pathname === '/login' || pathname === '/register') && loggedIn) {
+  if ((pathname === '/signin') && loggedIn) {
     return NextResponse.redirect(new URL('/user', req.url))
   }
 

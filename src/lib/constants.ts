@@ -21,7 +21,6 @@ function unsplash(id: string) {
 // DATAS
 
 const headlinePictures = [
-    // unsplash('fdM9euZW2j4'),
     "https://pusaka-api-bucket-dev.s3.ap-southeast-1.amazonaws.com/media/IMG_5527+1.png",
 ];
 

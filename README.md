@@ -16,7 +16,7 @@ Hope this documentation will help you get the general idea of the project.
 
 ## General good-to-knows
 
-We are using Next 13.4 with `src` directory. We don't have local API. Development API url is: `https://develop-pusaka.ap-southeast-1.elasticbeanstalk.com/` using Django Rest API that is hosted on AWS EB.
+We are using Next 13.4 with `src` directory. We don't have local API. Development API url is: `https://dev-api.pusakaapp.id/` using Django Rest API that is hosted on AWS EB.
 
 This project uses `Typescript`, `pnpm`, and `node v18.17.1`.
 This project is deployed on `Vercel` using Beni's Vercel account.

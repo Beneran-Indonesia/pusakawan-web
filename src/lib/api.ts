@@ -1,5 +1,6 @@
 // API calls
 import axios from 'axios';
+import { Agent } from 'https';
 import { createBearerHeader, urlToDatabaseFormatted } from './utils';
 
 const headers = {
@@ -9,6 +10,9 @@ const headers = {
 
 const api = axios.create({
     baseURL: process.env.NEXT_PUBLIC_API_URL,
+    httpsAgent: new Agent({
+        rejectUnauthorized: process.env.NEXT_PUBLIC_PRODUCTION === "true"
+    }),
     headers
 })
 
@@ -65,7 +69,7 @@ async function getProgram(id: number) {
     }
 }
 
-async function getProgramData (classname: string) {
+async function getProgramData(classname: string) {
     try {
         const res = await api.get("/program", {
             params: {
