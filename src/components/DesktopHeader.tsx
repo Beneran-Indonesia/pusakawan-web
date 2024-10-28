@@ -103,8 +103,8 @@ export default function Header() {
                                 </HeaderMenu>
                             </>
                             : <>
-                                <NextLink href="/signin"><Button size="large" variant="contained">{t('register')}</Button></NextLink>
                                 <NextLink href="/signin"><Button size="large" variant="outlined">{t('login')}</Button></NextLink>
+                                <NextLink href="/signin"><Button size="large" variant="contained">{t('register')}</Button></NextLink>
                             </>
                 }
 

@@ -152,14 +152,14 @@ export default function MobileHeader() {
               </Box>
             ) : (
               <Box>
+              <MenuItem>
+                  <Button size="small" variant="outlined" href="/signin" fullWidth>
+                    {t("login")}
+                  </Button>
+                </MenuItem>
                 <MenuItem sx={{ justifyContent: "center" }}>
                   <Button size="small" variant="contained" href="/signin">
                     {t("register")}
-                  </Button>
-                </MenuItem>
-                <MenuItem>
-                  <Button size="small" variant="outlined" href="/signin" fullWidth>
-                    {t("login")}
                   </Button>
                 </MenuItem>
               </Box>
