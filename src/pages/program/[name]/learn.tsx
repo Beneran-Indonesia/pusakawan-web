@@ -467,7 +467,7 @@ function ModulesMenu({
                 </MenuItem>
                 {moduleData.map((mdl) => (
                   <MenuItem key={mdl.id}>
-                    <HeaderLink href={mdl.href} title={mdl.title}>
+                    <HeaderLink href="#" title={mdl.title}>
                       {mdl.title}
                     </HeaderLink>
                   </MenuItem>
