@@ -188,6 +188,7 @@ function LoginBox() {
         if (dt.status === 200) {
           router.push("/program");
         }
+        setLoading(false);
       })
       .catch((e) => {
         setLoading(false);
@@ -248,6 +249,7 @@ function LoginBox() {
         if (dt.status === 200) {
           router.push("/program");
         }
+        setLoading(false);
       })
       .catch((e) => {
         setLoading(false);
