@@ -454,6 +454,7 @@ function TermsAndConditionModal({
   open,
   handleClose,
 }: TermsAndConditionModalProps) {
+  const isDesktopRation = useDesktopRatio();
   return (
     <Modal
       open={open}
@@ -465,7 +466,7 @@ function TermsAndConditionModal({
         <iframe
           src="/assets/terms-and-condition.html"
           style={{
-            width: "50%",
+            width: isDesktopRation ? "50%" : "85%",
             height: "80vh",
             position: "absolute",
             top: "50%",
