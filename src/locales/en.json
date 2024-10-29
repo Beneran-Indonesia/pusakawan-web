@@ -88,7 +88,7 @@
     "forgot_password": "Forgot password?",
     "change_password": "Change password",
     "or": "Or",
-    "google": "Login with Google",
+    "google": "Continue with Google",
     "to_register": "Create an account",
     "error": {
       "client": "Client error. Can not log you in.",
