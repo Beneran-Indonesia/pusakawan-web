@@ -49,7 +49,7 @@ export default function NameClass({ classname, programData, moduleData, assignme
     ];
 
     const userIsUnauthenticated = status === "unauthenticated";
-    const userProfileNotCompleted = !session?.user.is_profile_complete;
+    const userProfileNotCompleted = false; // !session?.user.is_profile_complete;
 
     const { title, description, banners, pusaka_points: pusakaPoints, price } = programData;
 
