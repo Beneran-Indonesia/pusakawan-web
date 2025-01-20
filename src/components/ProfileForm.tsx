@@ -76,6 +76,8 @@ export default function EditProfile({ setSnackbar, userData, accessToken, dropdo
             setEditLoading(false);
             if (res.status === 200) {
                 setSnackbar(true, true, t("edit_succeed"));
+                console.log("DATA:", res.data);
+                console.log("PROFILE:", res.data.is_profile_complete);
                 // Update session
                 if (res.data.profile_picture) {
                     await update({

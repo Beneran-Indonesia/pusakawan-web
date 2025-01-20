@@ -11,10 +11,10 @@ type NoticeProps = {
 export default function ProfileNotCompleteNotice({ type = "default" }: NoticeProps) {
     const { data: session, status } = useSession();
     const authenticated = status === "authenticated";
-    const profileCompleted = true; // session.user.is_profile_complete;
+    const profileCompleted = authenticated && session && session.user.is_profile_complete;
     const t = useTranslations("notice_bar");
     return (
-        authenticated && session && !profileCompleted ? (
+        !profileCompleted ? (
             <NoticeBar>
                 {t.rich(type, {
                     'red': (chunks) => <Box component="span" color="primary.main">{chunks}</Box>,
