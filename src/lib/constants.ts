@@ -44,8 +44,8 @@ const footerInformation: FooterInformationObject = {
         value: "+62 813-8543-2211"
     },
     email: {
-        href: "mailto:info@beneranindonesia.id",
-        value: "info@beneranindonesia.id"
+        href: "mailto:pusakawanedukasikreatif@gmail.com",
+        value: "pusakawanedukasikreatif@gmail.com"
     },
 };
 
