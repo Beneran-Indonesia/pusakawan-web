@@ -5,7 +5,6 @@ import { useTranslations } from "next-intl";
 import { footerInformation } from "@/lib/constants";
 import PhoneIcon from '@mui/icons-material/Phone';
 import PlaceIcon from '@mui/icons-material/Place';
-import Link from "next/link";
 import ChangeLanguageButtons from "./LanguageSwitcher";
 import EmailIcon from '@mui/icons-material/Email';
 import { ReactNode } from "react";
@@ -13,7 +12,6 @@ import { useDesktopRatio } from "@/lib/hooks";
 
 export default function Footer() {
     const t = useTranslations("footer");
-    const currentYear = new Date().getFullYear();
     const isDesktopRatio = useDesktopRatio();
     return (
         <Box
@@ -59,7 +57,7 @@ export default function Footer() {
                 </Box>
             </Box>
             <hr />
-            <Typography variant="h5" component="p" my={isDesktopRatio ? "75px" : "32px"} ml="auto">Copyrights &#169; {currentYear} <Link href='https://beneranindonesia.id/'>Beneran Indonesia</Link></Typography>
+            <Typography variant="h5" component="p" my={isDesktopRatio ? "75px" : "32px"} ml="auto">Copyrights &#169; 2024 Pusakawan </Typography>
         </Box>
     )
 }
