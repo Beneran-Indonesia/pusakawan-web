@@ -37,11 +37,11 @@ const getRandomCoursePicture = () => coursesPictures[Math.random() * 2 | 0];
 const footerInformation: FooterInformationObject = {
     office: {
         href: "https://maps.app.goo.gl/q5ukmMxaRno5uw7d8",
-        value: "Jl. Cimanuk no 49A, Cideng, Kec Gambir Kota Jakarta Pusat"
+        value: "Jalan Cimanuk 49A, Desa/Kelurahan Cideng. Kec. Gambir, Kota Adm. Jakarta Pusat, Provinsi DKI Jakarta, Kode Pos: 10150"
     },
     phone: {
-        href: "https://wa.me/6281385432211",
-        value: "+62 813-8543-2211"
+        href: "https://wa.me/6281281091400",
+        value: "+62 812-8109-1400"
     },
     email: {
         href: "mailto:pusakawanedukasikreatif@gmail.com",
