@@ -21,7 +21,7 @@ export default function Footer() {
                 flexDirection: 'column',
                 backgroundColor: 'primary.main',
                 color: "white",
-                px: isDesktopRatio ? "10rem" : "1rem"
+                px: isDesktopRatio ? "10rem" : "1rem",
             }}
         >
             <Box
@@ -29,7 +29,7 @@ export default function Footer() {
                 my={isDesktopRatio ? 10 : 4}
                 justifyContent="space-between"
                 flexDirection={isDesktopRatio ? "row" : "column"}
-            // gap={20}
+                gap={10}
             >
                 <PusakawanLogo white={true} />
                 <Box

@@ -14,7 +14,7 @@ export default function ProfileNotCompleteNotice({ type = "default" }: NoticePro
     const profileCompleted = authenticated && session && session.user.is_profile_complete;
     const t = useTranslations("notice_bar");
     return (
-        !profileCompleted ? (
+        session && !profileCompleted ? (
             <NoticeBar>
                 {t.rich(type, {
                     'red': (chunks) => <Box component="span" color="primary.main">{chunks}</Box>,
