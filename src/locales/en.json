@@ -41,7 +41,7 @@
         "program": "Programs"
       },
       "button": {
-        "paid": "Paid",
+        "paid": "Pay",
         "free": "Free enroll"
       },
       "description": "Program description",
@@ -57,7 +57,20 @@
       "error": {
         "unauthenticated": "You are not logged in.",
         "profile_not_complete": "Your profile is not complete yet."
-      }
+      },
+      "price_title": "Program Price"
+    },
+    "paid_card": {
+        "title": "Gain class access starting from",
+        "subtitle": "What benefits do you get?",
+        "points": {
+            "first": "Program completion certificate",
+            "second": "Learning can be accessed anytime and anywhere",
+            "third": "Opportunity to join the community"
+        },
+        "button": {
+            "title": "Enroll now"
+        }
     }
   },
   "form": {

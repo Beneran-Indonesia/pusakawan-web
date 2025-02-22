@@ -57,6 +57,19 @@
             "error": {
                 "unauthenticated": "Anda belum masuk.",
                 "profile_not_complete": "Anda belum melengkapi profil anda."
+            },
+            "price_title": "Harga Program"
+        },
+        "paid_card": {
+            "title": "Mulai akses kelas dari",
+            "subtitle": "Apa yang akan kamu dapatkan?",
+            "points": {
+                "first": "Sertifikat penyelesaian program",
+                "second": "Pembelajaran bisa diakses kapanpun dan dimanapun",
+                "third": "Kesempatan bergabung di komunitas"
+            },
+            "button": {
+                "title": "Beli Kelas"
             }
         }
     },
