@@ -98,10 +98,14 @@
       "email_not_verified": "Email has not been verified. Please verify your email.",
       "credentials_exists": "Please use email and password to continue login."
     },
+    "by_registering": "By registering, you agree to our",
     "tnc": {
         "title": "See our terms and conditions",
-        "by_registering": "By registering, you agree to our",
         "tnc": "Terms and Conditions Pusakawan"
+    },
+    "pp": {
+        "title": "See our privacy policy",
+        "pp": "Privacy Policy Pusakawan"
     },
     "switch_page": {
       "email": "Or login with email here.",
@@ -136,7 +140,8 @@
   },
   "footer": {
     "office_location": "Office address",
-    "contact_us": "Contact us"
+    "contact_us": "Contact us",
+    "tnc": "Terms and conditions"
   },
   "detail_panel": {
     "title": "Civic studies that are interactive",

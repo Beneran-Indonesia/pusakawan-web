@@ -103,6 +103,11 @@
             "by_registering": "Dengan mendaftar, kamu telah menyetujui",
             "tnc": "Syarat dan Ketentuan Pusakawan"
         },
+        "pp": {
+            "title": "Lihat Kebijakan Privasi Pusakawan",
+            "by_registering": "Dengan mendaftar, kamu telah menyetujui",
+            "pp": "Kebijakan Privasi Pusakawan"
+        },
         "switch_page": {
           "email": "Atau masuk dengan email disini.",
           "google": "Atau masuk dengan Google disini."
@@ -137,7 +142,8 @@
     },
     "footer": {
         "office_location": "Lokasi kantor",
-        "contact_us": "Kontak kami"
+        "contact_us": "Kontak kami",
+        "tnc": "Syarat dan ketentuan"
     },
     "detail_panel": {
         "title": "Belajar kewarganegaraan yang interaktif",
