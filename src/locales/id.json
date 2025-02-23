@@ -289,10 +289,27 @@
         },
         "breadcrumbs": {
             "home": "Beranda",
-            "program": "Programs",
-            "learn": "Materi"
+            "program": "Program",
+            "learn": "Materi",
+            "payment": "Pembayaran"
         },
         "learn": "Materi",
         "assignment": "Tugas"
+    },
+    "pricing": {
+        "title": "Pembayaran Program",
+        "method": "Metode Pembayaran",
+        "detail": "Detail Pembayaran",
+        "price": "Harga Program",
+        "additional": "Biaya Lainnya",
+        "total": "Total Harga",
+        "enroll": "Daftar Program",
+        "agreements": "Saya setuju dengan <red>Syarat & Ketentuan</red> yang berlaku",
+        "breadcrumbs": {
+            "home": "Beranda",
+            "program": "Program",
+            "learn": "Materi",
+            "payment": "Pembayaran"
+        }
     }
 }

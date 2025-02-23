@@ -289,9 +289,26 @@
     "breadcrumbs": {
       "home": "Home",
       "program": "Programs",
-      "learn": "Modules"
+      "learn": "Modules",
+      "payment": "Payment"
     },
     "learn": "Modules",
     "assignment": "Assignment"
-  }
+  },
+    "pricing": {
+        "title": "Program Payment",
+        "method": "Payment Method",
+        "detail": "Payment Details",
+        "price": "Program Price",
+        "additional": "Additional Fee",
+        "total": "Total Price",
+        "enroll": "Enroll Program",
+        "agreements": "I agree to the applicable <red>Terms & Conditions</red>",
+        "breadcrumbs": {
+          "home": "Home",
+          "program": "Programs",
+          "learn": "Modules",
+          "payment": "Payment"
+        }
+    }
 }

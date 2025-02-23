@@ -84,4 +84,33 @@ async function getProgramData(classname: string) {
     }
 }
 
-export { getProgramData, getEditProfileFields, getModuleData, getAllStorylinePrograms, getProgram };
+async function getPricingData(classname: string, email: string) {
+    return {
+        status: 200,
+        message: 
+            {
+                program_id: 1,
+                program_name: "Hello World",
+                main_price: 200_000,
+                unique_code: 0, // 385,
+                additional_fee: 15_000,
+                total_price: 200_000
+            }
+        
+    }
+    try {
+        const res = await api.post("/program/pricing/", {
+            params: {
+                title: urlToDatabaseFormatted(classname),
+                status: "ACTIVE",
+                program_type: "STORYLINE",
+                email
+            }
+        })
+        return { status: res.status, message: res.data };
+    } catch (e) {
+        console.error("GET PAYMENT DATA ERROR:", e)
+    }
+}
+
+export { getProgramData, getEditProfileFields, getModuleData, getAllStorylinePrograms, getProgram, getPricingData };

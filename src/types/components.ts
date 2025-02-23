@@ -2,7 +2,16 @@ type BreadcrumbLinkProps = {
     href: string, children: string, active?: boolean, title?: string
 }
 
-type STATUS = "NONACTIVE" | "ACTIVE" | "DRAFT"
+type STATUS = "NONACTIVE" | "ACTIVE" | "DRAFT";
+
+type ProgramPricing = {
+    program_id: number;
+    program_name: string;
+    main_price: number;
+    unique_code: number;
+    additional_fee: number;
+    total_price: number;
+}
 
 type ProgramData = {
     id: number;
@@ -63,6 +72,7 @@ type TestData = {
 export type {
     SimpleModuleData,
     BreadcrumbLinkProps,
+    ProgramPricing,
     ProgramData,
     SortBy,
     ModuleData,
