@@ -111,10 +111,10 @@
       "email_not_verified": "Email has not been verified. Please verify your email.",
       "credentials_exists": "Please use email and password to continue login."
     },
-    "by_registering": "By registering, you agree to our",
     "tnc": {
-        "title": "See our terms and conditions",
-        "tnc": "Terms and Conditions Pusakawan"
+      "by_registering": "By registering, you agree to our",
+      "title": "See our terms and conditions",
+      "tnc": "Terms and Conditions Pusakawan"
     },
     "pp": {
         "title": "See our privacy policy",

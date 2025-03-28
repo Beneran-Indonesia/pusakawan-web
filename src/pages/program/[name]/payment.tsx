@@ -144,8 +144,6 @@ function TNCAgreeRadio({
 }: TNCAgreeRadioProps) {
   const t = useTranslations("pricing");
 
-  const someString = "";
-
   return (
     <FormControl>
       <RadioGroup
