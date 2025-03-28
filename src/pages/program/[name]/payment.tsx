@@ -144,8 +144,6 @@ function TNCAgreeRadio({
 }: TNCAgreeRadioProps) {
   const t = useTranslations("pricing");
 
-  const someString = "";
-
   return (
     <FormControl>
       <RadioGroup
@@ -210,6 +208,7 @@ export const getServerSideProps: GetServerSideProps<
 
   return {
     props: {
+      pricing: programPricingReq.message,
       userData: {
         accessToken: session.user.accessToken,
         full_name: session.user.full_name,
@@ -218,7 +217,6 @@ export const getServerSideProps: GetServerSideProps<
       },
       messages: (await import(`../../../locales/${locale}.json`)).default,
       // testData: [{ title: "pretest", href: "/pretest" }, { title: "posttest", href: "/posttest" }],
-      pricing: programPricingReq.message,
     },
   };
 };

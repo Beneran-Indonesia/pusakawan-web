@@ -85,16 +85,19 @@ async function getProgramData(classname: string) {
 }
 
 async function getPricingData(classname: string, email: string) {
+    const pricing = {
+        main_price : 200_000,
+        unique_code: 385,
+        additional_fee: 15_000,
+        total_price: 215.385
+    }
     return {
         status: 200,
         message: 
             {
                 program_id: 1,
-                program_name: "Hello World",
-                main_price: 200_000,
-                unique_code: 0, // 385,
-                additional_fee: 15_000,
-                total_price: 200_000
+                program_name: classname,
+                ...pricing
             }
         
     }

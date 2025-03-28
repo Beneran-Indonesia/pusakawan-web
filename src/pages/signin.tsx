@@ -427,7 +427,7 @@ function Agreements() {
   return (
     <Box>
       <Typography component="h4" variant="h6">
-        {t("by_registering")}
+        {t("tnc.by_registering")}
       </Typography>
       {/* Terms and Conditions */}
       <Box

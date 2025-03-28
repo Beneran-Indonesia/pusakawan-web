@@ -98,7 +98,7 @@ export default function NameClass({
     pusaka_points: pusakaPoints,
     price,
   } = programData;
-  const paid = price > 0;
+  const programPaid = price > 0;
 
   async function enrollUser(
     userId: number,
@@ -203,9 +203,11 @@ export default function NameClass({
                   size={"medium"}
                   sx={{ textAlign: "center", mr: isDesktopRatio ? 4 : 1 }}
                   disabled={userIsUnauthenticated || userProfileNotCompleted}
-                  onClick={toggleModalOpen}
+                  onClick={ programPaid
+                    ? () => router.push(router.asPath + "/payment")
+                    : toggleModalOpen}
                 >
-                  {paid ? (
+                  {programPaid ? (
                     <>
                       {t("button.paid")}
                       <Typography
@@ -277,7 +279,7 @@ export default function NameClass({
             userIsEnrolled={userIsEnrolled}
           />
 
-          {!paid ? null : (
+          {!programPaid ? null : (
             <>
               <Typography
                 variant="h4"
@@ -288,7 +290,13 @@ export default function NameClass({
               >
                 {t("price_title")}
               </Typography>
-              <PaidClassCard price={price} />
+              <PaidClassCard
+                userIsEnrolled={userIsEnrolled}
+                buttonDisabled={
+                  userIsUnauthenticated || userProfileNotCompleted
+                }
+                price={price}
+              />
             </>
           )}
         </Box>
@@ -320,13 +328,7 @@ export default function NameClass({
             loading={enrollLoading}
             variant="contained"
             size="medium"
-            onClick={() =>
-              enrollUser(
-                user.id as number,
-                programData.id,
-                user.accessToken as string
-              )
-            }
+            onClick={() => enrollUser(user.id!, programData.id, user.accessToken!)}
           >
             {t("modal.confirm")}
           </LoadingButton>
@@ -338,9 +340,15 @@ export default function NameClass({
 
 type PaidClassCardProps = {
   price: number;
+  buttonDisabled: boolean;
+  userIsEnrolled: boolean;
 };
 
-function PaidClassCard({ price }: PaidClassCardProps) {
+function PaidClassCard({
+  buttonDisabled,
+  userIsEnrolled,
+  price,
+}: PaidClassCardProps) {
   const t = useTranslations("class.paid_card");
   const router = useRouter();
   const paymentLink = router.asPath + "/payment";
@@ -387,16 +395,18 @@ function PaidClassCard({ price }: PaidClassCardProps) {
         <PointsTypography content={t("points.second")} />
         <PointsTypography content={t("points.third")} />
       </Box>
-
-      <Button
-        variant="contained"
-        size="large"
-        sx={{ mt: 2 }}
-        title={t("button.title")}
-        href={paymentLink}
-      >
-        {t("button.title")}
-      </Button>
+      {userIsEnrolled ? null : (
+        <Button
+          disabled={buttonDisabled}
+          variant="contained"
+          size="large"
+          sx={{ mt: 2 }}
+          title={t("button.title")}
+          href={paymentLink}
+        >
+          {t("button.title")}
+        </Button>
+      )}
     </Box>
   );
 }
