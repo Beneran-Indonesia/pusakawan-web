@@ -9,7 +9,7 @@ type CardProps = {
     title: string;
     // programId: number;
     // null price means that it's free ( not paid )
-    price: number | null;
+    price: number;
     href: string;
 }
 
@@ -19,7 +19,7 @@ export default function ProgramCard({ img, title, price, href }: CardProps) {
         <CardWrapper alt={title} src={img}>
             <Typography variant="h5" component="h5" fontWeight={500} mb={2} sx={{ whiteSpace: "break-spaces" }}>{title}</Typography>
             <Typography variant="h3" component="h3" mb={4} fontWeight={600}>
-                {!price
+                {price === 0
                     ? t('paid')
                     : formatNumberToIdr(price)
                 }

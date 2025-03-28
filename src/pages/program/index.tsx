@@ -24,8 +24,8 @@ export default function ProgramPage({ programData }: InferGetServerSidePropsType
     const onFilterChange = (filterChange: SortBy) => {
         setFilter(filterChange);
         if (filterChange === 'ALL') setCurrentData(programData);
-        else if (filterChange === 'FREE') setCurrentData(currentData.filter((dt) => !dt.price));
-        else if (filterChange === 'PAID') setCurrentData(currentData.filter((dt) => dt.price));
+        else if (filterChange === 'FREE') setCurrentData(currentData.filter((dt) => dt.price === 0));
+        else if (filterChange === 'PAID') setCurrentData(currentData.filter((dt) => dt.price !== 0));
     };
     const isDesktopRatio = useDesktopRatio();
     return (
@@ -96,7 +96,7 @@ function CoursesCard({ data }: CoursesCardProps) {
                             <ProgramCard
                                 img={dt.banners[0]?.image}
                                 title={dt.title}
-                                price={dt.price!}
+                                price={dt.price}
                                 href={`/program/${databaseToUrlFormatted(dt.title)}/`}
                             // programId={dt.id}
                             />

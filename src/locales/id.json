@@ -57,6 +57,19 @@
             "error": {
                 "unauthenticated": "Anda belum masuk.",
                 "profile_not_complete": "Anda belum melengkapi profil anda."
+            },
+            "price_title": "Harga Program"
+        },
+        "paid_card": {
+            "title": "Mulai akses kelas dari",
+            "subtitle": "Apa yang akan kamu dapatkan?",
+            "points": {
+                "first": "Sertifikat penyelesaian program",
+                "second": "Pembelajaran bisa diakses kapanpun dan dimanapun",
+                "third": "Kesempatan bergabung di komunitas"
+            },
+            "button": {
+                "title": "Beli Kelas"
             }
         }
     },
@@ -103,6 +116,11 @@
             "by_registering": "Dengan mendaftar, kamu telah menyetujui",
             "tnc": "Syarat dan Ketentuan Pusakawan"
         },
+        "pp": {
+            "title": "Lihat Kebijakan Privasi Pusakawan",
+            "by_registering": "Dengan mendaftar, kamu telah menyetujui",
+            "pp": "Kebijakan Privasi Pusakawan"
+        },
         "switch_page": {
           "email": "Atau masuk dengan email disini.",
           "google": "Atau masuk dengan Google disini."
@@ -137,7 +155,8 @@
     },
     "footer": {
         "office_location": "Lokasi kantor",
-        "contact_us": "Kontak kami"
+        "contact_us": "Kontak kami",
+        "tnc": "Syarat dan ketentuan"
     },
     "detail_panel": {
         "title": "Belajar kewarganegaraan yang interaktif",
@@ -270,10 +289,27 @@
         },
         "breadcrumbs": {
             "home": "Beranda",
-            "program": "Programs",
-            "learn": "Materi"
+            "program": "Program",
+            "learn": "Materi",
+            "payment": "Pembayaran"
         },
         "learn": "Materi",
         "assignment": "Tugas"
+    },
+    "pricing": {
+        "title": "Pembayaran Program",
+        "method": "Metode Pembayaran",
+        "detail": "Detail Pembayaran",
+        "price": "Harga Program",
+        "additional": "Biaya Lainnya",
+        "total": "Total Harga",
+        "enroll": "Daftar Program",
+        "agreements": "Saya setuju dengan <red>Syarat & Ketentuan</red> yang berlaku",
+        "breadcrumbs": {
+            "home": "Beranda",
+            "program": "Program",
+            "learn": "Materi",
+            "payment": "Pembayaran"
+        }
     }
 }

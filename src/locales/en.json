@@ -41,7 +41,7 @@
         "program": "Programs"
       },
       "button": {
-        "paid": "Paid",
+        "paid": "Pay",
         "free": "Free enroll"
       },
       "description": "Program description",
@@ -57,7 +57,20 @@
       "error": {
         "unauthenticated": "You are not logged in.",
         "profile_not_complete": "Your profile is not complete yet."
-      }
+      },
+      "price_title": "Program Price"
+    },
+    "paid_card": {
+        "title": "Gain class access starting from",
+        "subtitle": "What benefits do you get?",
+        "points": {
+            "first": "Program completion certificate",
+            "second": "Learning can be accessed anytime and anywhere",
+            "third": "Opportunity to join the community"
+        },
+        "button": {
+            "title": "Enroll now"
+        }
     }
   },
   "form": {
@@ -98,10 +111,14 @@
       "email_not_verified": "Email has not been verified. Please verify your email.",
       "credentials_exists": "Please use email and password to continue login."
     },
+    "by_registering": "By registering, you agree to our",
     "tnc": {
         "title": "See our terms and conditions",
-        "by_registering": "By registering, you agree to our",
         "tnc": "Terms and Conditions Pusakawan"
+    },
+    "pp": {
+        "title": "See our privacy policy",
+        "pp": "Privacy Policy Pusakawan"
     },
     "switch_page": {
       "email": "Or login with email here.",
@@ -136,7 +153,8 @@
   },
   "footer": {
     "office_location": "Office address",
-    "contact_us": "Contact us"
+    "contact_us": "Contact us",
+    "tnc": "Terms and conditions"
   },
   "detail_panel": {
     "title": "Civic studies that are interactive",
@@ -271,9 +289,26 @@
     "breadcrumbs": {
       "home": "Home",
       "program": "Programs",
-      "learn": "Modules"
+      "learn": "Modules",
+      "payment": "Payment"
     },
     "learn": "Modules",
     "assignment": "Assignment"
-  }
+  },
+    "pricing": {
+        "title": "Program Payment",
+        "method": "Payment Method",
+        "detail": "Payment Details",
+        "price": "Program Price",
+        "additional": "Additional Fee",
+        "total": "Total Price",
+        "enroll": "Enroll Program",
+        "agreements": "I agree to the applicable <red>Terms & Conditions</red>",
+        "breadcrumbs": {
+          "home": "Home",
+          "program": "Programs",
+          "learn": "Modules",
+          "payment": "Payment"
+        }
+    }
 }

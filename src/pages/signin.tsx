@@ -15,7 +15,6 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import { signUpWithGoogle } from "@/lib/firebase";
 import HomeButton from "@/components/HomeButton";
 import { useDesktopRatio } from "@/lib/hooks";
-import Modal from "@mui/material/Modal";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import { LoginUserProps } from "@/types/auth";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -23,6 +22,7 @@ import Link from "next/link";
 import PasswordInput from "@/components/Form/PasswordInput";
 import { Input } from "@/components/Form/Input";
 import UnderlinedLink from "@/components/UnderlinedLink";
+import AgreementModal from "@/components/AgreementsModal";
 
 const LoginContainer = ({ children }: { children: React.ReactNode }) => {
   const isDesktopRatio = useDesktopRatio();
@@ -288,7 +288,7 @@ function LoginBox() {
                 {errorMessage.message}
               </Typography>
             )}
-            <TermsAndCondition />
+            <Agreements />
             <LoadingButton
               loading={loading}
               aria-label={t("google")}
@@ -410,20 +410,30 @@ function LoginBox() {
   );
 }
 
-function TermsAndCondition() {
-  const t = useTranslations("signin.tnc");
-  const [modalOpen, setModalOpen] = useState(false);
-  const handleClose = () => setModalOpen(false);
-  const handleOpen = () => setModalOpen(true);
+function Agreements() {
+  const t = useTranslations("signin");
+  const [TCModalOpen, setTCModalOpen] = useState(false);
+  const [PPModalOpen, setPPModalOpen] = useState(false);
+  const handleModal = (type: "T&C" | "PP") => {
+    if (type === "T&C") {
+      setTCModalOpen(!TCModalOpen);
+      setPPModalOpen(false);
+    } else {
+      setPPModalOpen(!PPModalOpen);
+      setTCModalOpen(false);
+    }
+  };
+
   return (
     <Box>
       <Typography component="h4" variant="h6">
         {t("by_registering")}
       </Typography>
+      {/* Terms and Conditions */}
       <Box
-        title={t("title")}
+        title={t("tnc.title")}
         aria-label="terms and conditions modal action"
-        onClick={handleOpen}
+        onClick={() => handleModal("T&C")}
         display="flex"
         flexDirection="row"
         color="primary.main"
@@ -437,48 +447,44 @@ function TermsAndCondition() {
           component="h4"
           variant="h6"
         >
-          {t("tnc")}
+          {t("tnc.tnc")}
         </Typography>
         <OpenInNewIcon fontSize="small" />
       </Box>
-      <TermsAndConditionModal open={modalOpen} handleClose={handleClose} />
-    </Box>
-  );
-}
-
-type TermsAndConditionModalProps = {
-  open: boolean;
-  handleClose: () => void;
-};
-
-// Modal to show the T&C
-function TermsAndConditionModal({
-  open,
-  handleClose,
-}: TermsAndConditionModalProps) {
-  const isDesktopRation = useDesktopRatio();
-  return (
-    <Modal
-      open={open}
-      onClose={handleClose}
-      aria-labelledby="terms and condition modal"
-      aria-describedby="read terms and condition"
-    >
-      <Box>
-        <iframe
-          src="/assets/terms-and-condition.html"
-          style={{
-            width: isDesktopRation ? "50%" : "85%",
-            height: "80vh",
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            borderRadius: 14,
-          }}
-        />
+      {/* Privacy Policy */}
+      <Box
+        title={t("pp.title")}
+        aria-label="privacy policy modal action"
+        onClick={() => handleModal("PP")}
+        display="flex"
+        flexDirection="row"
+        color="primary.main"
+        alignItems="center"
+        gap={0.5}
+        sx={{ cursor: "pointer" }}
+      >
+        <Typography
+          sx={{ textDecoration: "underline" }}
+          fontWeight={500}
+          component="h4"
+          variant="h6"
+        >
+          {t("pp.pp")}
+        </Typography>
+        <OpenInNewIcon fontSize="small" />
       </Box>
-    </Modal>
+
+      <AgreementModal
+        type="T&C"
+        open={TCModalOpen}
+        handleClose={() => handleModal("T&C")}
+      />
+      <AgreementModal
+        type="PP"
+        open={PPModalOpen}
+        handleClose={() => handleModal("PP")}
+      />
+    </Box>
   );
 }
 
