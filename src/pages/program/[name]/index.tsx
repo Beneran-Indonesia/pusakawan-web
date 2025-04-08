@@ -195,7 +195,7 @@ export default function NameClass({
           <Typography variant="h2" component="h2" fontWeight={600}>
             {title}
           </Typography>
-          <Box display="flex">
+          <Box display="flex" flexDirection={isDesktopRatio ? "row" : "column"} gap={isDesktopRatio ? 0 : 2}>
             <Box>
               {userIsEnrolled ? null : (
                 <Button
@@ -203,19 +203,19 @@ export default function NameClass({
                   size={"medium"}
                   sx={{ textAlign: "center", mr: isDesktopRatio ? 4 : 1 }}
                   disabled={userIsUnauthenticated || userProfileNotCompleted}
-                  onClick={ programPaid
-                    ? () => router.push(router.asPath + "/payment")
-                    : toggleModalOpen}
+                  onClick={
+                    programPaid
+                      ? () => router.push(router.asPath + "/payment")
+                      : toggleModalOpen
+                  }
                 >
                   {programPaid ? (
                     <>
-                      {t("button.paid")}
                       <Typography
-                        ml={1}
                         variant={isDesktopRatio ? "h4" : "h5"}
                         component="span"
                       >
-                        Rp. {formatNumberToIdr(price)}
+                        {`${t("button.paid")}  Rp. ${formatNumberToIdr(price)}`}
                       </Typography>
                     </>
                   ) : (
@@ -328,7 +328,9 @@ export default function NameClass({
             loading={enrollLoading}
             variant="contained"
             size="medium"
-            onClick={() => enrollUser(user.id!, programData.id, user.accessToken!)}
+            onClick={() =>
+              enrollUser(user.id!, programData.id, user.accessToken!)
+            }
           >
             {t("modal.confirm")}
           </LoadingButton>
@@ -390,7 +392,14 @@ function PaidClassCard({
         {t("subtitle")}
       </Typography>
 
-      <Box sx={{ lineHeight: "180%" }}>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          gap: 1,
+          lineHeight: "180%",
+        }}
+      >
         <PointsTypography content={t("points.first")} />
         <PointsTypography content={t("points.second")} />
         <PointsTypography content={t("points.third")} />
