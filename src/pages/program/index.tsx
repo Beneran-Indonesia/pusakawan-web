@@ -83,7 +83,8 @@ export default function ProgramPage({ programData }: InferGetServerSidePropsType
 type CoursesCardProps = { data: ProgramData[] }
 
 function CoursesCard({ data }: CoursesCardProps) {
-    const t = useTranslations("program.card")
+    const t = useTranslations("program.card");
+    console.log("COURSES CARDS:", data);
     return (
         <>
             {
