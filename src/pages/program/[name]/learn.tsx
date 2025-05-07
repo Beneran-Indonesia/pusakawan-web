@@ -1,3 +1,5 @@
+// halaman pembelajaran suatu modul
+
 import Box from "@mui/material/Box";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -255,7 +257,7 @@ export default function ModuleLearn({
                   pre={false}
                   selected={title === "posttest"}
                   onChange={() =>
-                    setCurrentModule(moduleData[moduleData.length])
+                    setCurrentModule(moduleData[moduleData.length - 1])
                   }
                 />
               )}

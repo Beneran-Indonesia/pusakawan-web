@@ -138,4 +138,8 @@ async function generateCertificate({ studentName, programName, programID }: Gene
 
 }
 
-const getFile = async (filename: string) => await fs.readFile(path.join(process.cwd(), 'public', 'assets', 'certificate', filename));
+// const getFile = async (filename: string) => await fs.readFile(path.join(process.cwd(), 'public', 'assets', 'certificate', filename));
+const getFile = async (filename: string): Promise<Uint8Array> => {
+    const buffer = await fs.readFile(path.join(process.cwd(), 'public', 'assets', 'certificate', filename));
+    return new Uint8Array(buffer); // Konversi Buffer ke Uint8Array
+};

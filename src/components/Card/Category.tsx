@@ -1,3 +1,7 @@
+// menampilkan sebuah kartu dengan gambar, judul, teks deskriptif, dan tombol aksi
+// halaman promosi modul/pelajaran
+// konten “lihat detail”
+
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import CardWrapper from "./Wrapper/Normal";

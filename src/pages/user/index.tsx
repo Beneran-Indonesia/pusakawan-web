@@ -1,3 +1,6 @@
+//  halaman user profile
+// untuk melihat dan mengedit informasi profil user dan melihat kelas yang sedang diikuti
+
 import type { InferGetServerSidePropsType, GetServerSideProps } from 'next'
 import { getSession } from 'next-auth/react';
 import Container from '@mui/material/Container';

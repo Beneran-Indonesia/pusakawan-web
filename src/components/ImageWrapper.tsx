@@ -1,3 +1,5 @@
+//  menampilkan gambar dengan konfigurasi yang fleksibel
+
 import Image, { StaticImageData } from "next/image"
 import { CSSProperties } from "react";
 

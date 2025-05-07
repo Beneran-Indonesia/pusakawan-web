@@ -8,14 +8,24 @@ type Items = { title: string; href: string };
 type ModuleAccordionProps = {
     userIsEnrolled: boolean;
 } & (
-        | { isModule: true; items: Items[] }
-        | { isModule: false; items: null | ({ title: string; href: string } | undefined | null)[] }
-    );
+    | { isModule: true; items: Items[]; isPostTest?: never }
+    | { isModule: false; isPostTest?: boolean; items: null | ({ title: string; href: string } | undefined | null)[] }
+);
 
-export default function ModuleAccordion({ isModule, items, userIsEnrolled }: ModuleAccordionProps) {
+export default function ModuleAccordion({ isModule, isPostTest = false, items, userIsEnrolled }: ModuleAccordionProps) {
     const t = useTranslations('accordion');
+    
+    let title = '';
+    if (isModule) {
+        title = t('module.title');
+    } else if (isPostTest) {
+        title = t('post_test');
+    } else {
+        title = t('assignment');
+    }
+    
     return (
-        <ClassAccordion id={4} isModule={isModule} title={t(isModule ? 'module.title' : 'assignment')}>
+        <ClassAccordion id={4} isModule={isModule} title={title}>
             {items && (
                 <>
                     {items.map((item, idx) => {
@@ -25,8 +35,18 @@ export default function ModuleAccordion({ isModule, items, userIsEnrolled }: Mod
                             <AccordionItem
                                 userIsEnrolled={userIsEnrolled}
                                 href={item.href}
-                                title={isModule ? (item as Items).title : t('assignment') + `: ${item.title}`}
-                                key={isModule ? (item as Items).title : `assignment${idx}`}
+                                title={isModule 
+                                    ? (item as Items).title 
+                                    : isPostTest 
+                                        ? t('post_test') + `: ${item.title}`
+                                        : t('assignment') + `: ${item.title}`
+                                }
+                                key={isModule 
+                                    ? (item as Items).title 
+                                    : isPostTest 
+                                        ? `post_test${idx}` 
+                                        : `assignment${idx}`
+                                }
                             />
                         )
                     })}

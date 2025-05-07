@@ -25,8 +25,12 @@
             "link_title_enrolled": "Pelajari modul ini sekarang",
             "link_title_unenrolled": "Daftar ke program ini terlebih dahulu untuk mengakses modul ini"
         },
-        "assignment": "Tugas"
+
+        "assignment": "Tugas",
+        "post_test": "Post Test",
+        "from_module": "dari Modul"
     },
+    
     "class": {
         "overview": {
             "snackbar": {
@@ -42,7 +46,8 @@
             },
             "button": {
                 "paid": "Berbayar",
-                "free": "Daftar gratis"
+                "free": "Daftar gratis",
+                "download_certificate": "Unduh Sertifikat"
             },
             "description": "Deskripsi program",
             "materials": "Materi pembelajaran",
@@ -311,5 +316,13 @@
             "learn": "Materi",
             "payment": "Pembayaran"
         }
+    },
+    "postTest": {
+        "title": "Post-Test",
+        "submit": "Submit jawaban",
+        "submitting": "Mengirim...",
+        "moduleName": "Modul",
+        "notAllAnswered": "Harap jawab semua pertanyaan sebelum submit!",
+        "resultTitle": "Hasil Post-Test"
     }
 }

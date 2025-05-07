@@ -1,3 +1,5 @@
+// tombol navigasi balik ke halaman beranda (home)
+
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import { SxProps, Theme } from '@mui/material';
 import Typography from "@mui/material/Typography";

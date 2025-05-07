@@ -1,3 +1,5 @@
+// Menampilkan satu blok accordion (bisa modul atau tugas), yang bisa dibuka/tutup (expand/collapse), dengan judul, ikon yang sesuai, dan isi
+
 import * as React from 'react';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';

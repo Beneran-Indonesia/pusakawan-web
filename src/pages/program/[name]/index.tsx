@@ -1,7 +1,7 @@
-import Accordion from "@/components/Accordion/Accordion";
+import ModuleAccordion from "@/components/Accordion/Accordion";
 import BreadcrumbsWrapper from "@/components/Breadcrumbs";
 import ImageWrapper from "@/components/ImageWrapper";
-import api, { getModuleData, getProgram, getProgramData } from "@/lib/api";
+import api, { getModuleData, getProgram, getProgramData, getTestData } from "@/lib/api";
 import {
   createBearerHeader,
   formatNumberToIdr,
@@ -33,14 +33,18 @@ import Snackbar from "@mui/material/Snackbar";
 import ProfileNotCompleteNotice from "@/components/ProfileNotCompleteNotice";
 import Head from "next/head";
 import { useDesktopRatio } from "@/lib/hooks";
+// import DownloadCertificate from "@/components/DownloadCertificate";
 
 export default function NameClass({
   classname,
   programData,
   moduleData,
   assignment,
+  postTest,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
+
+  const [isPassed, setIsPassed] = useState<boolean>(false);
 
   const [enrollLoading, setEnrollLoading] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState({
@@ -108,7 +112,7 @@ export default function NameClass({
     setEnrollLoading(true);
     try {
       const res = await api.post(
-        process.env.NEXT_PUBLIC_API_URL + "/program/enrollment/",
+        "/program/enrollment/",
         {
           program: programId,
           participant: userId,
@@ -116,12 +120,12 @@ export default function NameClass({
         { headers: createBearerHeader(sessionToken) }
       );
       setEnrollLoading(false);
+      
       if (res.status === 201) {
-        setEnrollLoading(false);
         handleSnackbar(true, true, t("snackbar.success"));
 
-        const programId = res.data.program;
-        const enrolledProgram = (await getProgram(programId))?.message;
+        const programResponse = await getProgram(programId);
+        const enrolledProgram = programResponse?.message;
 
         if (enrolledProgram) {
           await update({
@@ -142,7 +146,6 @@ export default function NameClass({
 
       toggleModalOpen();
       handleSnackbar(true, false, t("snackbar.error.server"));
-      setEnrollLoading(false);
       return;
     } catch (e) {
       console.error("ENROLL USER ERROR:", e);
@@ -266,18 +269,30 @@ export default function NameClass({
             {t("description")}
           </Typography>
           <Typography mb={2}>{description}</Typography>
-          {/* Apparently no description.. */}
-          <Accordion
+          
+          {/* penggunaan Accordion dengan ModuleAccordion */}
+          <ModuleAccordion
             isModule={true}
             items={moduleData}
             userIsEnrolled={userIsEnrolled}
           />
 
-          <Accordion
-            isModule={false}
-            items={assignment}
-            userIsEnrolled={userIsEnrolled}
-          />
+          {assignment && assignment.length > 0 && (
+            <ModuleAccordion
+              isModule={false}
+              items={assignment}
+              userIsEnrolled={userIsEnrolled}
+            />
+          )}
+          
+          {postTest && postTest.length > 0 && (
+            <ModuleAccordion
+              isModule={false}
+              isPostTest={true}
+              items={postTest}
+              userIsEnrolled={userIsEnrolled}
+            />
+          )}
 
           {!programPaid ? null : (
             <>
@@ -441,6 +456,7 @@ type ClassDatas = {
   moduleData: SimpleModuleData[];
   messages: string;
   assignment: SimpleModuleData[] | null;
+  postTest: SimpleModuleData[] | null;
 };
 
 export const getServerSideProps: GetServerSideProps<ClassDatas> = async (
@@ -448,7 +464,10 @@ export const getServerSideProps: GetServerSideProps<ClassDatas> = async (
 ) => {
   const { locale, params, resolvedUrl } = ctx;
   const classname = urlToDatabaseFormatted(params!.name as string);
+  
+  // Ambil data program
   const programDataReq = await getProgramData(classname);
+  console.log("Program Data Response:", programDataReq);
 
   if (!programDataReq || programDataReq.message.length === 0) {
     return { notFound: true };
@@ -461,21 +480,44 @@ export const getServerSideProps: GetServerSideProps<ClassDatas> = async (
     const defaultBanner = [{ id: 1, image: getRandomCoursePicture() }];
     programData = { ...programData, banners: defaultBanner };
   }
+  
+  // Ambil data modul
   const moduleRes = await getModuleData(programId.toString());
-
-  let modules = [{ title: "", href: "" }];
-  let assignment = null;
+  console.log("Module Data Response:", moduleRes);
+  
+  let modules: SimpleModuleData[] = [];
+  let assignment: SimpleModuleData[] | null = null;
+  let postTest: SimpleModuleData[] = [];
 
   if (moduleRes) {
     const moduleData = moduleRes.message as ModuleData[];
+    console.log("Module Data Detail:", moduleData);
+    
+    // Map data modul ke SimpleModuleData untuk tampilan
     modules = moduleData.map((mdl) => ({
       title: mdl.title,
       href: resolvedUrl + "/learn",
     }));
 
+    // Filter modul untuk assignment
     assignment = moduleData
       .filter((mdl) => mdl.additional_url)
-      .map((mdl) => ({ title: mdl.title, href: mdl.additional_url }));
+      .map((mdl) => ({ 
+        title: mdl.title, 
+        href: mdl.additional_url 
+      }));
+
+    moduleData.forEach((mdl, index) => {
+      console.log(`Module ${index} - ID: ${mdl.id}, Title: ${mdl.title}, Post-test: ${mdl.posttest}`);
+    });
+    
+    // Filter modul untuk post-test
+    postTest = moduleData
+      .filter(mdl => mdl.posttest !== null)
+      .map((mdl) => ({
+        title: mdl.title || `Post Test`,
+        href: resolvedUrl + "/post-test",
+      }));
   }
 
   return {
@@ -484,6 +526,7 @@ export const getServerSideProps: GetServerSideProps<ClassDatas> = async (
       programData,
       moduleData: modules,
       assignment,
+      postTest,
       messages: (await import(`../../../locales/${locale}.json`)).default,
     },
   };

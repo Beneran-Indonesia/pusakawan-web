@@ -27,6 +27,7 @@ type ProgramData = {
 type SimpleModuleData = {
     title: string;
     href: string;
+    // testTitle?: string;
 };
 
 type ModuleData = {

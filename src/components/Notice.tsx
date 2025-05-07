@@ -1,3 +1,5 @@
+// menampilkan informasi penting di halaman
+
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import React from "react";

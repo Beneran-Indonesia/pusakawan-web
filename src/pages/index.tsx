@@ -1,3 +1,5 @@
+// halaman depan (home page)
+
 import Headline from "@/components/Frontpage/Headline";
 import Head from "next/head";
 import DetailPanel from "@/components/Frontpage/DetailPanel";

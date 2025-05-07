@@ -1,3 +1,6 @@
+// menampilkan bagian kursus atau program yang dapat dipilih
+// menampilkan judul, kartu program, dan sebuah tombol untuk melihat lebih lanjut program lainnya
+
 import { coursesPictures } from "@/lib/constants";
 import Card from "../Card/Category";
 import Typography from "@mui/material/Typography";
@@ -72,7 +75,7 @@ function CoursesCard({ data }: { data: undefined | ProgramData[] }) {
                 data && data.slice(0, 3).map((dt) => (
                     <ProgramCard
                         key={dt.id + dt.title + "main-page"}
-                        img={dt.banners[0].image}
+                        img={dt.banners?.[0]?.image}
                         title={dt.title}
                         price={dt.price}
                         href={"/program/" + databaseToUrlFormatted(dt.title)}

@@ -1,3 +1,5 @@
+// menampilkan kartu program (misalnya: kursus, pelatihan, atau kelas) pada halaman daftar program yang tersedia
+
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import CardWrapper from "./Wrapper/Normal";

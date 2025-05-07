@@ -25,8 +25,12 @@
       "link_title_enrolled": "Learn this module now",
       "link_title_unenrolled": "Register to this program to unlock this module"
     },
-    "assignment": "Assignment"
-  },
+
+    "assignment": "Assignment",
+    "post_test": "Post Test",
+    "from_module": "from Modul"
+   },
+   
   "class": {
     "overview": {
       "snackbar": {
@@ -42,7 +46,8 @@
       },
       "button": {
         "paid": "Pay",
-        "free": "Free enroll"
+        "free": "Free enroll",
+        "download_certificate": "Download Certificate"
       },
       "description": "Program description",
       "materials": "Need to be learnt materials",
@@ -310,5 +315,13 @@
           "learn": "Modules",
           "payment": "Payment"
         }
+      },
+    "postTest": {
+      "title": "Post-Test",
+      "submit": "Submit answers",
+      "submitting": "Submitting...",
+      "moduleName": "Module",
+      "notAllAnswered": "Please answer all questions before submitting!",
+      "resultTitle": "Post-Test Result"
     }
-}
+  }
