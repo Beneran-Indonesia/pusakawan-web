@@ -2,6 +2,7 @@
 import axios from 'axios';
 import { Agent } from 'https';
 import { createBearerHeader, urlToDatabaseFormatted } from './utils';
+import { TestAnswer } from "@/types/components";
 
 const headers = {
     'Accept': 'application/json',
@@ -27,7 +28,7 @@ const getEditProfileFields = async (url: string, sessionToken: string) => {
 
 async function getAllStorylinePrograms() {
     try {
-        const res = await api.get("/program", {
+        const res = await api.get("/program/", {
             params: {
                 program_type: "STORYLINE",
                 status: "ACTIVE"
@@ -71,7 +72,7 @@ async function getProgram(id: number) {
 
 async function getProgramData(classname: string) {
     try {
-        const res = await api.get("/program", {
+        const res = await api.get("/program/", {
             params: {
                 title: urlToDatabaseFormatted(classname),
                 status: "ACTIVE",
@@ -116,4 +117,48 @@ async function getPricingData(classname: string, email: string) {
     }
 }
 
-export { getProgramData, getEditProfileFields, getModuleData, getAllStorylinePrograms, getProgram, getPricingData };
+// submit post-test
+const SubmitTest = async (enrollment: number, test: number, answers: TestAnswer[], sessionToken: string ) => {
+    try {
+        const res = await api.post("/storyline/test-submit/", {
+            enrollment,
+            test,
+            answers,
+        }, {
+            headers: createBearerHeader(sessionToken)
+        });
+
+        return { status: res.status, data: res.data };
+    } catch (e) {
+        console.error("SUBMIT TEST ERROR:", e);
+        throw e;
+    }
+};
+
+// create certificate
+const createCertificate = async (enrollmentId: number, sessionToken: string) => {
+    try {
+        const res = await api.post('/program/certificates/create/', {
+            enrollment_id: enrollmentId
+        }, {
+            headers: createBearerHeader(sessionToken)
+        });
+
+        return { status: res.status, data: res.data }; 
+    } catch (e) {
+        console.error("Failed to create certificate:", e);
+        throw e;
+    }
+};
+
+
+export { 
+    getProgramData, 
+    getEditProfileFields, 
+    getModuleData, 
+    getAllStorylinePrograms, 
+    getProgram, 
+    getPricingData,
+    SubmitTest,
+    createCertificate
+};

@@ -59,9 +59,10 @@ type ModalProps = {
   isOpen: boolean;
   toggleOpen: undefined | ((val: boolean) => void);
   children: React.ReactNode;
+  boxSx?: object;  // buat style box di accordion
 }
 
-export default function Modal({ isOpen, toggleOpen, children }: ModalProps) {
+export default function Modal({ isOpen, toggleOpen, children, boxSx }: ModalProps) {
   return (
     <div>
       <MUIModal
@@ -83,6 +84,7 @@ export default function Modal({ isOpen, toggleOpen, children }: ModalProps) {
         <Fade in={isOpen}>
           <Box sx={{
             ...style,
+            ...boxSx,
             display: "flex",
             flexDirection: "column",
             gap: 2,

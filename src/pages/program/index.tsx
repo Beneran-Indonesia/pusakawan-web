@@ -24,8 +24,8 @@ export default function ProgramPage({ programData }: InferGetServerSidePropsType
     const onFilterChange = (filterChange: SortBy) => {
         setFilter(filterChange);
         if (filterChange === 'ALL') setCurrentData(programData);
-        else if (filterChange === 'FREE') setCurrentData(currentData.filter((dt) => dt.price === 0));
-        else if (filterChange === 'PAID') setCurrentData(currentData.filter((dt) => dt.price !== 0));
+        else if (filterChange === 'FREE') setCurrentData(programData.filter((dt) => dt.price === 0));
+        else if (filterChange === 'PAID') setCurrentData(programData.filter((dt) => dt.price !== 0));
     };
     const isDesktopRatio = useDesktopRatio();
     return (

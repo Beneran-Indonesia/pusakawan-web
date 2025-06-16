@@ -25,7 +25,14 @@
             "link_title_enrolled": "Pelajari modul ini sekarang",
             "link_title_unenrolled": "Daftar ke program ini terlebih dahulu untuk mengakses modul ini"
         },
-        "assignment": "Tugas"
+        "assignment": "Tugas",
+        "post-test": "Post-test",
+        "postTest": {
+            "confirm_title": "Apakah kamu siap mengerjakan POST-TEST?",
+            "confirm_text": "Percobaan post-test dapat dilakukan 3x dalam sehari dan akan di reset dalam kurun waktu 24 jam",
+            "confirm_button": "Mulai Post-Test",
+            "cancel": "Batal"
+        }
     },
     "class": {
         "overview": {
@@ -42,7 +49,8 @@
             },
             "button": {
                 "paid": "Berbayar",
-                "free": "Daftar gratis"
+                "free": "Daftar gratis",
+                "download_certificate": "Unduh Sertifikat"
             },
             "description": "Deskripsi program",
             "materials": "Materi pembelajaran",

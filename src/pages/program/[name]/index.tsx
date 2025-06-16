@@ -1,7 +1,7 @@
 import Accordion from "@/components/Accordion/Accordion";
 import BreadcrumbsWrapper from "@/components/Breadcrumbs";
 import ImageWrapper from "@/components/ImageWrapper";
-import api, { getModuleData, getProgram, getProgramData } from "@/lib/api";
+import api, { getModuleData, getProgram, getProgramData, createCertificate } from "@/lib/api";
 import {
   createBearerHeader,
   formatNumberToIdr,
@@ -11,7 +11,7 @@ import {
   BreadcrumbLinkProps,
   ModuleData,
   ProgramData,
-  SimpleModuleData,
+  SimpleModuleData
 } from "@/types/components";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -24,7 +24,7 @@ import { useRouter } from "next/router";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import Logo from "@svgs/logo.svg";
 import { getRandomCoursePicture } from "@/lib/constants";
-import { useState } from "react";
+import { useState, useMemo, useEffect } from "react";
 import Modal from "@/components/Modal";
 import LoadingButton from "@mui/lab/LoadingButton";
 import Alert from "@mui/material/Alert";
@@ -33,21 +33,25 @@ import Snackbar from "@mui/material/Snackbar";
 import ProfileNotCompleteNotice from "@/components/ProfileNotCompleteNotice";
 import Head from "next/head";
 import { useDesktopRatio } from "@/lib/hooks";
+import { generateCertificate } from "@/lib/generateCertificate";
 
 export default function NameClass({
   classname,
   programData,
   moduleData,
   assignment,
+  TestData,
+  assignmentTitle 
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
-
   const [enrollLoading, setEnrollLoading] = useState(false);
+
   const [snackbarOpen, setSnackbarOpen] = useState({
     open: false,
     success: false,
     message: "",
   });
+  
 
   const handleSnackbar = (open: boolean, success: boolean, message: string) =>
     setSnackbarOpen({ open, success, message });
@@ -55,16 +59,33 @@ export default function NameClass({
     setSnackbarOpen({ ...snackbarOpen, open: false });
   const toggleModalOpen = () =>
     setConfirmationModalOpen(!confirmationModalOpen);
-
+  
+  
   const { data: session, status, update } = useSession();
   const t = useTranslations("class.overview");
   const router = useRouter();
 
+  useEffect(() => {
+    console.log('session',session)
+  }, [session])
+  
+  
+
   const userIsEnrolled =
     status === "authenticated" &&
-    session.user.enrolledPrograms.some(
+     Array.isArray(session.user.enrolledPrograms) &&
+      session.user.enrolledPrograms.some(
       (program) => program.id === programData.id
     );
+
+    // ambil enrollment_id dari session
+    const enrollmentId = useMemo(() =>  {
+      return session?.user?.enrolledPrograms?.find(
+        (program) => program.id === programData.id
+      )?.enrollment_id
+    }, [session, programData.id]) 
+
+    console.log('userIsEnrolled',userIsEnrolled)
 
   const user = { id: session?.user.id, accessToken: session?.user.accessToken };
   const breadcrumbData: BreadcrumbLinkProps[] = [
@@ -100,6 +121,66 @@ export default function NameClass({
   } = programData;
   const programPaid = price > 0;
 
+
+  // handle sertifikat
+  const handleDownloadCertificate = async () => {
+    try {
+      if (!session?.user?.accessToken) {
+        handleSnackbar(true, false, "session expired. please login again");
+        return;
+      }
+
+      if (!enrollmentId) {
+        handleSnackbar(true, false, "enrollment id not found");
+        return;
+      }
+
+      const certificateResponse = await createCertificate(
+        enrollmentId,
+        session.user.accessToken
+      );
+
+      if (certificateResponse.status === 200 || certificateResponse.status === 201) {
+        const certificateData = {
+          participant_name: certificateResponse.data.participant_name,
+          program_name: certificateResponse.data.program_name,
+          certificate_sequence: certificateResponse.data.certificate_sequence,
+          year: certificateResponse.data.year.toString(),
+          user_id: session.user.id.toString(),
+        };
+
+        console.log("Certificate data:", certificateData)
+
+        // Generate sertifikat
+        const certificate = await generateCertificate(certificateData);
+
+        const blob = new Blob([certificate], { type: "application/pdf" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+
+        // Nama file sertifikat
+        const fileName = `certificate_${certificateData.participant_name.replace(/\s+/g, '_')}_${certificateData.certificate_sequence}.pdf`;
+        link.download = fileName;
+
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        URL.revokeObjectURL(url);
+
+        handleSnackbar(true, true, "Certificate downloaded successfully!");
+      } else {
+        handleSnackbar(true, false, "Failed to create certificate. Please try again.");
+      }
+      
+    } catch (err) {
+      console.error("Error downloading certificate:", err);
+      handleSnackbar(true, false, "You have not passed the post-test.");
+      }
+    };
+
+
   async function enrollUser(
     userId: number,
     programId: number,
@@ -120,6 +201,7 @@ export default function NameClass({
         setEnrollLoading(false);
         handleSnackbar(true, true, t("snackbar.success"));
 
+        const enrollmentId = res.data.id; // id enrollment
         const programId = res.data.program;
         const enrolledProgram = (await getProgram(programId))?.message;
 
@@ -127,9 +209,13 @@ export default function NameClass({
           await update({
             ...session!,
             user: {
+              ...session!.user,
               enrolledPrograms: [
                 ...session!.user.enrolledPrograms,
-                ...enrolledProgram,
+                {
+                  ...enrolledProgram[0],
+                  enrollment_id: enrollmentId
+                }
               ],
             },
           });
@@ -197,7 +283,7 @@ export default function NameClass({
           </Typography>
           <Box display="flex" flexDirection={isDesktopRatio ? "row" : "column"} gap={isDesktopRatio ? 0 : 2}>
             <Box>
-              {userIsEnrolled ? null : (
+              {userIsEnrolled ? null :(
                 <Button
                   variant="contained"
                   size={"medium"}
@@ -231,7 +317,7 @@ export default function NameClass({
                 <Typography variant="h6" color="primary.main" mt={0.5}>
                   {t("error.profile_not_complete")}
                 </Typography>
-              ) : null}
+              ): null}
             </Box>
             <Box
               display="flex"
@@ -266,18 +352,49 @@ export default function NameClass({
             {t("description")}
           </Typography>
           <Typography mb={2}>{description}</Typography>
-          {/* Apparently no description.. */}
+
+           {/* download certificate */}
+          {userIsEnrolled && (
+          <Box sx={{ display: "flex", justifyContent: "flex-start" }}>
+            <Button
+              variant="contained"
+              size="large"
+              sx={{ mb: 2 }}
+              onClick={handleDownloadCertificate}
+            >
+              {t("button.download_certificate")}
+            </Button>
+          </Box>
+          )}
+
+          {/* Module Accordion */}
           <Accordion
             isModule={true}
             items={moduleData}
             userIsEnrolled={userIsEnrolled}
+            accordionType="module"
           />
 
-          <Accordion
-            isModule={false}
-            items={assignment}
-            userIsEnrolled={userIsEnrolled}
-          />
+          {/* Assignment Accordion */}
+          {assignment && assignment.length > 0 && (
+            <Accordion
+              isModule={false}
+              items={assignment}
+              userIsEnrolled={userIsEnrolled}
+              accordionType="assignment"
+              assignmentTitle={assignmentTitle} // nama accordion/konten
+            />
+          )}
+
+          {/* Post-test Accordion */}
+          {TestData && TestData.length > 0 && (
+            <Accordion
+              isModule={false}
+              items={TestData}     
+              userIsEnrolled={userIsEnrolled}
+              accordionType="post-test"
+            />
+          )}
 
           {!programPaid ? null : (
             <>
@@ -440,7 +557,9 @@ type ClassDatas = {
   programData: ProgramData;
   moduleData: SimpleModuleData[];
   messages: string;
-  assignment: SimpleModuleData[] | null;
+  assignment: SimpleModuleData[];
+  TestData: SimpleModuleData[];
+  assignmentTitle?: string; 
 };
 
 export const getServerSideProps: GetServerSideProps<ClassDatas> = async (
@@ -463,20 +582,42 @@ export const getServerSideProps: GetServerSideProps<ClassDatas> = async (
   }
   const moduleRes = await getModuleData(programId.toString());
 
-  let modules = [{ title: "", href: "" }];
-  let assignment = null;
+  let modules: SimpleModuleData[] = [];
+  let assignment: SimpleModuleData[] = [];
+  let TestData: SimpleModuleData[] = [];
+  let assignmentTitle: string | undefined; 
 
-  if (moduleRes) {
-    const moduleData = moduleRes.message as ModuleData[];
-    modules = moduleData.map((mdl) => ({
-      title: mdl.title,
-      href: resolvedUrl + "/learn",
+if (moduleRes) {
+  const moduleData = moduleRes.message as ModuleData[];
+
+  modules = moduleData.map(mdl => ({
+    title: mdl.title,
+    href: resolvedUrl + "/learn",
+  }));
+
+  assignment = moduleData
+    .filter(mdl => mdl.additional_url)
+    .map(mdl => ({
+      title: mdl.additional_url_custom_name  ?? mdl.title,
+      href: mdl.additional_url,
     }));
 
-    assignment = moduleData
-      .filter((mdl) => mdl.additional_url)
-      .map((mdl) => ({ title: mdl.title, href: mdl.additional_url }));
+  // assignment title dari module yang memiliki additional_url
+  const assignmentModule = moduleData.find(mdl => mdl.additional_url);
+  if (assignmentModule) {
+    assignmentTitle = assignmentModule.additional_url_section_name;
   }
+
+  TestData = moduleData
+  .filter(mdl =>
+    Array.isArray(mdl.test) &&
+    mdl.test.some((t) => t.test_type === "POST")
+  )
+  .map(mdl => ({
+    title: mdl.title,
+    href: resolvedUrl + "/post-test",
+  }));
+}
 
   return {
     props: {
@@ -484,6 +625,8 @@ export const getServerSideProps: GetServerSideProps<ClassDatas> = async (
       programData,
       moduleData: modules,
       assignment,
+      TestData,
+      assignmentTitle, //nama accordion/konten
       messages: (await import(`../../../locales/${locale}.json`)).default,
     },
   };

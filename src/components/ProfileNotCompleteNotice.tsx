@@ -11,6 +11,8 @@ type NoticeProps = {
 export default function ProfileNotCompleteNotice({ type = "default" }: NoticeProps) {
     const { data: session, status } = useSession();
     const authenticated = status === "authenticated";
+    
+
     const profileCompleted = authenticated && session && session.user.is_profile_complete;
     const t = useTranslations("notice_bar");
     return (
