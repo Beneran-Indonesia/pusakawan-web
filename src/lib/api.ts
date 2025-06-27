@@ -27,11 +27,7 @@ const getEditProfileFields = async (url: string, sessionToken: string) => {
 
 async function getAllStorylinePrograms() {
     try {
-        const res = await api.get("/program", {
-            params: {
-                program_type: "STORYLINE",
-                status: "ACTIVE"
-            }
+        const res = await api.get("/program/storyline/", {
         })
         return { status: res.status, message: res.data };
     } catch (e) {
@@ -86,20 +82,20 @@ async function getProgramData(classname: string) {
 
 async function getPricingData(classname: string, email: string) {
     const pricing = {
-        main_price : 200_000,
+        main_price: 200_000,
         unique_code: 385,
         additional_fee: 15_000,
         total_price: 215.385
     }
     return {
         status: 200,
-        message: 
-            {
-                program_id: 1,
-                program_name: classname,
-                ...pricing
-            }
-        
+        message:
+        {
+            program_id: 1,
+            program_name: classname,
+            ...pricing
+        }
+
     }
     try {
         const res = await api.post("/program/pricing/", {
@@ -131,40 +127,40 @@ async function getPricingData(classname: string, email: string) {
 //     }
 // }
 
-    const getTestData = async (storylineId: string) => {
+const getTestData = async (storylineId: string) => {
     try {
-      const res = await api.get(`/storyline/${storylineId}`);
-      return { status: res.status, data: res.data };
-        } catch (e) {
+        const res = await api.get(`/storyline/${storylineId}`);
+        return { status: res.status, data: res.data };
+    } catch (e) {
         console.error(`GET TEST ERROR for ID ${storylineId}:`, e);
         throw e;
-        }
-    };
+    }
+};
 
-  const submitPostTestAnswers = async (
+const submitPostTestAnswers = async (
     enrollmentId: string,
     testId: string,
-    answers: Array<{ test_question: string; selected_answer: string }>
-  ) => {
+    answers: { test_question: string; selected_answer: string }[]
+) => {
     try {
-      const res = await api.post("/storyline/submit-test", {
-        enrollment: enrollmentId,
-        test: testId,
-        answers: answers,
-      });
-      return { status: res.status, data: res.data };
+        const res = await api.post("/storyline/submit-test", {
+            enrollment: enrollmentId,
+            test: testId,
+            answers: answers,
+        });
+        return { status: res.status, data: res.data };
     } catch (e) {
-      console.error("SUBMIT POST TEST ANSWERS ERROR:", e);
-      throw e;
+        console.error("SUBMIT POST TEST ANSWERS ERROR:", e);
+        throw e;
     }
-  };
+};
 
-export { 
-    getProgramData, 
-    getEditProfileFields, 
-    getModuleData, 
-    getAllStorylinePrograms, 
-    getProgram, 
+export {
+    getProgramData,
+    getEditProfileFields,
+    getModuleData,
+    getAllStorylinePrograms,
+    getProgram,
     getPricingData,
     getTestData,
     submitPostTestAnswers
