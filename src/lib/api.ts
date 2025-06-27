@@ -27,11 +27,7 @@ const getEditProfileFields = async (url: string, sessionToken: string) => {
 
 async function getAllStorylinePrograms() {
     try {
-        const res = await api.get("/program", {
-            params: {
-                program_type: "STORYLINE",
-                status: "ACTIVE"
-            }
+        const res = await api.get("/program/storyline", {
         })
         return { status: res.status, message: res.data };
     } catch (e) {

@@ -84,7 +84,6 @@ type CoursesCardProps = { data: ProgramData[] }
 
 function CoursesCard({ data }: CoursesCardProps) {
     const t = useTranslations("program.card");
-    console.log("COURSES CARDS:", data);
     return (
         <>
             {
