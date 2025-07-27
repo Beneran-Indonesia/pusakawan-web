@@ -61,8 +61,12 @@ export default function Header() {
                                     tabIndex={0}
                                     display="flex" gap={2} alignItems="center">
                                     <Typography>{session.user.username}</Typography>
-                                    <Avatar alt="user picture" sx={{ bgcolor: 'primary.main' }}
-                                        src={session.user.profile_picture ?? undefined}>{session.user.username[0].toUpperCase()}
+                                    <Avatar
+                                        alt="user picture"
+                                        sx={{ bgcolor: 'primary.main' }}
+                                        src={session?.user?.profile_picture ?? undefined}
+                                    >
+                                        {session?.user?.username ? session.user.username[0].toUpperCase() : ''}
                                     </Avatar>
                                 </Box>
                                 <HeaderMenu
@@ -115,7 +119,7 @@ export default function Header() {
 
 const HeaderMenu = styled((props: MenuProps) => (
     <Menu
-        
+
         elevation={0}
         anchorOrigin={{
             vertical: 'bottom',

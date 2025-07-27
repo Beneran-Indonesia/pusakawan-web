@@ -2,6 +2,7 @@
 import axios from 'axios';
 import { Agent } from 'https';
 import { createBearerHeader, urlToDatabaseFormatted } from './utils';
+import { TestAnswer } from "@/types/components";
 
 const headers = {
     'Accept': 'application/json',
@@ -27,7 +28,11 @@ const getEditProfileFields = async (url: string, sessionToken: string) => {
 
 async function getAllStorylinePrograms() {
     try {
-        const res = await api.get("/program/storyline/", {
+        const res = await api.get("/program/", {
+            params: {
+                program_type: "STORYLINE",
+                status: "ACTIVE"
+            }
         })
         return { status: res.status, message: res.data };
     } catch (e) {
@@ -67,7 +72,7 @@ async function getProgram(id: number) {
 
 async function getProgramData(classname: string) {
     try {
-        const res = await api.get("/program", {
+        const res = await api.get("/program/", {
             params: {
                 title: urlToDatabaseFormatted(classname),
                 status: "ACTIVE",
@@ -112,56 +117,48 @@ async function getPricingData(classname: string, email: string) {
     }
 }
 
-// async function getTestData(id: number) {
-//     try {
-//         const res = await api.get("/storyline/", {
-//             params: {
-//                 id,
-//                 status: "ACTIVE",
-//                 test_type: "PRE/POST",
-//             }
-//         })
-//         return { status: res.status, message: res.data };
-//     } catch (e) {
-//         console.error("GET TEST DATA ERROR:", e)
-//     }
-// }
-
-const getTestData = async (storylineId: string) => {
+// submit post-test
+const SubmitTest = async (enrollment: number, test: number, answers: TestAnswer[], sessionToken: string ) => {
     try {
-        const res = await api.get(`/storyline/${storylineId}`);
-        return { status: res.status, data: res.data };
-    } catch (e) {
-        console.error(`GET TEST ERROR for ID ${storylineId}:`, e);
-        throw e;
-    }
-};
-
-const submitPostTestAnswers = async (
-    enrollmentId: string,
-    testId: string,
-    answers: { test_question: string; selected_answer: string }[]
-) => {
-    try {
-        const res = await api.post("/storyline/submit-test", {
-            enrollment: enrollmentId,
-            test: testId,
-            answers: answers,
+        const res = await api.post("/storyline/test-submit/", {
+            enrollment,
+            test,
+            answers,
+        }, {
+            headers: createBearerHeader(sessionToken)
         });
+
         return { status: res.status, data: res.data };
     } catch (e) {
-        console.error("SUBMIT POST TEST ANSWERS ERROR:", e);
+        console.error("SUBMIT TEST ERROR:", e);
         throw e;
     }
 };
 
-export {
-    getProgramData,
-    getEditProfileFields,
-    getModuleData,
-    getAllStorylinePrograms,
-    getProgram,
+// create certificate
+const createCertificate = async (enrollmentId: number, sessionToken: string) => {
+    try {
+        const res = await api.post('/program/certificates/create/', {
+            enrollment_id: enrollmentId
+        }, {
+            headers: createBearerHeader(sessionToken)
+        });
+
+        return { status: res.status, data: res.data }; 
+    } catch (e) {
+        console.error("Failed to create certificate:", e);
+        throw e;
+    }
+};
+
+
+export { 
+    getProgramData, 
+    getEditProfileFields, 
+    getModuleData, 
+    getAllStorylinePrograms, 
+    getProgram, 
     getPricingData,
-    getTestData,
-    submitPostTestAnswers
+    SubmitTest,
+    createCertificate
 };

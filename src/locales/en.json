@@ -25,12 +25,15 @@
       "link_title_enrolled": "Learn this module now",
       "link_title_unenrolled": "Register to this program to unlock this module"
     },
-
     "assignment": "Assignment",
-    "post_test": "Post Test",
-    "from_module": "from Modul"
-   },
-   
+    "post-test": "Post-test",
+    "postTest": {
+        "confirm_title": "Are you ready to take the POST-TEST?",
+        "confirm_text": "You can attempt the post-test up to 3 times per day. The attempt count will reset every 24 hours",
+        "confirm_button": "Start Post-Test",
+        "cancel": "Cancel"
+    }
+  },
   "class": {
     "overview": {
       "snackbar": {
