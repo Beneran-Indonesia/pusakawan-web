@@ -38,7 +38,6 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
                             const accessToken = res.data.tokens.access;
                             const profile = await getProfile(accessToken);
                             const enrolledPrograms = await getEnrolledPrograms(accessToken);
-                            console.log("ini enrolled" + enrolledPrograms)
                             return { ...profile, enrolledPrograms, accessToken };
                         }
 
@@ -131,8 +130,7 @@ async function getEnrolledPrograms(accessToken: string) {
                 status: "ACTIVE"
             }
         });
-
-        console.log('response get enrollment'+res)
+        // console.log('response get enrollment'+res)
         if (res.status === 200) {
             return res.data;
         }

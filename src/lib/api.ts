@@ -28,11 +28,7 @@ const getEditProfileFields = async (url: string, sessionToken: string) => {
 
 async function getAllStorylinePrograms() {
     try {
-        const res = await api.get("/program/", {
-            params: {
-                program_type: "STORYLINE",
-                status: "ACTIVE"
-            }
+        const res = await api.get("/program/storyline/", {
         })
         return { status: res.status, message: res.data };
     } catch (e) {
@@ -46,7 +42,6 @@ const getModuleData = async (programId: string) => {
         const res = await api.get("/storyline/", {
             params: {
                 program: programId,
-                status: "ACTIVE",
             }
         })
         return { status: res.status, message: res.data };
@@ -57,11 +52,9 @@ const getModuleData = async (programId: string) => {
 
 async function getProgram(id: number) {
     try {
-        const res = await api.get("/program/", {
+        const res = await api.get("/storyline/", {
             params: {
                 id,
-                status: "ACTIVE",
-                program_type: "STORYLINE",
             }
         })
         return { status: res.status, message: res.data };
@@ -72,11 +65,9 @@ async function getProgram(id: number) {
 
 async function getProgramData(classname: string) {
     try {
-        const res = await api.get("/program/", {
+        const res = await api.get("/program/storyline/", {
             params: {
                 title: urlToDatabaseFormatted(classname),
-                status: "ACTIVE",
-                program_type: "STORYLINE",
             }
         })
         return { status: res.status, message: res.data };
@@ -118,7 +109,7 @@ async function getPricingData(classname: string, email: string) {
 }
 
 // submit post-test
-const SubmitTest = async (enrollment: number, test: number, answers: TestAnswer[], sessionToken: string ) => {
+const SubmitTest = async (enrollment: number, test: number, answers: TestAnswer[], sessionToken: string) => {
     try {
         const res = await api.post("/storyline/test-submit/", {
             enrollment,
@@ -144,7 +135,7 @@ const createCertificate = async (enrollmentId: number, sessionToken: string) => 
             headers: createBearerHeader(sessionToken)
         });
 
-        return { status: res.status, data: res.data }; 
+        return { status: res.status, data: res.data };
     } catch (e) {
         console.error("Failed to create certificate:", e);
         throw e;
@@ -152,12 +143,12 @@ const createCertificate = async (enrollmentId: number, sessionToken: string) => 
 };
 
 
-export { 
-    getProgramData, 
-    getEditProfileFields, 
-    getModuleData, 
-    getAllStorylinePrograms, 
-    getProgram, 
+export {
+    getProgramData,
+    getEditProfileFields,
+    getModuleData,
+    getAllStorylinePrograms,
+    getProgram,
     getPricingData,
     SubmitTest,
     createCertificate

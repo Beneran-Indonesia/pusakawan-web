@@ -3,4 +3,5 @@
         "src/locales"
     ],
     "i18n-ally.keystyle": "nested",
+    "postman.settings.dotenv-detection-notification-visibility": false,
 }

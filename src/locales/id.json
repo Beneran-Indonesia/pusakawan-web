@@ -37,6 +37,14 @@
     
     "class": {
         "overview": {
+            "certificate": {
+                "error": {
+                    "enrollment_id": "Kamu belum mendaftar ke program ini.",
+                    "post_test": "Kamu belum lolos post-testnya.."
+                },
+                "succeed": "Sertifikat telah terunduh!",
+                "failed": "Terjadi error, kamu tidak bisa mengunduh sertifikat saat ini. Maaf, ya!"
+            },
             "snackbar": {
                 "success": "Anda telah terdaftar!",
                 "error": {

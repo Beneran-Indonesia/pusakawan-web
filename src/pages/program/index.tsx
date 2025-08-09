@@ -22,7 +22,6 @@ export default function ProgramPage({ programData }: InferGetServerSidePropsType
     const [filter, setFilter] = useState<SortBy>('ALL');
     const [currentData, setCurrentData] = useState(programData);
     const t = useTranslations('program');
-    const isDesktopRatio = useDesktopRatio();
 
     const breadcrumbData: BreadcrumbLinkProps[] = [
         { children: t('header.breadcrumbs.home'), href: '/' }, 

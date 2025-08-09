@@ -15,8 +15,7 @@ type ProgramPricing = {
 
 type ProgramData = {
     program_id: number;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    program: any;
+    enrollment_id: number;
     id: number;
     status: STATUS;
     title: string;
@@ -24,8 +23,6 @@ type ProgramData = {
     description: string;
     price: number;
     pusaka_points: number;
-    // paid: boolean;
-    enrollment_id: number;
 }
 
 type SimpleModuleData = {
@@ -97,12 +94,12 @@ type SubmitTestResponse = {
     is_passed: boolean;
     total_correct: number;
     total_questions: number;
-    graded_answers: Array<{
+    graded_answers: {
         question_id: number;
         question: string;
         selected_answer: string;
         is_correct: boolean;
-    }>;
+    }[];
     can_view_submission: boolean;
     attempt_info: {
         attempts_used: number;

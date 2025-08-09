@@ -36,8 +36,16 @@
   },
   "class": {
     "overview": {
+      "certificate": {
+          "error": {
+              "enrollment_id": "You haven't been enrolled to this program.",
+              "post_test": "You have not passed the post-test.."
+          },
+          "succeed": "Certificate have been downloaded!",
+          "failed": "Error occured, currently you can't download the certificate. Sorry for the inconvenience!"
+      },
       "snackbar": {
-        "success": "You have enrolled!",
+        "success": "You are now enrolled!",
         "error": {
           "server": "Server error occured. Please contact the administrator. Sorry for the inconvenience.",
           "client": "Client error occured. Please contact the administrator. Sorry for the inconvenience."

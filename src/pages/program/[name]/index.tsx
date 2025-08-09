@@ -1,7 +1,12 @@
 import ModuleAccordion from "@/components/Accordion/Accordion";
 import BreadcrumbsWrapper from "@/components/Breadcrumbs";
 import ImageWrapper from "@/components/ImageWrapper";
-import api, { getModuleData, getProgram, getProgramData, createCertificate } from "@/lib/api";
+import api, {
+  getModuleData,
+  getProgram,
+  getProgramData,
+  createCertificate,
+} from "@/lib/api";
 import {
   createBearerHeader,
   formatNumberToIdr,
@@ -11,7 +16,7 @@ import {
   BreadcrumbLinkProps,
   ModuleData,
   ProgramData,
-  SimpleModuleData
+  SimpleModuleData,
 } from "@/types/components";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -24,7 +29,7 @@ import { useRouter } from "next/router";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import Logo from "@svgs/logo.svg";
 import { getRandomCoursePicture } from "@/lib/constants";
-import { useState, useMemo, useEffect } from "react";
+import { useState } from "react";
 import Modal from "@/components/Modal";
 import LoadingButton from "@mui/lab/LoadingButton";
 import Alert from "@mui/material/Alert";
@@ -41,7 +46,7 @@ export default function NameClass({
   moduleData,
   assignment,
   TestData,
-  assignmentTitle 
+  assignmentTitle,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
   const [enrollLoading, setEnrollLoading] = useState(false);
@@ -51,7 +56,6 @@ export default function NameClass({
     success: false,
     message: "",
   });
-  
 
   const handleSnackbar = (open: boolean, success: boolean, message: string) =>
     setSnackbarOpen({ open, success, message });
@@ -59,35 +63,27 @@ export default function NameClass({
     setSnackbarOpen({ ...snackbarOpen, open: false });
   const toggleModalOpen = () =>
     setConfirmationModalOpen(!confirmationModalOpen);
-  
-  
+
   const { data: session, status, update } = useSession();
+  const user = { id: session?.user.id, accessToken: session?.user.accessToken };
   const t = useTranslations("class.overview");
   const router = useRouter();
 
-  useEffect(() => {
-    console.log('session',session)
-  }, [session])
-  
-  
-
-  const userIsEnrolled =
+  const enrolled =
     status === "authenticated" &&
-     Array.isArray(session.user.enrolledPrograms) &&
-      session.user.enrolledPrograms.some(
+    Array.isArray(session.user.enrolledPrograms) &&
+    session.user.enrolledPrograms.find(
       (program) => program.id === programData.id
     );
 
-    // ambil enrollment_id dari session
-    const enrollmentId = useMemo(() =>  {
-      return session?.user?.enrolledPrograms?.find(
-        (program) => program.id === programData.id
-      )?.enrollment_id
-    }, [session, programData.id]) 
+    // console.log(enrolled)
+    // console.log(session!.user.enrolledPrograms.find(
+    //   (program) => program.id === programData.id
+    // ))
 
-    console.log('userIsEnrolled',userIsEnrolled)
+  const enrollmentId =
+    enrolled !== false && enrolled !== undefined && enrolled.enrollment_id;
 
-  const user = { id: session?.user.id, accessToken: session?.user.accessToken };
   const breadcrumbData: BreadcrumbLinkProps[] = [
     {
       href: "/",
@@ -108,9 +104,7 @@ export default function NameClass({
   ];
 
   const userIsUnauthenticated = status === "unauthenticated";
-  const userProfileNotCompleted =
-    (!userIsUnauthenticated && session && !session.user.is_profile_complete) ??
-    true;
+  const userProfileNotCompleted = (status !== "loading") && !!(!userIsUnauthenticated && session && !session.user.is_profile_complete)
 
   const {
     title,
@@ -121,17 +115,11 @@ export default function NameClass({
   } = programData;
   const programPaid = price > 0;
 
-
   // handle sertifikat
   const handleDownloadCertificate = async () => {
     try {
-      if (!session?.user?.accessToken) {
-        handleSnackbar(true, false, "session expired. please login again");
-        return;
-      }
-
       if (!enrollmentId) {
-        handleSnackbar(true, false, "enrollment id not found");
+        handleSnackbar(true, false, t("certificate.error.enrollment_id"));
         return;
       }
 
@@ -140,7 +128,10 @@ export default function NameClass({
         session.user.accessToken
       );
 
-      if (certificateResponse.status === 200 || certificateResponse.status === 201) {
+      if (
+        certificateResponse.status === 200 ||
+        certificateResponse.status === 201
+      ) {
         const certificateData = {
           participant_name: certificateResponse.data.participant_name,
           program_name: certificateResponse.data.program_name,
@@ -149,18 +140,22 @@ export default function NameClass({
           user_id: session.user.id.toString(),
         };
 
-        console.log("Certificate data:", certificateData)
+        console.log("Certificate data:", certificateData);
 
         // Generate sertifikat
         const certificate = await generateCertificate(certificateData);
 
-        const blob = new Blob([certificate], { type: "application/pdf" });
+        // Convert the Uint8Array to a proper Blob
+        const blob = new Blob([new Uint8Array(certificate)], { type: "application/pdf" });
         const url = URL.createObjectURL(blob);
         const link = document.createElement("a");
         link.href = url;
 
         // Nama file sertifikat
-        const fileName = `certificate_${certificateData.participant_name.replace(/\s+/g, '_')}_${certificateData.certificate_sequence}.pdf`;
+        const fileName = `certificate_${certificateData.participant_name.replace(
+          /\s+/g,
+          "_"
+        )}_${certificateData.certificate_sequence}.pdf`;
         link.download = fileName;
 
         document.body.appendChild(link);
@@ -169,17 +164,19 @@ export default function NameClass({
 
         URL.revokeObjectURL(url);
 
-        handleSnackbar(true, true, "Certificate downloaded successfully!");
+        handleSnackbar(true, true, t("certificate.succeed"));
       } else {
-        handleSnackbar(true, false, "Failed to create certificate. Please try again.");
+        handleSnackbar(
+          true,
+          false,
+          t("certificate.failed")
+        );
       }
-      
     } catch (err) {
       console.error("Error downloading certificate:", err);
-      handleSnackbar(true, false, "You have not passed the post-test.");
-      }
-    };
-
+      handleSnackbar(true, false, t("certificate.error.post_test"));
+    }
+  };
 
   async function enrollUser(
     userId: number,
@@ -197,13 +194,15 @@ export default function NameClass({
         { headers: createBearerHeader(sessionToken) }
       );
       setEnrollLoading(false);
-      
+
       if (res.status === 201) {
         handleSnackbar(true, true, t("snackbar.success"));
 
         const enrollmentId = res.data.id; // id enrollment
         const programId = res.data.program;
         const enrolledProgram = (await getProgram(programId))?.message;
+
+        console.log("ENROLLED PROGRAM:", enrolledProgram)
 
         if (enrolledProgram) {
           await update({
@@ -213,9 +212,17 @@ export default function NameClass({
               enrolledPrograms: [
                 ...session!.user.enrolledPrograms,
                 {
-                  ...enrolledProgram[0],
-                  enrollment_id: enrollmentId
-                }
+                  ...enrolledProgram,
+                  // this currently doesnt exist in the API
+                  // {
+//     "id": 372,
+//     "program": 273,
+//     "participant": 148,
+//     "created_at": "2025-08-09T21:39:49.625795+07:00",
+//     "updated_at": "2025-08-09T21:39:49.625811+07:00"
+// }
+                  enrollment_id: enrollmentId,
+                },
               ],
             },
           });
@@ -280,9 +287,13 @@ export default function NameClass({
           <Typography variant="h2" component="h2" fontWeight={600}>
             {title}
           </Typography>
-          <Box display="flex" flexDirection={isDesktopRatio ? "row" : "column"} gap={isDesktopRatio ? 0 : 2}>
+          <Box
+            display="flex"
+            flexDirection={isDesktopRatio ? "row" : "column"}
+            gap={isDesktopRatio ? 0 : 2}
+          >
             <Box>
-              {userIsEnrolled ? null :(
+              {enrolled ? null : (
                 <Button
                   variant="contained"
                   size={"medium"}
@@ -316,7 +327,7 @@ export default function NameClass({
                 <Typography variant="h6" color="primary.main" mt={0.5}>
                   {t("error.profile_not_complete")}
                 </Typography>
-              ): null}
+              ) : null}
             </Box>
             <Box
               display="flex"
@@ -352,34 +363,34 @@ export default function NameClass({
           </Typography>
           <Typography mb={2}>{description}</Typography>
 
-           {/* download certificate */}
-          {userIsEnrolled && (
-          <Box sx={{ display: "flex", justifyContent: "flex-start" }}>
-            <Button
-              variant="contained"
-              size="large"
-              sx={{ mb: 2 }}
-              onClick={handleDownloadCertificate}
-            >
-              {t("button.download_certificate")}
-            </Button>
-          </Box>
+          {/* download certificate */}
+          {enrolled && (
+            <Box sx={{ display: "flex", justifyContent: "flex-start" }}>
+              <Button
+                variant="contained"
+                size="large"
+                sx={{ mb: 2 }}
+                onClick={handleDownloadCertificate}
+              >
+                {t("button.download_certificate")}
+              </Button>
+            </Box>
           )}
 
           {/* Module Accordion */}
-          <Accordion
+          <ModuleAccordion
             isModule={true}
             items={moduleData}
-            userIsEnrolled={userIsEnrolled}
+            userIsEnrolled={!!enrolled}
             accordionType="module"
           />
 
           {/* Assignment Accordion */}
           {assignment && assignment.length > 0 && (
-            <Accordion
+            <ModuleAccordion
               isModule={false}
               items={assignment}
-              userIsEnrolled={userIsEnrolled}
+              userIsEnrolled={!!enrolled}
               accordionType="assignment"
               assignmentTitle={assignmentTitle} // nama accordion/konten
             />
@@ -387,10 +398,10 @@ export default function NameClass({
 
           {/* Post-test Accordion */}
           {TestData && TestData.length > 0 && (
-            <Accordion
+            <ModuleAccordion
               isModule={false}
-              items={TestData}     
-              userIsEnrolled={userIsEnrolled}
+              items={TestData}
+              userIsEnrolled={!!enrolled}
               accordionType="post-test"
             />
           )}
@@ -407,7 +418,7 @@ export default function NameClass({
                 {t("price_title")}
               </Typography>
               <PaidClassCard
-                userIsEnrolled={userIsEnrolled}
+                userIsEnrolled={!!enrolled}
                 buttonDisabled={
                   userIsUnauthenticated || userProfileNotCompleted
                 }
@@ -558,7 +569,7 @@ type ClassDatas = {
   messages: string;
   assignment: SimpleModuleData[];
   TestData: SimpleModuleData[];
-  assignmentTitle?: string; 
+  assignmentTitle?: string;
 };
 
 export const getServerSideProps: GetServerSideProps<ClassDatas> = async (
@@ -566,10 +577,9 @@ export const getServerSideProps: GetServerSideProps<ClassDatas> = async (
 ) => {
   const { locale, params, resolvedUrl } = ctx;
   const classname = urlToDatabaseFormatted(params!.name as string);
-  
+
   // Ambil data program
   const programDataReq = await getProgramData(classname);
-  console.log("Program Data Response:", programDataReq);
 
   if (!programDataReq || programDataReq.message.length === 0) {
     return { notFound: true };
@@ -582,46 +592,47 @@ export const getServerSideProps: GetServerSideProps<ClassDatas> = async (
     const defaultBanner = [{ id: 1, image: getRandomCoursePicture() }];
     programData = { ...programData, banners: defaultBanner };
   }
-  
+
   // Ambil data modul
   const moduleRes = await getModuleData(programId.toString());
 
   let modules: SimpleModuleData[] = [];
   let assignment: SimpleModuleData[] = [];
   let TestData: SimpleModuleData[] = [];
-  let assignmentTitle: string | undefined; 
+  let assignmentTitle: string | undefined;
 
-if (moduleRes) {
-  const moduleData = moduleRes.message as ModuleData[];
+  if (moduleRes) {
+    const moduleData = moduleRes.message as ModuleData[];
 
-  modules = moduleData.map(mdl => ({
-    title: mdl.title,
-    href: resolvedUrl + "/learn",
-  }));
-
-  assignment = moduleData
-    .filter(mdl => mdl.additional_url)
-    .map(mdl => ({
-      title: mdl.additional_url_custom_name  ?? mdl.title,
-      href: mdl.additional_url,
+    modules = moduleData.map((mdl) => ({
+      title: mdl.title,
+      href: resolvedUrl + "/learn",
     }));
 
-  // assignment title dari module yang memiliki additional_url
-  const assignmentModule = moduleData.find(mdl => mdl.additional_url);
-  if (assignmentModule) {
-    assignmentTitle = assignmentModule.additional_url_section_name;
-  }
+    assignment = moduleData
+      .filter((mdl) => mdl.additional_url)
+      .map((mdl) => ({
+        title: mdl.additional_url_custom_name ?? mdl.title,
+        href: mdl.additional_url,
+      }));
 
-  TestData = moduleData
-  .filter(mdl =>
-    Array.isArray(mdl.test) &&
-    mdl.test.some((t) => t.test_type === "POST")
-  )
-  .map(mdl => ({
-    title: mdl.title,
-    href: resolvedUrl + "/post-test",
-  }));
-}
+    // assignment title dari module yang memiliki additional_url
+    const assignmentModule = moduleData.find((mdl) => mdl.additional_url);
+    if (assignmentModule) {
+      assignmentTitle = assignmentModule.additional_url_section_name;
+    }
+
+    TestData = moduleData
+      .filter(
+        (mdl) =>
+          Array.isArray(mdl.test) &&
+          mdl.test.some((t) => t.test_type === "POST")
+      )
+      .map((mdl) => ({
+        title: mdl.title,
+        href: resolvedUrl + "/post-test",
+      }));
+  }
 
   return {
     props: {
