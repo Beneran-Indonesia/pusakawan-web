@@ -36,7 +36,7 @@ async function getAllStorylinePrograms() {
     }
 }
 
-const getModuleData = async (programId: string) => {
+const getModuleData = async (programId: number) => {
     // const res = await mockClassOverviews.filter((dt) => dt.title.toLowerCase() === urlToDatabaseFormatted(name.toLowerCase()));
     try {
         const res = await api.get("/storyline/", {
@@ -47,19 +47,6 @@ const getModuleData = async (programId: string) => {
         return { status: res.status, message: res.data };
     } catch (e) {
         console.error("GET CLASS OVERVIEW DATA ERROR:", e)
-    }
-}
-
-async function getProgram(id: number) {
-    try {
-        const res = await api.get("/storyline/", {
-            params: {
-                id,
-            }
-        })
-        return { status: res.status, message: res.data };
-    } catch (e) {
-        console.error("GET PROGRAM DATA ERROR:", e)
     }
 }
 
@@ -142,13 +129,11 @@ const createCertificate = async (enrollmentId: number, sessionToken: string) => 
     }
 };
 
-
 export {
     getProgramData,
     getEditProfileFields,
     getModuleData,
     getAllStorylinePrograms,
-    getProgram,
     getPricingData,
     SubmitTest,
     createCertificate

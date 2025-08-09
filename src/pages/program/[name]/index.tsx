@@ -3,7 +3,6 @@ import BreadcrumbsWrapper from "@/components/Breadcrumbs";
 import ImageWrapper from "@/components/ImageWrapper";
 import api, {
   getModuleData,
-  getProgram,
   getProgramData,
   createCertificate,
 } from "@/lib/api";
@@ -76,10 +75,12 @@ export default function NameClass({
       (program) => program.id === programData.id
     );
 
-    // console.log(enrolled)
-    // console.log(session!.user.enrolledPrograms.find(
-    //   (program) => program.id === programData.id
-    // ))
+  // console.log(session!.user!.enrolledPrograms)
+
+  // console.log(enrolled)
+  // console.log(session!.user.enrolledPrograms.find(
+  //   (program) => program.id === programData.id
+  // ))
 
   const enrollmentId =
     enrolled !== false && enrolled !== undefined && enrolled.enrollment_id;
@@ -104,7 +105,9 @@ export default function NameClass({
   ];
 
   const userIsUnauthenticated = status === "unauthenticated";
-  const userProfileNotCompleted = (status !== "loading") && !!(!userIsUnauthenticated && session && !session.user.is_profile_complete)
+  const userProfileNotCompleted =
+    status !== "loading" &&
+    !!(!userIsUnauthenticated && session && !session.user.is_profile_complete);
 
   const {
     title,
@@ -146,7 +149,9 @@ export default function NameClass({
         const certificate = await generateCertificate(certificateData);
 
         // Convert the Uint8Array to a proper Blob
-        const blob = new Blob([new Uint8Array(certificate)], { type: "application/pdf" });
+        const blob = new Blob([new Uint8Array(certificate)], {
+          type: "application/pdf",
+        });
         const url = URL.createObjectURL(blob);
         const link = document.createElement("a");
         link.href = url;
@@ -166,11 +171,7 @@ export default function NameClass({
 
         handleSnackbar(true, true, t("certificate.succeed"));
       } else {
-        handleSnackbar(
-          true,
-          false,
-          t("certificate.failed")
-        );
+        handleSnackbar(true, false, t("certificate.failed"));
       }
     } catch (err) {
       console.error("Error downloading certificate:", err);
@@ -197,40 +198,30 @@ export default function NameClass({
 
       if (res.status === 201) {
         handleSnackbar(true, true, t("snackbar.success"));
-
         const enrollmentId = res.data.id; // id enrollment
-        const programId = res.data.program;
-        const enrolledProgram = (await getProgram(programId))?.message;
-
-        console.log("ENROLLED PROGRAM:", enrolledProgram)
-
-        if (enrolledProgram) {
-          await update({
-            ...session!,
-            user: {
-              ...session!.user,
-              enrolledPrograms: [
-                ...session!.user.enrolledPrograms,
-                {
-                  ...enrolledProgram,
-                  // this currently doesnt exist in the API
-                  // {
-//     "id": 372,
-//     "program": 273,
-//     "participant": 148,
-//     "created_at": "2025-08-09T21:39:49.625795+07:00",
-//     "updated_at": "2025-08-09T21:39:49.625811+07:00"
-// }
-                  enrollment_id: enrollmentId,
-                },
-              ],
-            },
-          });
-          toggleModalOpen();
-          return { status: res.status, message: res.data };
-        }
-
-        throw new Error("Failed to fetch enrolled program details");
+        await update({
+          ...session!,
+          user: {
+            ...session!.user,
+            enrolledPrograms: [
+              ...session!.user.enrolledPrograms,
+              {
+                ...programData,
+                // this currently doesnt exist in the API
+                // {
+                //     "id": 372,
+                //     "program": 273,
+                //     "participant": 148,
+                //     "created_at": "2025-08-09T21:39:49.625795+07:00",
+                //     "updated_at": "2025-08-09T21:39:49.625811+07:00"
+                // }
+                enrollment_id: enrollmentId,
+              },
+            ],
+          },
+        });
+        toggleModalOpen();
+        return { status: res.status, message: res.data };
       }
 
       toggleModalOpen();
@@ -594,7 +585,7 @@ export const getServerSideProps: GetServerSideProps<ClassDatas> = async (
   }
 
   // Ambil data modul
-  const moduleRes = await getModuleData(programId.toString());
+  const moduleRes = await getModuleData(programId);
 
   let modules: SimpleModuleData[] = [];
   let assignment: SimpleModuleData[] = [];
