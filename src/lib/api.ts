@@ -96,7 +96,7 @@ async function getPricingData(classname: string, email: string) {
 }
 
 // submit post-test
-const SubmitTest = async (enrollment: number, test: number, answers: TestAnswer[], sessionToken: string) => {
+const submitTest = async (enrollment: number, test: number, answers: TestAnswer[], sessionToken: string) => {
     try {
         const res = await api.post("/storyline/test-submit/", {
             enrollment,
@@ -135,6 +135,6 @@ export {
     getModuleData,
     getAllStorylinePrograms,
     getPricingData,
-    SubmitTest,
+    submitTest,
     createCertificate
 };

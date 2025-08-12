@@ -22,11 +22,11 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
-import { useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/router";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import Logo from "@svgs/logo.svg";
+import { useSession } from "next-auth/react";
 import { getRandomCoursePicture } from "@/lib/constants";
 import { useState } from "react";
 import Modal from "@/components/Modal";
@@ -44,9 +44,13 @@ export default function NameClass({
   programData,
   moduleData,
   assignment,
-  TestData,
+  testData,
   assignmentTitle,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  let enrollmentId: number | null = null;
+  let userEnrolled: boolean = false;
+  let userPassedPostTest: boolean = false;
+
   const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
   const [enrollLoading, setEnrollLoading] = useState(false);
 
@@ -65,25 +69,25 @@ export default function NameClass({
 
   const { data: session, status, update } = useSession();
   const user = { id: session?.user.id, accessToken: session?.user.accessToken };
+  // Ambil data user enrolled
+
+  if (session) {
+    const enrolled =
+      Array.isArray(session.user.enrolledPrograms) &&
+      session.user.enrolledPrograms.find(
+        (program) => program.id === programData.id
+      );
+
+    if (enrolled !== false && enrolled !== undefined) {
+      enrollmentId = enrolled.enrollment_id;
+      userEnrolled = true;
+    }
+    userPassedPostTest = !!session.user.enrolledPrograms.find(
+      (program) => program.id === programData.id
+    )?.test_submissions?.is_passed;
+  }
   const t = useTranslations("class.overview");
   const router = useRouter();
-
-  const enrolled =
-    status === "authenticated" &&
-    Array.isArray(session.user.enrolledPrograms) &&
-    session.user.enrolledPrograms.find(
-      (program) => program.id === programData.id
-    );
-
-  // console.log(session!.user!.enrolledPrograms)
-
-  // console.log(enrolled)
-  // console.log(session!.user.enrolledPrograms.find(
-  //   (program) => program.id === programData.id
-  // ))
-
-  const enrollmentId =
-    enrolled !== false && enrolled !== undefined && enrolled.enrollment_id;
 
   const breadcrumbData: BreadcrumbLinkProps[] = [
     {
@@ -126,6 +130,17 @@ export default function NameClass({
         return;
       }
 
+      if (session === null || userIsUnauthenticated) {
+        handleSnackbar(true, false, t("certificate.error.session_expired"));
+        router.push("/signin");
+        return;
+      }
+
+      if (!userPassedPostTest) {
+        handleSnackbar(true, false, t("certificate.error.post_test"));
+        return;
+      }
+
       const certificateResponse = await createCertificate(
         enrollmentId,
         session.user.accessToken
@@ -143,7 +158,7 @@ export default function NameClass({
           user_id: session.user.id.toString(),
         };
 
-        console.log("Certificate data:", certificateData);
+        // console.log("Certificate data:", certificateData);
 
         // Generate sertifikat
         const certificate = await generateCertificate(certificateData);
@@ -207,14 +222,6 @@ export default function NameClass({
               ...session!.user.enrolledPrograms,
               {
                 ...programData,
-                // this currently doesnt exist in the API
-                // {
-                //     "id": 372,
-                //     "program": 273,
-                //     "participant": 148,
-                //     "created_at": "2025-08-09T21:39:49.625795+07:00",
-                //     "updated_at": "2025-08-09T21:39:49.625811+07:00"
-                // }
                 enrollment_id: enrollmentId,
               },
             ],
@@ -284,7 +291,7 @@ export default function NameClass({
             gap={isDesktopRatio ? 0 : 2}
           >
             <Box>
-              {enrolled ? null : (
+              {userEnrolled ? null : (
                 <Button
                   variant="contained"
                   size={"medium"}
@@ -355,16 +362,34 @@ export default function NameClass({
           <Typography mb={2}>{description}</Typography>
 
           {/* download certificate */}
-          {enrolled && (
-            <Box sx={{ display: "flex", justifyContent: "flex-start" }}>
+          {userEnrolled && (
+            <Box
+              sx={{
+                mb: 2,
+                display: "flex",
+                justifyContent: "flex-start",
+                flexDirection: "column",
+                width: "fit-content",
+              }}
+            >
               <Button
                 variant="contained"
                 size="large"
-                sx={{ mb: 2 }}
                 onClick={handleDownloadCertificate}
+                disabled={!userPassedPostTest}
+                title={t(
+                  !userPassedPostTest
+                    ? "button.title_disabled"
+                    : "button.title_enabled"
+                )}
               >
                 {t("button.download_certificate")}
               </Button>
+              {!userPassedPostTest ? (
+                <Typography variant="h6" color="primary.main" mt={0.5}>
+                  {t("button.title_disabled")}
+                </Typography>
+              ) : null}
             </Box>
           )}
 
@@ -372,7 +397,7 @@ export default function NameClass({
           <ModuleAccordion
             isModule={true}
             items={moduleData}
-            userIsEnrolled={!!enrolled}
+            userIsEnrolled={userEnrolled}
             accordionType="module"
           />
 
@@ -381,18 +406,19 @@ export default function NameClass({
             <ModuleAccordion
               isModule={false}
               items={assignment}
-              userIsEnrolled={!!enrolled}
+              userIsEnrolled={userEnrolled}
               accordionType="assignment"
               assignmentTitle={assignmentTitle} // nama accordion/konten
             />
           )}
 
           {/* Post-test Accordion */}
-          {TestData && TestData.length > 0 && (
+          {testData && testData.length > 0 && (
             <ModuleAccordion
+              testDisabled={userPassedPostTest}
               isModule={false}
-              items={TestData}
-              userIsEnrolled={!!enrolled}
+              items={testData}
+              userIsEnrolled={userEnrolled}
               accordionType="post-test"
             />
           )}
@@ -409,7 +435,7 @@ export default function NameClass({
                 {t("price_title")}
               </Typography>
               <PaidClassCard
-                userIsEnrolled={!!enrolled}
+                userIsEnrolled={userEnrolled}
                 buttonDisabled={
                   userIsUnauthenticated || userProfileNotCompleted
                 }
@@ -559,7 +585,7 @@ type ClassDatas = {
   moduleData: SimpleModuleData[];
   messages: string;
   assignment: SimpleModuleData[];
-  TestData: SimpleModuleData[];
+  testData: SimpleModuleData[];
   assignmentTitle?: string;
 };
 
@@ -589,7 +615,7 @@ export const getServerSideProps: GetServerSideProps<ClassDatas> = async (
 
   let modules: SimpleModuleData[] = [];
   let assignment: SimpleModuleData[] = [];
-  let TestData: SimpleModuleData[] = [];
+  let testData: SimpleModuleData[] = [];
   let assignmentTitle: string | undefined;
 
   if (moduleRes) {
@@ -613,7 +639,7 @@ export const getServerSideProps: GetServerSideProps<ClassDatas> = async (
       assignmentTitle = assignmentModule.additional_url_section_name;
     }
 
-    TestData = moduleData
+    testData = moduleData
       .filter(
         (mdl) =>
           Array.isArray(mdl.test) &&
@@ -631,7 +657,7 @@ export const getServerSideProps: GetServerSideProps<ClassDatas> = async (
       programData,
       moduleData: modules,
       assignment,
-      TestData,
+      testData,
       assignmentTitle, //nama accordion/konten
       messages: (await import(`../../../locales/${locale}.json`)).default,
     },

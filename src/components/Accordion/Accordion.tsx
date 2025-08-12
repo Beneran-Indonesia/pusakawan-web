@@ -12,6 +12,7 @@ import Button from "@mui/material/Button";
 type Items = { title: string; href: string };
 
 type ModuleAccordionProps = {
+    testDisabled?: boolean;
     userIsEnrolled: boolean;
     accordionType?: 'module' | 'assignment' | 'post-test';
     assignmentTitle?: string; // untuk accordion/konten
@@ -21,6 +22,7 @@ type ModuleAccordionProps = {
 );
 
 export default function ModuleAccordion({
+    testDisabled,
     isModule,
     items,
     userIsEnrolled,
@@ -43,7 +45,7 @@ export default function ModuleAccordion({
         title = assignmentTitle || t('assignment');
         id = 5;
     } else {
-        title = t('post-test');
+        title = t('post-test.title');
         id = 6;
     }
 
@@ -82,6 +84,7 @@ export default function ModuleAccordion({
                             return (
                                 item && (
                                     <AccordionItem
+                                        testDisabled={!!testDisabled}
                                         userIsEnrolled={userIsEnrolled}
                                         href={item.href}
                                         title={
@@ -107,11 +110,11 @@ export default function ModuleAccordion({
                 boxSx={{ width: 600, p: 4, borderRadius: 2 }}
             >
                 <Typography variant="h5" fontWeight={600} mb={2}>
-                    {t("postTest.confirm_title")}
+                    {t("post-test.confirm_title")}
                 </Typography>
 
                 <Typography mb={3} align="center" color="monochrome.four">
-                    {t("postTest.confirm_text")}
+                    {t("post-test.confirm_text")}
                 </Typography>
 
                 <Box display="flex" gap={2} justifyContent="flex-end">
@@ -120,7 +123,7 @@ export default function ModuleAccordion({
                         size="large"
                         onClick={handleModalClose}
                     >
-                        {t("postTest.cancel") || "Cancel"}
+                        {t("post-test.cancel") || "Cancel"}
                     </Button>
 
                     <Button
@@ -128,7 +131,7 @@ export default function ModuleAccordion({
                         size="large"
                         onClick={handleConfirmPostTest}
                     >
-                        {t("postTest.confirm_button")}
+                        {t("post-test.confirm_button")}
                     </Button>
                 </Box>
             </Modal>
@@ -137,6 +140,7 @@ export default function ModuleAccordion({
 }
 
 type AccordionItemProps = {
+    testDisabled: boolean;
     userIsEnrolled: boolean;
     href: string;
     title: string;
@@ -144,22 +148,28 @@ type AccordionItemProps = {
     onClick?: (e: React.MouseEvent) => void;
 };
 
-function AccordionItem({ userIsEnrolled, href, title, onClick }: AccordionItemProps) {
+function AccordionItem({ testDisabled, userIsEnrolled, href, title, onClick }: AccordionItemProps) {
+    const disabled = !userIsEnrolled || testDisabled
     const t = useTranslations('accordion');
 
     return (
-        <span title={t(userIsEnrolled ? "module.link_title_enrolled" : "module.link_title_unenrolled")}>
+        <span title={t(userIsEnrolled ? "module.link_title_enrolled" : testDisabled ? "" : "module.link_title_unenrolled" )}>
             <Link
                 component={NextLink}
-                href={userIsEnrolled ? href : "#"}
+                href={!disabled ? href : "#"}
                 variant='h5'
                 fontWeight={500}
                 underline="always"
-                onClick={userIsEnrolled ? onClick : undefined}
-                sx={!userIsEnrolled ? { pointerEvents: 'none' } : undefined}
+                onClick={!disabled ? onClick : undefined}
+                sx={disabled ? { pointerEvents: 'none' } : undefined}
             >
                 {title}
             </Link>
-        </span>
+                <Box display="inline-flex" ml={2} color="green">
+                    {testDisabled
+                    ? t("post-test.finished")
+                : null}
+                </Box>
+            </span>
     );
 }

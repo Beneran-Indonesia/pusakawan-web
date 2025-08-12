@@ -543,7 +543,7 @@ export const getServerSideProps: GetServerSideProps<ModuleDatas> = async (
   // get module and assignments
   const programData = programDataReq!.message[0] as ProgramData;
 
-  const moduleDataReq = await getModuleData(programData.id.toString());
+  const moduleDataReq = await getModuleData(programData.id);
 
   // should not be possible but just in case :)
   if (!moduleDataReq || moduleDataReq.message.length === 0) {

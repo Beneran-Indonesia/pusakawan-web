@@ -13,6 +13,15 @@ type ProgramPricing = {
     total_price: number;
 }
 
+type TestSubmissions = {
+    id: number;
+    enrollment: number;
+    test: number;
+    submitted_at: Date;
+    is_passed: boolean;
+    final_score: number;
+}
+
 type ProgramData = {
     program_id: number;
     enrollment_id: number;
@@ -23,6 +32,7 @@ type ProgramData = {
     description: string;
     price: number;
     pusaka_points: number;
+    test_submissions?: TestSubmissions;
 }
 
 type SimpleModuleData = {
@@ -47,7 +57,7 @@ type ModuleData = {
     additional_url_section_name: string;
     description: string;
     can_posttest: false
-    is_postest: false 
+    is_postest: false
     test?: TestItem[];
     // modules: {
     //     description?: string;

@@ -68,7 +68,7 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
                             const accessToken = conn.data.tokens.access;
                             const profile = await getProfile(accessToken);
                             const enrolledPrograms = await getEnrolledPrograms(accessToken);
-                            
+
                             return { ...profile, enrolledPrograms, accessToken };
                         }
                     } catch (e) {
@@ -130,8 +130,9 @@ async function getEnrolledPrograms(accessToken: string) {
                 status: "ACTIVE"
             }
         });
-        // console.log('response get enrollment'+res)
         if (res.status === 200) {
+            console.log('response get enrollment: ', res.data)
+
             return res.data;
         }
         return false;
