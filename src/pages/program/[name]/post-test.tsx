@@ -30,7 +30,6 @@ import { useTranslations } from "next-intl";
 import PusakawanLogo from "@/components/PusakawanLogo";
 
 export default function PostTest({
-  programId,
   programTitle,
   postTest,
   enrollmentId,
@@ -505,7 +504,6 @@ export default function PostTest({
 }
 
 interface PostTestProps {
-  programId: number;
   programTitle: string;
   enrollmentId: number;
   postTest: TestItem;
@@ -596,7 +594,6 @@ export const getServerSideProps: GetServerSideProps<PostTestProps> = async (
 
   return {
     props: {
-      programId: programData.id,
       programTitle: programData.title,
       postTest,
       enrollmentId: enrollmentId,
