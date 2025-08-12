@@ -2,6 +2,7 @@
 import axios from 'axios';
 import { Agent } from 'https';
 import { createBearerHeader, urlToDatabaseFormatted } from './utils';
+import { TestAnswer } from "@/types/components";
 
 const headers = {
     'Accept': 'application/json',
@@ -27,7 +28,7 @@ const getEditProfileFields = async (url: string, sessionToken: string) => {
 
 async function getAllStorylinePrograms() {
     try {
-        const res = await api.get("/program/storyline", {
+        const res = await api.get("/program/storyline/", {
         })
         return { status: res.status, message: res.data };
     } catch (e) {
@@ -35,13 +36,12 @@ async function getAllStorylinePrograms() {
     }
 }
 
-const getModuleData = async (programId: string) => {
+const getModuleData = async (programId: number) => {
     // const res = await mockClassOverviews.filter((dt) => dt.title.toLowerCase() === urlToDatabaseFormatted(name.toLowerCase()));
     try {
         const res = await api.get("/storyline/", {
             params: {
                 program: programId,
-                status: "ACTIVE",
             }
         })
         return { status: res.status, message: res.data };
@@ -50,28 +50,11 @@ const getModuleData = async (programId: string) => {
     }
 }
 
-async function getProgram(id: number) {
-    try {
-        const res = await api.get("/program/", {
-            params: {
-                id,
-                status: "ACTIVE",
-                program_type: "STORYLINE",
-            }
-        })
-        return { status: res.status, message: res.data };
-    } catch (e) {
-        console.error("GET PROGRAM DATA ERROR:", e)
-    }
-}
-
 async function getProgramData(classname: string) {
     try {
-        const res = await api.get("/program", {
+        const res = await api.get("/program/storyline/", {
             params: {
                 title: urlToDatabaseFormatted(classname),
-                status: "ACTIVE",
-                program_type: "STORYLINE",
             }
         })
         return { status: res.status, message: res.data };
@@ -82,20 +65,20 @@ async function getProgramData(classname: string) {
 
 async function getPricingData(classname: string, email: string) {
     const pricing = {
-        main_price : 200_000,
+        main_price: 200_000,
         unique_code: 385,
         additional_fee: 15_000,
         total_price: 215.385
     }
     return {
         status: 200,
-        message: 
-            {
-                program_id: 1,
-                program_name: classname,
-                ...pricing
-            }
-        
+        message:
+        {
+            program_id: 1,
+            program_name: classname,
+            ...pricing
+        }
+
     }
     try {
         const res = await api.post("/program/pricing/", {
@@ -112,4 +95,46 @@ async function getPricingData(classname: string, email: string) {
     }
 }
 
-export { getProgramData, getEditProfileFields, getModuleData, getAllStorylinePrograms, getProgram, getPricingData };
+// submit post-test
+const submitTest = async (enrollment: number, test: number, answers: TestAnswer[], sessionToken: string) => {
+    try {
+        const res = await api.post("/storyline/test-submit/", {
+            enrollment,
+            test,
+            answers,
+        }, {
+            headers: createBearerHeader(sessionToken)
+        });
+
+        return { status: res.status, data: res.data };
+    } catch (e) {
+        console.error("SUBMIT TEST ERROR:", e);
+        throw e;
+    }
+};
+
+// create certificate
+const createCertificate = async (enrollmentId: number, sessionToken: string) => {
+    try {
+        const res = await api.post('/program/certificates/create/', {
+            enrollment_id: enrollmentId
+        }, {
+            headers: createBearerHeader(sessionToken)
+        });
+
+        return { status: res.status, data: res.data };
+    } catch (e) {
+        console.error("Failed to create certificate:", e);
+        throw e;
+    }
+};
+
+export {
+    getProgramData,
+    getEditProfileFields,
+    getModuleData,
+    getAllStorylinePrograms,
+    getPricingData,
+    submitTest,
+    createCertificate
+};

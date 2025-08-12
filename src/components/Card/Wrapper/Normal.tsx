@@ -1,3 +1,5 @@
+// menampilkan kartu (card) bergambar 
+
 import Box from "@mui/material/Box";
 import ImageWrapper from "../../ImageWrapper";
 
@@ -9,12 +11,40 @@ type CardProps = {
 
 export default function CardWrapper({ src, alt, children }: CardProps) {
     return (
-        <Box maxWidth={300} position="relative" border="1px solid #CCC"
-            borderRadius="1rem" bgcolor="white" boxShadow={1} flex="0 0 auto"
+        <Box 
+            maxWidth={300}
+            width="100%"
+            height="100%"
+            display="flex"
+            flexDirection="column"
+            justifyContent="space-between"
+            position="relative"
+            border="1px solid #CCC"
+            borderRadius="1rem"
+            bgcolor="white"
+            boxShadow={1}
+            flex="0 0 auto"
+            mt={3}
         >
             <BlurBox />
-            <ImageWrapper src={src} alt={alt} width={299} height={130} style={{ borderTopRightRadius: '1rem', borderTopLeftRadius: '1rem', objectFit: 'cover' }} />
-            <Box p={1.5} display="flex" flexDirection="column">
+            <ImageWrapper 
+                src={src} 
+                alt={alt} 
+                width={299} 
+                height={130} 
+                style={{ 
+                    borderTopRightRadius: '1rem', 
+                    borderTopLeftRadius: '1rem', 
+                    objectFit: 'cover' 
+                }} 
+            />
+            <Box 
+                p={1.5} 
+                display="flex" 
+                flexDirection="column"
+                justifyContent="space-between"
+                flexGrow={1}
+            >
                 {children}
             </Box>
         </Box>

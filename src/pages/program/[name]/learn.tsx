@@ -1,3 +1,5 @@
+// halaman pembelajaran suatu modul
+
 import Box from "@mui/material/Box";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -255,7 +257,7 @@ export default function ModuleLearn({
                   pre={false}
                   selected={title === "posttest"}
                   onChange={() =>
-                    setCurrentModule(moduleData[moduleData.length])
+                    setCurrentModule(moduleData[moduleData.length - 1])
                   }
                 />
               )}
@@ -541,7 +543,7 @@ export const getServerSideProps: GetServerSideProps<ModuleDatas> = async (
   // get module and assignments
   const programData = programDataReq!.message[0] as ProgramData;
 
-  const moduleDataReq = await getModuleData(programData.id.toString());
+  const moduleDataReq = await getModuleData(programData.id);
 
   // should not be possible but just in case :)
   if (!moduleDataReq || moduleDataReq.message.length === 0) {

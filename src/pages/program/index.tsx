@@ -1,3 +1,5 @@
+// menampilkan daftar program (halaman utama program)
+
 import BreadcrumbsWrapper from "@/components/Breadcrumbs";
 import { programPagePicture } from "@/lib/constants";
 import { BreadcrumbLinkProps, ProgramData, SortBy } from "@/types/components";
@@ -20,12 +22,17 @@ export default function ProgramPage({ programData }: InferGetServerSidePropsType
     const [filter, setFilter] = useState<SortBy>('ALL');
     const [currentData, setCurrentData] = useState(programData);
     const t = useTranslations('program');
-    const breadcrumbData: BreadcrumbLinkProps[] = [{ children: t('header.breadcrumbs.home'), href: '/' }, { children: t('header.breadcrumbs.program'), href: '/program', active: true }];
+
+    const breadcrumbData: BreadcrumbLinkProps[] = [
+        { children: t('header.breadcrumbs.home'), href: '/' }, 
+        { children: t('header.breadcrumbs.program'), href: '/program', active: true }
+    ];
+
     const onFilterChange = (filterChange: SortBy) => {
         setFilter(filterChange);
         if (filterChange === 'ALL') setCurrentData(programData);
-        else if (filterChange === 'FREE') setCurrentData(currentData.filter((dt) => dt.price === 0));
-        else if (filterChange === 'PAID') setCurrentData(currentData.filter((dt) => dt.price !== 0));
+        else if (filterChange === 'FREE') setCurrentData(programData.filter((dt) => dt.price === 0));
+        else if (filterChange === 'PAID') setCurrentData(programData.filter((dt) => dt.price !== 0));
     };
     const isDesktopRatio = useDesktopRatio();
     return (
@@ -33,9 +40,14 @@ export default function ProgramPage({ programData }: InferGetServerSidePropsType
             <Head>
                 <title>Program</title>
             </Head>
+
             {/* Header part */}
             <ProfileNotCompleteNotice />
-            <Box display="flex" px={isDesktopRatio ? 25.5 : 2} py={7} flexDirection="column" justifyContent="space-between"
+            <Box 
+                display="flex" 
+                px={isDesktopRatio ? 25.5 : 2} 
+                py={7} flexDirection="column" 
+                justifyContent="space-between"
                 sx={{
                     background: `linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,.5)), url('${programPagePicture}')`,
                     backgroundRepeat: "no-repeat", backgroundSize: 'cover', backgroundPosition: '0 45%'
@@ -49,6 +61,7 @@ export default function ProgramPage({ programData }: InferGetServerSidePropsType
                     })}
                 </Typography>
             </Box>
+
             {/* Content part */}
             <Box display="flex" flexDirection="column" alignItems="center" py={isDesktopRatio ? 6 : 3} px={isDesktopRatio ? 24 : 5} gap={3}
                 borderRadius="1.5rem 1.5rem 0rem 0rem"
@@ -70,6 +83,7 @@ export default function ProgramPage({ programData }: InferGetServerSidePropsType
                     columns={{ xs: 1, sm: 2, md: 3 }}
                     justifyContent="center"
                     rowGap={3}
+                    mt={4}
                 >
                     {/* <Card img={mockClass.s3Url}  /> */}
                     <CoursesCard data={currentData} />
@@ -84,27 +98,27 @@ type CoursesCardProps = { data: ProgramData[] }
 
 function CoursesCard({ data }: CoursesCardProps) {
     const t = useTranslations("program.card");
+
+    if (data.length === 0) {
+        return <Typography mt={4}>{t("empty")}</Typography>;
+    }
+
     return (
-        <>
+        <Grid container spacing={{ xs: 2, md: 3 }} justifyContent="center">
             {
-                data.length === 0
-                    ? <Typography mt={4}>{t("empty")}</Typography>
-                    : data.map((dt) => (
-                        <Grid item
-                            key={`course-card ${dt.title} ${dt.id}`}
-                        >
-                            <ProgramCard
-                                img={dt.banners[0]?.image}
-                                title={dt.title}
-                                price={dt.price}
-                                href={`/program/${databaseToUrlFormatted(dt.title)}/`}
-                            // programId={dt.id}
-                            />
-                        </Grid>
-                    ))
+                data.map((dt) => (
+                    <Grid item xs={12} sm={6} md={4} key={`course-card ${dt.title} ${dt.id}`}>
+                        <ProgramCard
+                            img={dt.banners[0]?.image}
+                            title={dt.title}
+                            price={dt.price}
+                            href={`/program/${databaseToUrlFormatted(dt.title)}/`}
+                        />
+                    </Grid>
+                ))
             }
-        </>
-    )
+        </Grid>
+    );
 }
 
 type Programs = {
@@ -115,7 +129,11 @@ type Programs = {
 export const getServerSideProps: GetServerSideProps<Programs> = async (ctx) => {
     const { locale } = ctx;
     const storylinePrograms = await getAllStorylinePrograms();
-    const defaultReturn = { programData: [], messages: (await import(`../../locales/${locale}.json`)).default };
+    const defaultReturn = { 
+        programData: [], 
+        messages: (await import(`../../locales/${locale}.json`)).default 
+    };
+    
     if (!storylinePrograms) return { props: { ...defaultReturn } }
     // const res = await api.get('/programs', { headers: ...})
     return {

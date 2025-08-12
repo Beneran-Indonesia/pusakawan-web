@@ -1,3 +1,6 @@
+// memilih antara beberapa pilihan pengurutan
+// "ALL", "FREE", dan "PAID"
+
 import { useTranslations } from 'next-intl';
 import * as React from 'react';
 import {
@@ -22,12 +25,24 @@ type SortBySelectProps = {
 
 export default function SortBySelect({ onChange, currentValue }: SortBySelectProps) {
   const t = useTranslations('program.select')
-  const list = [{ value: 'ALL', text: t('all') }, { value: 'FREE', text: t('free') }, { value: 'PAID', text: t('paid') }]
+  const list = [
+    { value: 'ALL', text: t('all') }, 
+    { value: 'FREE', text: t('free') }, 
+    { value: 'PAID', text: t('paid') 
+  }]
+
   return (
-    <Select defaultValue={list[0].value} value={currentValue} onChange={(_, newValue) => onChange(newValue as SortBy)} >
-      {
-        list.map((l, idx) => <Option value={l.value} key={l.value + idx}>{l.text}</Option>)
-      }
+    <Select
+      value={currentValue}
+      onChange={(_, newValue) => {
+        if (newValue) onChange(newValue as SortBy);
+      }}
+    >
+      {list.map((l, idx) => (
+        <Option value={l.value} key={l.value + idx}>
+          {l.text}
+        </Option>
+      ))}
     </Select>
   );
 }

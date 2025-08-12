@@ -1,3 +1,5 @@
+// Menampilkan satu blok accordion (bisa modul atau tugas), yang bisa dibuka/tutup (expand/collapse), dengan judul, ikon yang sesuai, dan isi
+
 import * as React from 'react';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
@@ -7,13 +9,18 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Box } from '@mui/system';
 import TextSnippetIcon from '@mui/icons-material/TextSnippet';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
+import LightbulbOutlinedIcon from '@mui/icons-material/LightbulbOutlined';
 import { useDesktopRatio } from '@/lib/hooks';
 
 type ClassAccordionProps = {
-    id: number; title: string; children: React.ReactNode; isModule: boolean;
+    id: number; 
+    title: string; 
+    children: React.ReactNode; 
+    isModule: boolean;
+    isPostTest?: boolean;
 }
 
-export default function ClassAccordion({ id, title, children, isModule }: ClassAccordionProps) {
+export default function ClassAccordion({ id, title, children, isModule, isPostTest = false }: ClassAccordionProps) {
     const [expanded, setExpanded] = React.useState<string | false>(false);
 
     const handleChange =
@@ -24,12 +31,17 @@ export default function ClassAccordion({ id, title, children, isModule }: ClassA
     return (
         <Accordion expanded={expanded === `panel${id}`} sx={{ boxShadow: 1 }} disableGutters
             onChange={handleChange(`panel${id}`)} key={`accordion${id}`}>
-            <AccordionTitle isModule={isModule} id={id}>{title}</AccordionTitle>
+            <AccordionTitle isModule={isModule} isPostTest={isPostTest} id={id}>{title}</AccordionTitle>
             <AccordionDetail>{children}</AccordionDetail>
         </Accordion>
     );
 }
-function AccordionTitle({ id, children, isModule }: { id: number; isModule: boolean; children: string }) {
+function AccordionTitle({ id, children, isModule, isPostTest = false }: { 
+    id: number; 
+    isModule: boolean; 
+    isPostTest?: boolean;
+    children: string 
+}) {
     const isDesktopRatio = useDesktopRatio();
     return <AccordionSummary
         expandIcon={<ExpandMoreIcon />}
@@ -39,6 +51,8 @@ function AccordionTitle({ id, children, isModule }: { id: number; isModule: bool
     >
         <Box component="span" sx={{ width: isDesktopRatio ? '3%' : "12%", flexShrink: 0 }}>
             {
+                isPostTest ? 
+                    <LightbulbOutlinedIcon /> : 
                 isModule
                     ? <InsertDriveFileIcon />
                     : <TextSnippetIcon />

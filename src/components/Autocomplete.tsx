@@ -1,3 +1,6 @@
+// menampilkan fitur pencarian
+// pengguna mulai mengetik, daftar opsi yang sesuai akan ditampilkan
+
 import { useAutocomplete } from '@mui/base/useAutocomplete';
 import { styled } from '@mui/material/styles';
 import { ProgramData } from '@/types/components';

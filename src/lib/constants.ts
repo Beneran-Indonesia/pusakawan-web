@@ -81,37 +81,40 @@ const mockClass = {
 };
 
 const mockProgramData: ProgramData[] = [
-    { id: 0, banners: [{ image: unsplash('M7ievVk4FzA'), id: 1 }], title: "Kebijakan Ekspor Impor", status: "ACTIVE", description: "", pusaka_points: 100, price: 15000 },
-    { id: 1, banners: [{ image: unsplash("I-8e7wx2hao"), id: 1 }], title: "Permasalahan Dana Desa", status: "ACTIVE", description: "", pusaka_points: 100, price: 25000 },
-    { id: 2, banners: [{ image: unsplash('gMsnXqILjp4'), id: 1 }], title: "Rendahnya Daya Saing", status: "ACTIVE", description: "", pusaka_points: 100, price: 0 },
-    { id: 3, banners: [{ image: unsplash('FvBVVf0ctnk'), id: 1 }], title: "Tantangan Globalisasi", status: "ACTIVE", description: "", pusaka_points: 100, price: 10000 },
-    { id: 4, banners: [{ image: unsplash('xMh_ww8HN_Q'), id: 1 }], title: "Ketahanan Pangan", status: "ACTIVE", description: "", pusaka_points: 100, price: 0 },
+    { id: 0, program_id: 0, enrollment_id: 1, banners: [{ image: unsplash('M7ievVk4FzA'), id: 1 }], title: "Kebijakan Ekspor Impor", status: "ACTIVE", description: "", pusaka_points: 100, price: 15000 },
+    { id: 1, program_id: 1, enrollment_id: 2, banners: [{ image: unsplash("I-8e7wx2hao"), id: 1 }], title: "Permasalahan Dana Desa", status: "ACTIVE", description: "", pusaka_points: 100, price: 25000 },
+    { id: 2, program_id: 2, enrollment_id: 3, banners: [{ image: unsplash('gMsnXqILjp4'), id: 1 }], title: "Rendahnya Daya Saing", status: "ACTIVE", description: "", pusaka_points: 100, price: 0 },
+    { id: 3, program_id: 3, enrollment_id: 4, banners: [{ image: unsplash('FvBVVf0ctnk'), id: 1 }], title: "Tantangan Globalisasi", status: "ACTIVE", description: "", pusaka_points: 100, price: 10000 },
+    { id: 4, program_id: 4, enrollment_id: 5, banners: [{ image: unsplash('xMh_ww8HN_Q'), id: 1 }], title: "Ketahanan Pangan", status: "ACTIVE", description: "", pusaka_points: 100, price: 0 },
 ];
 
 const mockStorylineTest: TestData[] = [
     {
+        id: 1,
         question: "Perekonomian Indonesia pernah mengalami resesi pada tahun...?",
         choice_a: "1945",
         choice_b: "1998",
         choice_c: "2009",
         choice_d: "2021",
-        answer: "choice_b"
+        correct_answer: "B"
     },
     {
+        id: 2,
         question: "Sistem ekonomi yang dianut oleh Indonesia adalah....?",
         choice_a: "Komando",
         choice_b: "Tradisional",
         choice_c: "Terpusat",
         choice_d: "Pancasila",
-        answer: "choice_d"
+        correct_answer: "D"
     },
     {
+        id: 3,
         question: "Indonesia mengalami pertumbuhan ekonomi paling signifikan pada tahun...",
         choice_a: "1980",
         choice_b: "1990",
         choice_c: "2000",
         choice_d: "2014",
-        answer: "choice_c"
+        correct_answer: "C"
     },
 ]
 

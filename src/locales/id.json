@@ -1,315 +1,382 @@
 {
-    "notice_bar": {
-        "default": "<red>Perhatian:</red> Anda belum melengkapi profil anda. Tolong lengkapi profil anda <link>disini</link> untuk mendaftar di program.",
-        "profile": "<red>Perhatian:</red> Anda belum melengkapi profil anda. Tolong lengkapi profil anda disini."
+  "notice_bar": {
+    "default": "<red>Perhatian:</red> Anda belum melengkapi profil anda. Tolong lengkapi profil anda <link>disini</link> untuk mendaftar di program.",
+    "profile": "<red>Perhatian:</red> Anda belum melengkapi profil anda. Tolong lengkapi profil anda disini."
+  },
+  "error_page": {
+    "404": {
+      "title": "Halaman Tidak Ditemukan",
+      "description": "Mohon maaf, halaman yang Anda coba akses saat ini tidak tersedia. Kami sedang melakukan pemeliharaan atau ada masalah teknis yang sedang kami tangani. Silakan coba lagi nanti. Terima kasih atas pengertian dan kesabarannya.",
+      "button": "Kembali ke halaman utama"
     },
-    "error_page": {
-        "404": {
-            "title": "Halaman Tidak Ditemukan",
-            "description": "Mohon maaf, halaman yang Anda coba akses saat ini tidak tersedia. Kami sedang melakukan pemeliharaan atau ada masalah teknis yang sedang kami tangani. Silakan coba lagi nanti. Terima kasih atas pengertian dan kesabarannya.",
-            "button": "Kembali ke halaman utama"
-        },
-        "maintenance": {
-            "title": "Dalam tahap pengembangan",
-            "description": "Bagian ini masih dalam tahap pengembangan. Sering cek situs ini untuk tahu lebih lanjut, ya!",
-            "button": "Kembali ke halaman utama"
-        }
-    },
-    "home_button": {
-        "value": "Beranda",
-        "title": "Kembali ke beranda"
-    },
-    "accordion": {
-        "module": {
-            "title": "Modul yang perlu dipelajari",
-            "link_title_enrolled": "Pelajari modul ini sekarang",
-            "link_title_unenrolled": "Daftar ke program ini terlebih dahulu untuk mengakses modul ini"
-        },
-        "assignment": "Tugas"
-    },
-    "class": {
-        "overview": {
-            "snackbar": {
-                "success": "Anda telah terdaftar!",
-                "error": {
-                    "server": "Terjadi error server. Tolong hubungi administrator. Maaf atas ketidaknyamanannya!",
-                    "client": "Terjadi error client. Tolong hubungi administrator. Maaf atas ketidaknyamanannya!"
-                }
-            },
-            "breadcrumbs": {
-                "home": "Beranda",
-                "program": "Programs"
-            },
-            "button": {
-                "paid": "Berbayar",
-                "free": "Daftar gratis"
-            },
-            "description": "Deskripsi program",
-            "materials": "Materi pembelajaran",
-            "assignment": "Tugas",
-            "points": "Poin",
-            "pusaka_points_details": "Pusaka Points adalah currency. Semakin banyak poin yang kamu punya, bisa kamu tukar dengan hadiah menarik. Yuk kumpulkan poinnya sebanyak mungkin!",
-            "modal": {
-                "confirm": "Ya, daftar",
-                "cancel": "Tidak, cancel",
-                "description": "Dengan mendaftar, Anda berkomitmen untuk menyelesaikan semua konten yang tersedia dalam program ini."
-            },
-            "error": {
-                "unauthenticated": "Anda belum masuk.",
-                "profile_not_complete": "Anda belum melengkapi profil anda."
-            },
-            "price_title": "Harga Program"
-        },
-        "paid_card": {
-            "title": "Mulai akses kelas dari",
-            "subtitle": "Apa yang akan kamu dapatkan?",
-            "points": {
-                "first": "Sertifikat penyelesaian program",
-                "second": "Pembelajaran bisa diakses kapanpun dan dimanapun",
-                "third": "Kesempatan bergabung di komunitas"
-            },
-            "button": {
-                "title": "Beli Kelas"
-            }
-        }
-    },
-    "form": {
-        "text_field": {
-            "label": {
-                "confirmation": "Konfirmasi password"
-            },
-            "error": {
-                "email": "Email tidak valid. Tolong periksa ejaan anda.",
-                "required": "Kolom ini perlu diisi.",
-                "min_length_password": "Password terlalu pendek. Minimum 8 karakter.",
-                "min_length_phone": "Nomor terlalu pendek. Minimum 6 digit.",
-                "max_length_phone": "Nomor terlalu panjang. Maksimum 12 digit.",
-                "max": "Anda telah melebihi 50 karakter.",
-                "min": "Minimum 3 karakter.",
-                "fullname": "Nama lengkap memiliki angka atau karakter illegal. Harap masukkan huruf saja.",
-                "username": "Nama pengguna memiliki karakter yang ilegal. Harap hanya menggunakan huruf, angka, dan tanda hubung/garis bawah pada username Anda."
-            }
-        },
-        "phone": {
-            "title": "Masukkan nomor telfon"
-        }
-    },
-    "signin": {
-        "title": "Login/Register",
-        "description": "Belum memiliki akun? Kamu bisa mendaftar langsung melalui <strong>Akun Google.</strong>",
-        "remember_me": "Ingat saya",
-        "forgot_password": "Lupa password?",
-        "change_password": "Ganti password",
-        "or": "Atau",
-        "google": "Lanjutkan dengan Google",
-        "to_register": "Bikin akun",
-        "error": {
-            "client": "Client error. Tidak bisa memasukkan anda.",
-            "server": "Server error. Tidak bisa memasukkan anda.",
-            "invalid_credentials": "Username atau password tidak cocok.",
-            "account_disabled": "Akun telah di nonaktifkan, tolong kontak administrator.",
-            "email_not_verified": "Email belum di-verify. Tolong periksa email anda.",
-            "credentials_exists": "Tolong gunakan email dan password untuk masuk."
-        },
-        "tnc": {
-            "title": "Lihat Syarat dan Ketentuan Pusakawan",
-            "by_registering": "Dengan mendaftar, kamu telah menyetujui",
-            "tnc": "Syarat dan Ketentuan Pusakawan"
-        },
-        "pp": {
-            "title": "Lihat Kebijakan Privasi Pusakawan",
-            "by_registering": "Dengan mendaftar, kamu telah menyetujui",
-            "pp": "Kebijakan Privasi Pusakawan"
-        },
-        "switch_page": {
-          "email": "Atau masuk dengan email disini.",
-          "google": "Atau masuk dengan Google disini."
-        }
-    },
-    
-    "header": {
-        "pusakawan": "Kembali ke Pusakawan",
-        "challenge": "Tantangan",
-        "program": "Programs",
-        "register": "Daftar",
-        "login": "Masuk",
-        "profile": "Lihat profil",
-        "leaderboards": "Peringkat",
-        "about_us": "Tentang kami",
-        "sign_out": "Keluar dari Pusaka",
-        "points": "Pusaka point anda",
-        "menu": {
-            "point": "Poin",
-            "profile": "Profil",
-            "sign_out": "Keluar",
-            "language": {
-                "indonesian": "Ubah bahasa website ke Bahasa Indonesia",
-                "english": "Ubah bahasa website ke Bahasa Inggris"
-            }
-        }
-    },
-    "headline": {
-        "title": "Bentuk Karakter dan Perkaya Diri Dengan Pembelajaran Kami.",
-        "subtitle": "Ciptakan versi terbaik diri kamu dengan karakter dan nilai diri yang baik.",
-        "button": "Lihat pembelajaran"
-    },
-    "footer": {
-        "office_location": "Lokasi kantor",
-        "contact_us": "Kontak kami",
-        "tnc": "Syarat dan ketentuan"
-    },
-    "detail_panel": {
-        "title": "Belajar kewarganegaraan yang interaktif",
-        "detail_one": {
-            "title": "Materi yang diberikan mudah untuk dipahami",
-            "detail": "Materi dibawakan dengan cara yang sederhana serta tidak membosankan."
-        },
-        "detail_two": {
-            "title": "Berlatih pola pikir yang membangun",
-            "detail": "Berlatih cara berpikir seperti problem solving, critical thinking, decision making, dan analytical thinking dengan mengerjakan tantangan yang ada."
-        }
-    },
-    "banner": {
-        "title": "Apakah kamu sudah siap untuk menjadi pemilih ?",
-        "button": "Ikut challenge"
-    },
-    "courses_selection": {
-        "title": "Belajar dari <red>Program</red> Kami",
-        "cta": "Lihat isu lainnya",
-        "environment": {
-            "title": "Lingkungan",
-            "text": "Pelajari isu yang terkait lingkungan yang menjadi perhatian anak muda saat ini."
-        },
-        "economy": {
-            "title": "Ekonomi",
-            "text": "Pelajari isu ekonomi dan perkembangannya serta dampaknya bagi masyarakat."
-        },
-        "health": {
-            "title": "Kesehatan",
-            "text": "Pelajari isu kesehatan dan perkembangannya di lingkungan masyarakat."
-        },
-        "button": "Mulai pelajari"
-    },
-    "program_selection": {
-        "paid": "Gratis",
-        "button": "Mulai pelajari"
-    },
-    "reset-password": {
-        "button": "Ubah password",
-        "title": "Ganti password",
-        "snackbar": {
-            "succeed": "Permintaan ganti password telah terkirim. Check email kamu ya!",
-            "failed": "Terjadi error di server. Tolong kontak administrator."
-        }
-    },
-    "account": {
-        "account_information": "Informasi Akun",
-        "class_information": "Informasi Kelas",
-        "vertical_tab": {
-            "profile": "Profil",
-            "class": "Kelas"
-        },
-        "horizontal_tab": {
-            "on_going": "Sedang Berlangsung",
-            "finished": "Selesai",
-            "empty": "Kosong disini...",
-            "card": {
-                "starting": "Mulai kelas",
-                "on_going": "Lanjutkan kelas",
-                "finished": "Sertifikat"
-            }
-        },
-        "edit_profile": {
-            "profile_picture": "Ubah foto profil anda",
-            "name": "Nama",
-            "email": "Email",
-            "bio": "Biodata",
-            "dob": "Ulang tahun",
-            "username": "Username",
-            "phone": "Nomor telfon",
-            "province": "Provinsi",
-            "island": "Pulau",
-            "religion": "Agama",
-            "city": "Kota asal",
-            "ethnicity": "Etnis",
-            "gender": {
-                "title": "Jenis Kelamin",
-                "male": "Laki-laki",
-                "female": "Perempuan"
-            },
-            "status": {
-                "professional": "Profesional",
-                "student": "Siswa",
-                "scholar": "Mahasiswa"
-            },
-            "button": "Simpan Profil",
-            "edit_failed": "Gangguan server, edit profil gagal. Maaf!",
-            "edit_succeed": "Profil anda berhasil diedit.",
-            "user_category": "Profesi",
-            "work": "Tempat bekerja",
-            "alumni": "Alumni dari",
-            "entry_year": "Tahun masuk",
-            "graduation_year": "Tahun lulus",
-            "major": "Jurusan",
-            "university": "Universitas",
-            "class": "Kelas",
-            "school": "Nama sekolah"
-        }
-    },
-    "log_out": "Keluar",
-    "program": {
-        "header": {
-            "breadcrumbs": {
-                "home": "Beranda",
-                "program": "Programs"
-            },
-            "title": "Perdalam <red>kemampuanmu</red> dengan mempelajari program kami"
-        },
-        "content": {
-            "title": "Pilih Program yang Ingin Anda Pelajari"
-        },
-        "autocomplete": {
-            "placeholder": "Cari program",
-            "empty": "Hm, program tidak ditemukan"
-        },
-        "card": {
-            "empty": "Program sesuai tidak ditemukan"
-        },
-        "select": {
-            "all": "Semua",
-            "paid": "Berbayar",
-            "free": "Gratis"
-        }
-    },
-    "module": {
-        "buttons": {
-            "fullscreen": "Lihat modul dengan fullscreen",
-            "next": "Pergi ke materi selanjutnya",
-            "previous": "Pergi ke materi sebelumnya"
-        },
-        "breadcrumbs": {
-            "home": "Beranda",
-            "program": "Program",
-            "learn": "Materi",
-            "payment": "Pembayaran"
-        },
-        "learn": "Materi",
-        "assignment": "Tugas"
-    },
-    "pricing": {
-        "title": "Pembayaran Program",
-        "method": "Metode Pembayaran",
-        "detail": "Detail Pembayaran",
-        "price": "Harga Program",
-        "additional": "Biaya Lainnya",
-        "total": "Total Harga",
-        "enroll": "Daftar Program",
-        "agreements": "Saya setuju dengan <red>Syarat & Ketentuan</red> yang berlaku",
-        "breadcrumbs": {
-            "home": "Beranda",
-            "program": "Program",
-            "learn": "Materi",
-            "payment": "Pembayaran"
-        }
+    "maintenance": {
+      "title": "Dalam tahap pengembangan",
+      "description": "Bagian ini masih dalam tahap pengembangan. Sering cek situs ini untuk tahu lebih lanjut, ya!",
+      "button": "Kembali ke halaman utama"
     }
+  },
+  "home_button": {
+    "value": "Beranda",
+    "title": "Kembali ke beranda"
+  },
+  "accordion": {
+    "module": {
+      "title": "Modul yang perlu dipelajari",
+      "link_title_enrolled": "Pelajari modul ini sekarang",
+      "link_title_unenrolled": "Daftar ke program ini terlebih dahulu untuk mengakses modul ini"
+    },
+    "assignment": "Tugas",
+    "post-test": {
+      "title": "Post-test",
+      "finished": "Post-test lulus ✔️",
+      "confirm_title": "Apakah kamu siap mengerjakan POST-TEST?",
+      "confirm_text": "Percobaan post-test dapat dilakukan 3x dalam sehari dan akan di reset dalam kurun waktu 24 jam",
+      "confirm_button": "Mulai Post-Test",
+      "cancel": "Batal"
+    }
+  },
+
+  "class": {
+    "overview": {
+      "certificate": {
+        "error": {
+          "session_expired": "Sesi berakhir. Tolong masuk kembali.",
+          "failed": "Kamu belum lulus post-testnya...",
+          "enrollment_id": "Kamu belum mendaftar ke program ini.",
+          "post_test": "Kamu belum lolos post-testnya.."
+        },
+        "succeed": "Sertifikat telah terunduh!",
+        "failed": "Terjadi error, kamu tidak bisa mengunduh sertifikat saat ini. Maaf, ya!"
+      },
+      "snackbar": {
+        "success": "Anda telah terdaftar!",
+        "error": {
+          "server": "Terjadi error server. Tolong hubungi administrator. Maaf atas ketidaknyamanannya!",
+          "client": "Terjadi error client. Tolong hubungi administrator. Maaf atas ketidaknyamanannya!"
+        }
+      },
+      "breadcrumbs": {
+        "home": "Beranda",
+        "program": "Programs"
+      },
+      "button": {
+        "title_disabled": "Kamu masih belum menyelesaikan post-test.",
+        "title_enabled": "Unduh sertifikat kamu sekarang!",
+        "paid": "Berbayar",
+        "free": "Daftar gratis",
+        "download_certificate": "Unduh Sertifikat"
+      },
+      "description": "Deskripsi program",
+      "materials": "Materi pembelajaran",
+      "assignment": "Tugas",
+      "points": "Poin",
+      "pusaka_points_details": "Pusaka Points adalah currency. Semakin banyak poin yang kamu punya, bisa kamu tukar dengan hadiah menarik. Yuk kumpulkan poinnya sebanyak mungkin!",
+      "modal": {
+        "confirm": "Ya, daftar",
+        "cancel": "Tidak, cancel",
+        "description": "Dengan mendaftar, Anda berkomitmen untuk menyelesaikan semua konten yang tersedia dalam program ini."
+      },
+      "error": {
+        "unauthenticated": "Anda belum masuk.",
+        "profile_not_complete": "Anda belum melengkapi profil anda."
+      },
+      "price_title": "Harga Program"
+    },
+    "paid_card": {
+      "title": "Mulai akses kelas dari",
+      "subtitle": "Apa yang akan kamu dapatkan?",
+      "points": {
+        "first": "Sertifikat penyelesaian program",
+        "second": "Pembelajaran bisa diakses kapanpun dan dimanapun",
+        "third": "Kesempatan bergabung di komunitas"
+      },
+      "button": {
+        "title": "Beli Kelas"
+      }
+    }
+  },
+  "form": {
+    "text_field": {
+      "label": {
+        "confirmation": "Konfirmasi password"
+      },
+      "error": {
+        "email": "Email tidak valid. Tolong periksa ejaan anda.",
+        "required": "Kolom ini perlu diisi.",
+        "min_length_password": "Password terlalu pendek. Minimum 8 karakter.",
+        "min_length_phone": "Nomor terlalu pendek. Minimum 6 digit.",
+        "max_length_phone": "Nomor terlalu panjang. Maksimum 12 digit.",
+        "max": "Anda telah melebihi 50 karakter.",
+        "min": "Minimum 3 karakter.",
+        "fullname": "Nama lengkap memiliki angka atau karakter illegal. Harap masukkan huruf saja.",
+        "username": "Nama pengguna memiliki karakter yang ilegal. Harap hanya menggunakan huruf, angka, dan tanda hubung/garis bawah pada username Anda."
+      }
+    },
+    "phone": {
+      "title": "Masukkan nomor telfon"
+    }
+  },
+  "signin": {
+    "title": "Login/Register",
+    "description": "Belum memiliki akun? Kamu bisa mendaftar langsung melalui <strong>Akun Google.</strong>",
+    "remember_me": "Ingat saya",
+    "forgot_password": "Lupa password?",
+    "change_password": "Ganti password",
+    "or": "Atau",
+    "google": "Lanjutkan dengan Google",
+    "to_register": "Bikin akun",
+    "error": {
+      "client": "Client error. Tidak bisa memasukkan anda.",
+      "server": "Server error. Tidak bisa memasukkan anda.",
+      "invalid_credentials": "Username atau password tidak cocok.",
+      "account_disabled": "Akun telah di nonaktifkan, tolong kontak administrator.",
+      "email_not_verified": "Email belum di-verify. Tolong periksa email anda.",
+      "credentials_exists": "Tolong gunakan email dan password untuk masuk."
+    },
+    "tnc": {
+      "title": "Lihat Syarat dan Ketentuan Pusakawan",
+      "by_registering": "Dengan mendaftar, kamu telah menyetujui",
+      "tnc": "Syarat dan Ketentuan Pusakawan"
+    },
+    "pp": {
+      "title": "Lihat Kebijakan Privasi Pusakawan",
+      "by_registering": "Dengan mendaftar, kamu telah menyetujui",
+      "pp": "Kebijakan Privasi Pusakawan"
+    },
+    "switch_page": {
+      "email": "Atau masuk dengan email disini.",
+      "google": "Atau masuk dengan Google disini."
+    }
+  },
+
+  "header": {
+    "pusakawan": "Kembali ke Pusakawan",
+    "challenge": "Tantangan",
+    "program": "Programs",
+    "register": "Daftar",
+    "login": "Masuk",
+    "profile": "Lihat profil",
+    "leaderboards": "Peringkat",
+    "about_us": "Tentang kami",
+    "sign_out": "Keluar dari Pusaka",
+    "points": "Pusaka point anda",
+    "menu": {
+      "point": "Poin",
+      "profile": "Profil",
+      "sign_out": "Keluar",
+      "language": {
+        "indonesian": "Ubah bahasa website ke Bahasa Indonesia",
+        "english": "Ubah bahasa website ke Bahasa Inggris"
+      }
+    }
+  },
+  "headline": {
+    "title": "Bentuk Karakter dan Perkaya Diri Dengan Pembelajaran Kami.",
+    "subtitle": "Ciptakan versi terbaik diri kamu dengan karakter dan nilai diri yang baik.",
+    "button": "Lihat pembelajaran"
+  },
+  "footer": {
+    "office_location": "Lokasi kantor",
+    "contact_us": "Kontak kami",
+    "tnc": "Syarat dan ketentuan"
+  },
+  "detail_panel": {
+    "title": "Belajar kewarganegaraan yang interaktif",
+    "detail_one": {
+      "title": "Materi yang diberikan mudah untuk dipahami",
+      "detail": "Materi dibawakan dengan cara yang sederhana serta tidak membosankan."
+    },
+    "detail_two": {
+      "title": "Berlatih pola pikir yang membangun",
+      "detail": "Berlatih cara berpikir seperti problem solving, critical thinking, decision making, dan analytical thinking dengan mengerjakan tantangan yang ada."
+    }
+  },
+  "banner": {
+    "title": "Apakah kamu sudah siap untuk menjadi pemilih ?",
+    "button": "Ikut challenge"
+  },
+  "courses_selection": {
+    "title": "Belajar dari <red>Program</red> Kami",
+    "cta": "Lihat isu lainnya",
+    "environment": {
+      "title": "Lingkungan",
+      "text": "Pelajari isu yang terkait lingkungan yang menjadi perhatian anak muda saat ini."
+    },
+    "economy": {
+      "title": "Ekonomi",
+      "text": "Pelajari isu ekonomi dan perkembangannya serta dampaknya bagi masyarakat."
+    },
+    "health": {
+      "title": "Kesehatan",
+      "text": "Pelajari isu kesehatan dan perkembangannya di lingkungan masyarakat."
+    },
+    "button": "Mulai pelajari"
+  },
+  "program_selection": {
+    "paid": "Gratis",
+    "button": "Mulai pelajari"
+  },
+  "reset-password": {
+    "button": "Ubah password",
+    "title": "Ganti password",
+    "snackbar": {
+      "succeed": "Permintaan ganti password telah terkirim. Check email kamu ya!",
+      "failed": "Terjadi error di server. Tolong kontak administrator."
+    }
+  },
+  "account": {
+    "account_information": "Informasi Akun",
+    "class_information": "Informasi Kelas",
+    "vertical_tab": {
+      "profile": "Profil",
+      "class": "Kelas"
+    },
+    "horizontal_tab": {
+      "on_going": "Sedang Berlangsung",
+      "finished": "Selesai",
+      "empty": "Kosong disini...",
+      "card": {
+        "starting": "Mulai kelas",
+        "on_going": "Lanjutkan kelas",
+        "finished": "Sertifikat"
+      }
+    },
+    "edit_profile": {
+      "profile_picture": "Ubah foto profil anda",
+      "name": "Nama",
+      "email": "Email",
+      "bio": "Biodata",
+      "dob": "Ulang tahun",
+      "username": "Username",
+      "phone": "Nomor telfon",
+      "province": "Provinsi",
+      "island": "Pulau",
+      "religion": "Agama",
+      "city": "Kota asal",
+      "ethnicity": "Etnis",
+      "gender": {
+        "title": "Jenis Kelamin",
+        "male": "Laki-laki",
+        "female": "Perempuan"
+      },
+      "status": {
+        "professional": "Profesional",
+        "student": "Siswa",
+        "scholar": "Mahasiswa"
+      },
+      "button": "Simpan Profil",
+      "edit_failed": "Gangguan server, edit profil gagal. Maaf!",
+      "edit_succeed": "Profil anda berhasil diedit.",
+      "user_category": "Profesi",
+      "work": "Tempat bekerja",
+      "alumni": "Alumni dari",
+      "entry_year": "Tahun masuk",
+      "graduation_year": "Tahun lulus",
+      "major": "Jurusan",
+      "university": "Universitas",
+      "class": "Kelas",
+      "school": "Nama sekolah"
+    }
+  },
+  "log_out": "Keluar",
+  "program": {
+    "header": {
+      "breadcrumbs": {
+        "home": "Beranda",
+        "program": "Programs"
+      },
+      "title": "Perdalam <red>kemampuanmu</red> dengan mempelajari program kami"
+    },
+    "content": {
+      "title": "Pilih Program yang Ingin Anda Pelajari"
+    },
+    "autocomplete": {
+      "placeholder": "Cari program",
+      "empty": "Hm, program tidak ditemukan"
+    },
+    "card": {
+      "empty": "Program sesuai tidak ditemukan"
+    },
+    "select": {
+      "all": "Semua",
+      "paid": "Berbayar",
+      "free": "Gratis"
+    }
+  },
+  "module": {
+    "buttons": {
+      "fullscreen": "Lihat modul dengan fullscreen",
+      "next": "Pergi ke materi selanjutnya",
+      "previous": "Pergi ke materi sebelumnya"
+    },
+    "breadcrumbs": {
+      "home": "Beranda",
+      "program": "Program",
+      "learn": "Materi",
+      "payment": "Pembayaran"
+    },
+    "learn": "Materi",
+    "assignment": "Tugas"
+  },
+  "pricing": {
+    "title": "Pembayaran Program",
+    "method": "Metode Pembayaran",
+    "detail": "Detail Pembayaran",
+    "price": "Harga Program",
+    "additional": "Biaya Lainnya",
+    "total": "Total Harga",
+    "enroll": "Daftar Program",
+    "agreements": "Saya setuju dengan <red>Syarat & Ketentuan</red> yang berlaku",
+    "breadcrumbs": {
+      "home": "Beranda",
+      "program": "Program",
+      "learn": "Materi",
+      "payment": "Pembayaran"
+    }
+  },
+  "post_test": {
+    "modal": {
+      "confirmation": {
+        "title": "Apakah kamu yakin ingin mengirimkan post-test?",
+        "confirm_button": "Ya, submit",
+        "cancel_button": "Tidak, cancel"
+      },
+      "redo": {
+        "loading": "Loading data test...",
+        "attempt_message_one": "Kamu masih punya",
+        "attempt_message_two": "dari {max_attempt} percobaan dalam 24 jam.",
+        "redo": "Kerjakan kembali post-test?",
+        "confirmation": "Apakah kamu yakin ingin mengerjakan kembali post-test?"
+      }
+    },
+    "result": {
+      "score_amount": "Skor: {final_score}/100",
+      "score_message": "Kamu berhasil menjawab {total_correct} dari {total_questions} total pertanyaan dengan skor minimum kelulusan: {passing_score}/100.",
+      "passed": "Selamat, kamu lulus post-testnya!",
+      "failed": "Sayangnya, kamu tidak lulus post-testnya.. Silakan tinjau kembali materi dan coba lagi.",
+      "question_correct": "Kamu menjawab pertanyaan ini dengan benar.",
+      "question_incorrect": "Kamu tidak menjawab pertanyaan ini dengan benar."
+    },
+    "progress": {
+      "submitting": "Mengirimkan...",
+      "loading_answers": "Loading pertanyaan..."
+    },
+    "button": {
+      "submit": "Kirim jawaban",
+      "cancel": "Batalkan",
+      "return": "Kembali",
+      "next": "Selanjutnya",
+      "redo": "Kerjakan ulang post-test"
+    },
+    "error": {
+      "not_all_answered": "Tolong jawab semua pertanyaan sebelum mengirimkan jawaban!",
+      "session_expired": "Sesi berakhir. Tolong masuk kembali.",
+      "submit": "Terjadi kesalahan tak terduga saat mengirimkan jawaban."
+    },
+    "title": "Post-Test",
+    "submit": "Kirim jawaban",
+    "submitting": "Mengirimkan...",
+    "moduleName": "Modul",
+    "resultTitle": "Jawaban Post-Test"
+  }
 }

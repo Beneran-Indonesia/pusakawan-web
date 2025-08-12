@@ -1,3 +1,5 @@
+// mengedit profil pengguna
+
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import { Input } from "./Form/Input";
@@ -76,7 +78,7 @@ export default function EditProfile({ setSnackbar, userData, accessToken, dropdo
             setEditLoading(false);
             if (res.status === 200) {
                 setSnackbar(true, true, t("edit_succeed"));
-                // Update session
+                // Update 
                 if (res.data.profile_picture) {
                     await update({
                         ...session,

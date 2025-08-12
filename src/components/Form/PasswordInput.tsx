@@ -1,3 +1,6 @@
+// menangani input kata sandi (password) dalam formulir
+// menyembunyikan dan menampilkan kata sandi
+
 import { formControlRoot } from "@/lib/constants";
 import IconButton from '@mui/material/IconButton';
 import OutlinedInput from '@mui/material/OutlinedInput';

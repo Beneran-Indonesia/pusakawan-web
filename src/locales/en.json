@@ -25,12 +25,30 @@
       "link_title_enrolled": "Learn this module now",
       "link_title_unenrolled": "Register to this program to unlock this module"
     },
-    "assignment": "Assignment"
+    "assignment": "Assignment",
+    "post-test": {
+      "title": "Post-test",
+      "finished": "Post-test finished ✔️",
+      "confirm_title": "Are you ready to take the POST-TEST?",
+      "confirm_text": "You can attempt the post-test up to 3 times per day. The attempt count will reset every 24 hours",
+      "confirm_button": "Start Post-Test",
+      "cancel": "Cancel"
+    }
   },
   "class": {
     "overview": {
+      "certificate": {
+        "error": {
+          "session_expired": "Session expired. Please login again.",
+          "failed": "You didn't past the post-test...",
+          "enrollment_id": "You haven't been enrolled to this program.",
+          "post_test": "You have not passed the post-test.."
+        },
+        "succeed": "Certificate have been downloaded!",
+        "failed": "Error occured, currently you can't download the certificate. Sorry for the inconvenience!"
+      },
       "snackbar": {
-        "success": "You have enrolled!",
+        "success": "You are now enrolled!",
         "error": {
           "server": "Server error occured. Please contact the administrator. Sorry for the inconvenience.",
           "client": "Client error occured. Please contact the administrator. Sorry for the inconvenience."
@@ -41,8 +59,11 @@
         "program": "Programs"
       },
       "button": {
+        "title_disabled": "You haven't finished the post-test.",
+        "title_enabled": "Download your certificate now!",
         "paid": "Pay",
-        "free": "Free enroll"
+        "free": "Free enroll",
+        "download_certificate": "Download Certificate"
       },
       "description": "Program description",
       "materials": "Need to be learnt materials",
@@ -61,16 +82,16 @@
       "price_title": "Program Price"
     },
     "paid_card": {
-        "title": "Gain class access starting from",
-        "subtitle": "What benefits do you get?",
-        "points": {
-            "first": "Program completion certificate",
-            "second": "Learning can be accessed anytime and anywhere",
-            "third": "Opportunity to join the community"
-        },
-        "button": {
-            "title": "Enroll now"
-        }
+      "title": "Gain class access starting from",
+      "subtitle": "What benefits do you get?",
+      "points": {
+        "first": "Program completion certificate",
+        "second": "Learning can be accessed anytime and anywhere",
+        "third": "Opportunity to join the community"
+      },
+      "button": {
+        "title": "Enroll now"
+      }
     }
   },
   "form": {
@@ -117,8 +138,8 @@
       "tnc": "Terms and Conditions Pusakawan"
     },
     "pp": {
-        "title": "See our privacy policy",
-        "pp": "Privacy Policy Pusakawan"
+      "title": "See our privacy policy",
+      "pp": "Privacy Policy Pusakawan"
     },
     "switch_page": {
       "email": "Or login with email here.",
@@ -295,20 +316,65 @@
     "learn": "Modules",
     "assignment": "Assignment"
   },
-    "pricing": {
-        "title": "Program Payment",
-        "method": "Payment Method",
-        "detail": "Payment Details",
-        "price": "Program Price",
-        "additional": "Additional Fee",
-        "total": "Total Price",
-        "enroll": "Enroll Program",
-        "agreements": "I agree to the applicable <red>Terms & Conditions</red>",
-        "breadcrumbs": {
-          "home": "Home",
-          "program": "Programs",
-          "learn": "Modules",
-          "payment": "Payment"
-        }
+  "pricing": {
+    "title": "Program Payment",
+    "method": "Payment Method",
+    "detail": "Payment Details",
+    "price": "Program Price",
+    "additional": "Additional Fee",
+    "total": "Total Price",
+    "enroll": "Enroll Program",
+    "agreements": "I agree to the applicable <red>Terms & Conditions</red>",
+    "breadcrumbs": {
+      "home": "Home",
+      "program": "Programs",
+      "learn": "Modules",
+      "payment": "Payment"
     }
+  },
+  "post_test": {
+    "modal": {
+      "confirmation": {
+        "title": "Are you sure you want to submit the questions?",
+        "confirm_button": "Yes, submit",
+        "cancel_button": "No, cancel"
+      },
+      "redo": {
+        "loading": "Loading test data...",
+        "attempt_message_one": "You still have",
+        "attempt_message_two": "out of {max_attempt} attempt in 24 hours.",
+        "redo": "Redo post-test?",
+        "confirmation": "Are you sure you want to redo the post test?"
+      }
+    },
+    "result": {
+      "score_amount": "Score: {final_score}/100",
+      "score_message": "You correctly answered {total_correct} out of {total_questions} of the questions with a minimum passing score of: {passing_score}/100.",
+      "passed": "Congratulations, you passed the post-test!",
+      "failed": "Unfortunately, you did not pass the post-test. Please review the material and try again.",
+      "question_correct": "You answered this question correctly.",
+      "question_incorrect": "You did not answer this question correctly."
+    },
+    "progress": {
+      "submitting": "Submitting...",
+      "loading_answers": "Loading answers..."
+    },
+    "button": {
+      "submit": "Submit answers",
+      "cancel": "Cancel",
+      "return": "Go back",
+      "next": "Next",
+      "redo": "Redo post-test"
+    },
+    "error": {
+      "not_all_answered": "Please answer all questions before submitting!",
+      "session_expired": "Session expired. Please login again.",
+      "submit": "Unexpected error happened during submitting answers."
+    },
+    "title": "Post-Test",
+    "submit": "Submit answers",
+    "submitting": "Submitting...",
+    "moduleName": "Module",
+    "resultTitle": "Post-Test Result"
+  }
 }

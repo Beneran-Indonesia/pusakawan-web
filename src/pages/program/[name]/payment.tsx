@@ -1,3 +1,6 @@
+// menampilkan halaman pembayaran untuk suatu program
+// dapat melihat detail harga, memilih metode pembayaran, dan menyetujui syarat dan ketentuan
+
 import BreadcrumbsWrapper from "@/components/Breadcrumbs";
 import ImageWrapper from "@/components/ImageWrapper";
 import { getPricingData } from "@/lib/api";

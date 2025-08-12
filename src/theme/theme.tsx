@@ -129,7 +129,7 @@ const themeOptions: ThemeOptions = {
       fontSize: 16,
     },
     subtitle2: {
-      fontSzize: 12,
+      fontSize: 12,
     },
     caption: {
       fontSize: '0.75rem',

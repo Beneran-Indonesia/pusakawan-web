@@ -1,3 +1,5 @@
+// membuat tampilan banner responsif yang berisi teks dan gambar dengan efek blur
+
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";

@@ -1,3 +1,6 @@
+//  halaman user profile
+// untuk melihat dan mengedit informasi profil user dan melihat kelas yang sedang diikuti
+
 import type { InferGetServerSidePropsType, GetServerSideProps } from 'next'
 import { getSession } from 'next-auth/react';
 import Container from '@mui/material/Container';
@@ -151,7 +154,7 @@ export const getServerSideProps: GetServerSideProps<UserDatas> = async (ctx) => 
         getEditProfileFields(`/address/state-province/`, accessToken),
         getEditProfileFields(`/address/city-district/`, accessToken)
     ]);
-    const enrolledPrograms = session.user.enrolledPrograms;
+    const enrolledPrograms = session.user.enrolledPrograms ?? null;
     const dropdownItems = {
         ethnicity: ethnicity.message,
         island: island.message,
