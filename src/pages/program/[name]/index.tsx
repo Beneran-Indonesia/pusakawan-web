@@ -102,6 +102,10 @@ export default function NameClass({
                   ],
                 },
               });
+              // Clean up the URL by removing query parameters
+              router.replace(router.pathname, router.asPath.split("?")[0], {
+                shallow: true,
+              });
             } else {
               // handle snackbar to failed, with message as the invoice status.
               handleSnackbar(true, false, "Payment failed.");
@@ -117,10 +121,6 @@ export default function NameClass({
             handleSnackbar(true, false, "Payment failed.");
           }
         }
-        // Clean up the URL by removing query parameters
-        router.replace(router.pathname, router.asPath.split("?")[0], {
-          shallow: true,
-        });
       }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
