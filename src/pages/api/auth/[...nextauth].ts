@@ -98,6 +98,7 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
             async session({ session, token }) {
                 // Return a cookie value as part of the session
                 // This is read when `req.query.nextauth.includes("session") && req.method === "GET"`
+                // TODO, EnrolledProgram type is incorrect
                 session = { ...session, user: { ...token } as ProfileInput & EnrolledProgram };
                 // expected: { user: email, ...token }, expires: string;
                 return session;
@@ -131,8 +132,6 @@ async function getEnrolledPrograms(accessToken: string) {
             }
         });
         if (res.status === 200) {
-            console.log('response get enrollment: ', res.data)
-
             return res.data;
         }
         return false;

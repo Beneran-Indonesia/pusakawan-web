@@ -63,38 +63,6 @@ async function getProgramData(classname: string) {
     }
 }
 
-async function getPricingData(classname: string, email: string) {
-    const pricing = {
-        main_price: 200_000,
-        unique_code: 385,
-        additional_fee: 15_000,
-        total_price: 215.385
-    }
-    return {
-        status: 200,
-        message:
-        {
-            program_id: 1,
-            program_name: classname,
-            ...pricing
-        }
-
-    }
-    try {
-        const res = await api.post("/program/pricing/", {
-            params: {
-                title: urlToDatabaseFormatted(classname),
-                status: "ACTIVE",
-                program_type: "STORYLINE",
-                email
-            }
-        })
-        return { status: res.status, message: res.data };
-    } catch (e) {
-        console.error("GET PAYMENT DATA ERROR:", e)
-    }
-}
-
 // submit post-test
 const submitTest = async (enrollment: number, test: number, answers: TestAnswer[], sessionToken: string) => {
     try {
@@ -134,7 +102,6 @@ export {
     getEditProfileFields,
     getModuleData,
     getAllStorylinePrograms,
-    getPricingData,
     submitTest,
     createCertificate
 };

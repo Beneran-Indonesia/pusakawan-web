@@ -1,12 +1,17 @@
-// menampilkan halaman pembayaran untuk suatu program
-// dapat melihat detail harga, memilih metode pembayaran, dan menyetujui syarat dan ketentuan
-
 import BreadcrumbsWrapper from "@/components/Breadcrumbs";
 import ImageWrapper from "@/components/ImageWrapper";
-import { getPricingData } from "@/lib/api";
+import api, { getProgramData } from "@/lib/api";
 import { useDesktopRatio } from "@/lib/hooks";
-import { formatNumberToIdr, urlToDatabaseFormatted } from "@/lib/utils";
-import { BreadcrumbLinkProps, ProgramPricing } from "@/types/components";
+import {
+  createBearerHeader,
+  formatNumberToIdr,
+  urlToDatabaseFormatted,
+} from "@/lib/utils";
+import {
+  BreadcrumbLinkProps,
+  ProgramData,
+  ProgramPricing,
+} from "@/types/components";
 import { ProfileInput } from "@/types/form";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -15,24 +20,27 @@ import Container from "@mui/material/Container";
 import FormControl from "@mui/material/FormControl";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
-import Button from "@mui/material/Button";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { getSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import AgreementModal from "@/components/AgreementsModal";
+import LoadingButton from "@mui/lab/LoadingButton";
+import { PaymentPayload, PaymentResponse } from "@/types/payment";
 
 export default function ProgramPayment({
-  // userData,
+  userData,
   pricing,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const isDesktopRatio = useDesktopRatio();
   const t = useTranslations("pricing");
   const router = useRouter();
+
   const { program_name: programName } = pricing;
   const [radioAccepted, setRadioAccepted] = useState(false);
   const [tncModalOpen, setTncModalOpen] = useState(false);
+  const [isLoading, setisLoading] = useState(false);
 
   const breadcrumbData: BreadcrumbLinkProps[] = [
     {
@@ -58,25 +66,73 @@ export default function ProgramPayment({
     },
   ];
 
+  const programPayment = async () => {
+    setisLoading(true);
+    const classname = router.query!.name;
+    const callbackRoute = `${window.location.origin}/program/${classname}`;
+
+    const payload: PaymentPayload = {
+      user: {
+        ...userData,
+        user_id: userData.id,
+      },
+      program: {
+        program_id: pricing.program_id,
+        program_name: pricing.program_name,
+      },
+      pricing: {
+        ...pricing,
+        total: pricing.main_price,
+        additional_fee: [],
+      },
+      success_url:
+        callbackRoute +
+        `?payment=success&payload=${pricing.program_id}-${userData.id}`,
+      failure_url:
+        callbackRoute +
+        `?payment=failed&payload=${pricing.program_id}-${userData.id}`,
+    };
+
+    try {
+      const res = await api.post("/program/payment/storyline/", payload, {
+        headers: createBearerHeader(userData.accessToken),
+      });
+
+      if (res.status === 201) {
+        const data: PaymentResponse = res.data;
+        const { invoice_url } = data;
+        router.push(invoice_url);
+      }
+    } catch (e) {
+      console.error("error: ", e);
+    } finally {
+      setisLoading(true);
+    }
+  };
+
   function PriceWrapper({
+    classname,
     title,
     price,
     total = false,
   }: {
+    classname?: string;
     title: string;
-    price: number;
+    price?: number;
     total?: boolean;
   }) {
-    return (
+    return price && price > 0 ? (
       <Box display="flex" justifyContent="space-between">
         <Typography variant="h5" component="h5" fontWeight={total ? 600 : 400}>
           {title}
+          {": "}
+          <b>{classname ?? null}</b>
         </Typography>
         <Typography variant="h5" component="h5" fontWeight={total ? 600 : 400}>
           {formatNumberToIdr(price)}
         </Typography>
       </Box>
-    );
+    ) : null;
   }
 
   return (
@@ -106,7 +162,11 @@ export default function ProgramPayment({
           <Typography variant="h5" component="h5" fontWeight={500}>
             {t("detail")}
           </Typography>
-          <PriceWrapper title={t("price")} price={pricing.main_price} />
+          <PriceWrapper
+            title={t("price")}
+            classname={pricing.program_name}
+            price={pricing.main_price}
+          />
           <PriceWrapper
             title={t("additional")}
             price={pricing.additional_fee}
@@ -127,7 +187,15 @@ export default function ProgramPayment({
             open={tncModalOpen}
             handleClose={() => setTncModalOpen(false)}
           />
-          <Button variant="contained" size="large" disabled={!radioAccepted}>{t("enroll")}</Button>
+          <LoadingButton
+            variant="contained"
+            size="large"
+            disabled={!radioAccepted}
+            onClick={programPayment}
+            loading={isLoading}
+          >
+            {t("enroll")}
+          </LoadingButton>
         </Box>
       </Box>
     </Container>
@@ -179,6 +247,11 @@ type ProgramPaymentProps = {
   pricing: ProgramPricing;
 };
 
+// type PaymentQuery = {
+//   failed: "paymentFailed",
+//   success: "paymentSuccess"
+// }
+
 export const getServerSideProps: GetServerSideProps<
   ProgramPaymentProps
 > = async (ctx) => {
@@ -191,27 +264,47 @@ export const getServerSideProps: GetServerSideProps<
     return { notFound: true };
   }
 
-  // const userId = session.user.id;
-
-  const classname = urlToDatabaseFormatted(params!.name as string);
-
-  // TODO: backend create a payment that checks 1. user is enrolled to the program (search by name + email + status = active) ?
-  // !! expected data already put at api.ts
-
-  const programPricingReq = await getPricingData(classname, session.user.email);
-
   // checks if program exists
+  const classname = urlToDatabaseFormatted(params!.name as string);
+  const programRes = await getProgramData(classname);
   if (
-    !programPricingReq ||
-    programPricingReq.status !== 200 ||
-    programPricingReq.message.length === 0
+    !programRes ||
+    programRes.status !== 200 ||
+    programRes.message.length === 0
   ) {
     return { notFound: true };
   }
 
+  // checks if user is enrolled in class
+  const userEnrolledPrograms = session.user.enrolledPrograms;
+  const programData: ProgramData = programRes.message[0];
+  const userEnrolled = !!userEnrolledPrograms.find(
+    (program) => program.id == programData.id
+  );
+
+  if (userEnrolled) {
+    return { notFound: true };
+  }
+
+  const programPrice = programData.price;
+  const additionalFee = 0;
+  const uniqueCodeFee = 0;
+  const totalPrice = programData.price + additionalFee + uniqueCodeFee;
+
+  const pricing: ProgramPricing = {
+    program_id: programData.id,
+    program_name: classname,
+    main_price: programPrice,
+    additional_fee: additionalFee,
+    unique_code: uniqueCodeFee,
+    total_price: totalPrice,
+  };
+
+  // Checking if user has paid this program ->
+
   return {
     props: {
-      pricing: programPricingReq.message,
+      pricing,
       userData: {
         accessToken: session.user.accessToken,
         full_name: session.user.full_name,
