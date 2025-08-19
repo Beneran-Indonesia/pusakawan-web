@@ -8,8 +8,8 @@ type ProgramPricing = {
     program_id: number;
     program_name: string;
     main_price: number;
-    unique_code: number;
-    additional_fee: number;
+    unique_code?: number;
+    additional_fee?: number;
     total_price: number;
 }
 
@@ -80,7 +80,7 @@ type SortBy = 'ALL' | 'PAID' | 'FREE';
 type EnrolledProgram = {
     id: number;
     enrolledPrograms: ProgramData[]
-};
+}; // | [] ; // TODO: put the empty array because it's possible user has no enrolled program
 
 type TestData = {
     id: number;

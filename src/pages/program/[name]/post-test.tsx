@@ -538,7 +538,6 @@ export const getServerSideProps: GetServerSideProps<PostTestProps> = async (
 
   // 3. ngecek user enrolled di program ini?
   const { enrolledPrograms } = session.user;
-  console.log(enrolledPrograms, programData.id);
   const userEnrolled = enrolledPrograms.find(
     (program) => program.id === programData.id
   );
