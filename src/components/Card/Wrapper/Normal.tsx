@@ -25,12 +25,13 @@ export default function CardWrapper({ src, alt, children }: CardProps) {
             boxShadow={1}
             flex="0 0 auto"
             mt={3}
+            overflow="hidden"
         >
             <BlurBox />
             <ImageWrapper 
                 src={src} 
                 alt={alt} 
-                width={299} 
+                width={300}
                 height={130} 
                 style={{ 
                     borderTopRightRadius: '1rem', 

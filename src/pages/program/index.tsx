@@ -79,6 +79,7 @@ export default function ProgramPage({ programData }: InferGetServerSidePropsType
                 </Box>
                 <Grid
                     container
+                    width={{xs: "300px", sm: "500px", md: "900px", lg: "1200px"}}
                     spacing={{ xs: 2, md: 3 }}
                     columns={{ xs: 1, sm: 2, md: 3 }}
                     justifyContent="center"

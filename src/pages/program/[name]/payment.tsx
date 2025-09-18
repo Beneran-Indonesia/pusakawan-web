@@ -98,7 +98,7 @@ export default function ProgramPayment({
         headers: createBearerHeader(userData.accessToken),
       });
 
-      if (res.status === 201) {
+      if (res.status === 201 || res.status === 200) {
         const data: PaymentResponse = res.data;
         const { invoice_url } = data;
         router.push(invoice_url);
@@ -106,7 +106,7 @@ export default function ProgramPayment({
     } catch (e) {
       console.error("error: ", e);
     } finally {
-      setisLoading(true);
+      setisLoading(false);
     }
   };
 
