@@ -129,7 +129,7 @@ export default function ProgramPayment({
           <b>{classname ?? null}</b>
         </Typography>
         <Typography variant="h5" component="h5" fontWeight={total ? 600 : 400}>
-          {formatNumberToIdr(price)}
+          Rp {formatNumberToIdr(price)}
         </Typography>
       </Box>
     ) : null;

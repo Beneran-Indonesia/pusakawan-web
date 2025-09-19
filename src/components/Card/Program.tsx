@@ -29,7 +29,7 @@ export default function ProgramCard({ img, title, price, href }: CardProps) {
         {title}
       </Typography>
       <Typography variant="h3" component="h3" mb={4} fontWeight={600}>
-        {price === 0 ? t("paid") : `Rp. ${formatNumberToIdr(price)}`}
+        {price === 0 ? t("paid") : `Rp ${formatNumberToIdr(price)}`}
       </Typography>
       <Button
         variant="outlined"

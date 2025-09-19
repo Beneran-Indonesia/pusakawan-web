@@ -379,7 +379,7 @@ export default function NameClass({
                         variant={isDesktopRatio ? "h4" : "h5"}
                         component="span"
                       >
-                        {`${t("button.paid")}  Rp. ${formatNumberToIdr(price)}`}
+                        {`${t("button.paid")}  Rp ${formatNumberToIdr(price)}`}
                       </Typography>
                     </>
                   ) : (
@@ -600,7 +600,7 @@ function PaidClassCard({
         {t("title")}
       </Typography>
       <Typography variant="h3" component="span" fontWeight={600}>
-        Rp. {formatNumberToIdr(price)}
+        Rp {formatNumberToIdr(price)}
       </Typography>
       <Typography variant="h5" component="h5" color="monochrome.two">
         {t("subtitle")}
