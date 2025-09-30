@@ -160,7 +160,7 @@ export default function NameClass({
       setEnrollLoading(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [session]);
+  }, []);
 
   // Ambil data user enrolled
   if (session) {
