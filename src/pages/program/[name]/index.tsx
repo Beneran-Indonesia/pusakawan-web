@@ -28,7 +28,7 @@ import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import Logo from "@svgs/logo.svg";
 import { useSession } from "next-auth/react";
 import { getRandomCoursePicture } from "@/lib/constants";
-import { useEffect, useCallback, useState } from "react";
+import { useCallback, useState, useEffect } from "react";
 import Modal from "@/components/Modal";
 import LoadingButton from "@mui/lab/LoadingButton";
 import Alert from "@mui/material/Alert";
@@ -54,96 +54,10 @@ export default function NameClass({
   const { data: session, status, update } = useSession();
   const user = { id: session?.user.id, accessToken: session?.user.accessToken };
   const router = useRouter();
-  const query = router.query;
-
-  // Ambil data user enrolled
-  if (session) {
-    const enrolled =
-      Array.isArray(session.user.enrolledPrograms) &&
-      session.user.enrolledPrograms.find(
-        (program) => program.id === programData.id
-      );
-
-    if (enrolled !== false && enrolled !== undefined) {
-      enrollmentId = enrolled.enrollment_id;
-      userEnrolled = true;
-    }
-    userPassedPostTest = !!session.user.enrolledPrograms.find(
-      (program) => program.id === programData.id
-    )?.test_submissions?.is_passed;
-  }
-
-  const handlePaymentCallback = useCallback(async () => {
-    try {
-      if (typeof query.payment === "string" && query.payment.length > 0) {
-        setEnrollLoading(true);
-        if (session) {
-          const payload = query.payload;
-          if (payload && query.payment === "success") {
-            const checkPaymentStatus = await api.get(
-              `/program/payment/storyline/?external_id=${payload}`,
-              {
-                headers: createBearerHeader(session.user.accessToken),
-              }
-            );
-            if (checkPaymentStatus.status === 200) {
-              // handle snackbar to success, update the session
-              handleSnackbar(true, true, "You have been enrolled!");
-              await update({
-                ...session!,
-                user: {
-                  ...session!.user,
-                  enrolledPrograms: [
-                    ...session!.user.enrolledPrograms,
-                    {
-                      ...programData,
-                      enrollment_id: enrollmentId,
-                    },
-                  ],
-                },
-              });
-              // Clean up the URL by removing query parameters
-              router.replace(router.pathname, router.asPath.split("?")[0], {
-                shallow: true,
-              });
-            } else {
-              // handle snackbar to failed, with message as the invoice status.
-              handleSnackbar(true, false, "Payment failed.");
-              if (checkPaymentStatus.data.invoice_status) {
-                handleSnackbar(
-                  true,
-                  false,
-                  `Current payment status: ${checkPaymentStatus.data.invoice_status}`
-                );
-              }
-            }
-          } else if (query.payment === "failed") {
-            handleSnackbar(true, false, "Payment failed.");
-          }
-        }
-      }
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (e: any) {
-      console.error("ERROR: ", e);
-      if (e) {
-        handleSnackbar(
-          true,
-          false,
-          e.response?.statusText ?? "Error happened in server, sorry!"
-        );
-      }
-    } finally {
-      setEnrollLoading(false);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [query]);
-
-  useEffect(() => {
-    handlePaymentCallback();
-  }, [handlePaymentCallback]);
 
   const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
   const [enrollLoading, setEnrollLoading] = useState(false);
+  const [paymentChecked, setPaymentChecked] = useState(false);
 
   const [snackbarOpen, setSnackbarOpen] = useState({
     open: false,
@@ -193,6 +107,96 @@ export default function NameClass({
     price,
   } = programData;
   const programPaid = price > 0;
+
+  const handlePaymentCallback = useCallback(async () => {
+    try {
+      setEnrollLoading(true);
+      if (session) {
+        const programId = programData.id;
+        const userId = user.id;
+        const payload = `${programId}-${userId}`;
+        const checkPaymentStatus = await api.get(
+          `/program/payment/storyline/?external_id=${payload}`,
+          {
+            headers: createBearerHeader(session.user.accessToken),
+          }
+        );
+        if (checkPaymentStatus.status === 200) {
+          // handle snackbar to success, update the session
+          handleSnackbar(true, true, "You have been enrolled!");
+          await update({
+            ...session!,
+            user: {
+              ...session!.user,
+              enrolledPrograms: [
+                ...session!.user.enrolledPrograms,
+                {
+                  ...programData,
+                  enrollment_id: enrollmentId,
+                },
+              ],
+            },
+          });
+          // Clean up the URL by removing query parameters
+          router.replace(router.pathname, router.asPath.split("?")[0], {
+            shallow: true,
+          });
+        } else {
+          // handle snackbar to failed, with message as the invoice status.
+          handleSnackbar(true, false, "Payment failed.");
+          if (checkPaymentStatus.data.invoice_status) {
+            handleSnackbar(
+              true,
+              false,
+              `Current payment status: ${checkPaymentStatus.data.invoice_status}`
+            );
+          }
+        }
+      }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (e: any) {
+      console.error("ERROR: ", e);
+      // if (e) {
+      //   if (e.response?.status !== 400 || e.response?.status !== 500) {
+      //     console.log("yo wtf", e.response?.status, e.response?.status !== 500)
+      //     handleSnackbar(
+      //       true,
+      //       false,
+      //       e.response?.statusText ?? "Error happened in server, sorry!"
+      //     );
+      //   }
+      // }
+    } finally {
+      setEnrollLoading(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [session]);
+
+  // Ambil data user enrolled
+  if (session) {
+    const enrolled =
+      Array.isArray(session.user.enrolledPrograms) &&
+      session.user.enrolledPrograms.find(
+        (program) => program.id === programData.id
+      );
+
+    if (enrolled !== false && enrolled !== undefined) {
+      enrollmentId = enrolled.enrollment_id;
+      userEnrolled = true;
+    }
+
+    userPassedPostTest = !!session.user.enrolledPrograms.find(
+      (program) => program.id === programData.id
+    )?.test_submissions?.is_passed;
+  }
+
+  // Check payment status once when user is not enrolled
+  useEffect(() => {
+    if (session && !userEnrolled && !paymentChecked) {
+      handlePaymentCallback();
+      setPaymentChecked(true);
+    }
+  }, [session, userEnrolled, paymentChecked, handlePaymentCallback]);
 
   // handle sertifikat
   const handleDownloadCertificate = async () => {

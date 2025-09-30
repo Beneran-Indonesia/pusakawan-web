@@ -87,10 +87,10 @@ export default function ProgramPayment({
       },
       success_url:
         callbackRoute +
-        `?payment=success&payload=${pricing.program_id}-${userData.id}`,
+        `?payment=success`,
       failure_url:
         callbackRoute +
-        `?payment=failed&payload=${pricing.program_id}-${userData.id}`,
+        `?payment=failed`,
     };
 
     try {
