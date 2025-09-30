@@ -156,16 +156,6 @@ export default function NameClass({
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
       console.error("ERROR: ", e);
-      // if (e) {
-      //   if (e.response?.status !== 400 || e.response?.status !== 500) {
-      //     console.log("yo wtf", e.response?.status, e.response?.status !== 500)
-      //     handleSnackbar(
-      //       true,
-      //       false,
-      //       e.response?.statusText ?? "Error happened in server, sorry!"
-      //     );
-      //   }
-      // }
     } finally {
       setEnrollLoading(false);
     }
@@ -370,7 +360,7 @@ export default function NameClass({
                   variant="contained"
                   size={"medium"}
                   sx={{ textAlign: "center", mr: isDesktopRatio ? 4 : 1 }}
-                  disabled={userIsUnauthenticated || userProfileNotCompleted}
+                  disabled={userIsUnauthenticated || userProfileNotCompleted || enrollLoading}
                   onClick={
                     programPaid
                       ? () => router.push(router.asPath + "/payment")
