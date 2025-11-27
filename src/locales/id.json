@@ -178,7 +178,8 @@
   "footer": {
     "office_location": "Lokasi kantor",
     "contact_us": "Kontak kami",
-    "tnc": "Syarat dan ketentuan"
+    "tnc": "Syarat dan ketentuan",
+    "pp": "Kebijakan Privasi"
   },
   "detail_panel": {
     "title": "Belajar kewarganegaraan yang interaktif",
@@ -326,7 +327,7 @@
     "additional": "Biaya Lainnya",
     "total": "Total Harga",
     "enroll": "Daftar Program",
-    "agreements": "Saya setuju dengan <red>Syarat & Ketentuan</red> yang berlaku",
+    "agreements": "Saya setuju dengan <tnc>Syarat & Ketentuan</tnc> dan <pp>Kebijakan Privasi</pp> yang berlaku",
     "breadcrumbs": {
       "home": "Beranda",
       "program": "Program",

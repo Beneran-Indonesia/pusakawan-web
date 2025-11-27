@@ -175,7 +175,8 @@
   "footer": {
     "office_location": "Office address",
     "contact_us": "Contact us",
-    "tnc": "Terms and conditions"
+    "tnc": "Terms and conditions",
+    "pp": "Privacy Policy"
   },
   "detail_panel": {
     "title": "Civic studies that are interactive",
@@ -324,7 +325,7 @@
     "additional": "Additional Fee",
     "total": "Total Price",
     "enroll": "Enroll Program",
-    "agreements": "I agree to the applicable <red>Terms & Conditions</red>",
+    "agreements": "I agree to the applicable <tnc>Terms & Conditions</tnc> and <pp>Privacy Policy</pp>",
     "breadcrumbs": {
       "home": "Home",
       "program": "Programs",
