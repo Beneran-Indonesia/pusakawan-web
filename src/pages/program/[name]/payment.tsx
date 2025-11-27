@@ -39,8 +39,9 @@ export default function ProgramPayment({
 
   const { program_name: programName } = pricing;
   const [radioAccepted, setRadioAccepted] = useState(false);
-  const [tncModalOpen, setTncModalOpen] = useState(false);
   const [isLoading, setisLoading] = useState(false);
+  const [TNCModalOpen, setTNCModalOpen] = useState(false);
+  const [PPModalOpen, setPPModalOpen] = useState(false);
 
   const breadcrumbData: BreadcrumbLinkProps[] = [
     {
@@ -85,12 +86,8 @@ export default function ProgramPayment({
         total: pricing.main_price,
         additional_fee: [],
       },
-      success_url:
-        callbackRoute +
-        `?payment=success`,
-      failure_url:
-        callbackRoute +
-        `?payment=failed`,
+      success_url: callbackRoute + `?payment=success`,
+      failure_url: callbackRoute + `?payment=failed`,
     };
 
     try {
@@ -177,15 +174,21 @@ export default function ProgramPayment({
             total={true}
           />
 
-          <TNCAgreeRadio
+          <AgreementRadio
             radioValue={radioAccepted}
             setRadioValue={setRadioAccepted}
-            setModalOpen={() => setTncModalOpen(true)}
+            setTNCModalOpen={() => setTNCModalOpen(true)}
+            setPPModalOpen={() => setPPModalOpen(true)}
           />
           <AgreementModal
             type="T&C"
-            open={tncModalOpen}
-            handleClose={() => setTncModalOpen(false)}
+            open={TNCModalOpen}
+            handleClose={() => setTNCModalOpen(false)}
+          />
+          <AgreementModal
+            type="PP"
+            open={PPModalOpen}
+            handleClose={() => setPPModalOpen(false)}
           />
           <LoadingButton
             variant="contained"
@@ -202,25 +205,27 @@ export default function ProgramPayment({
   );
 }
 
-type TNCAgreeRadioProps = {
+type AgreementRadioProps = {
   radioValue: boolean;
   setRadioValue: (value: boolean) => void;
-  setModalOpen: () => void;
+  setTNCModalOpen: () => void;
+  setPPModalOpen: () => void;
 };
 
-function TNCAgreeRadio({
+function AgreementRadio({
   radioValue,
   setRadioValue,
-  setModalOpen,
-}: TNCAgreeRadioProps) {
+  setTNCModalOpen,
+  setPPModalOpen
+}: AgreementRadioProps) {
   const t = useTranslations("pricing");
 
   return (
     <FormControl>
       <RadioGroup
         row
-        aria-labelledby="terms-and-condition-agreement"
-        name="tnc-radio"
+        aria-labelledby="terms-and-condition-and-privacy-policy-agreement"
+        name="agreement-radio"
         value={radioValue}
         defaultValue={false}
         defaultChecked={false}
@@ -230,8 +235,21 @@ function TNCAgreeRadio({
           value={true}
           control={<Radio />}
           label={t.rich("agreements", {
-            red: (chunks) => (
-              <Box component="span" color="primary.main" onClick={setModalOpen}>
+            tnc: (chunks) => (
+              <Box
+                component="span"
+                color="primary.main"
+                onClick={setTNCModalOpen}
+              >
+                {chunks}
+              </Box>
+            ),
+            pp: (chunks) => (
+              <Box
+                component="span"
+                color="primary.main"
+                onClick={setPPModalOpen}
+              >
                 {chunks}
               </Box>
             ),
@@ -246,11 +264,6 @@ type ProgramPaymentProps = {
   userData: Pick<ProfileInput, "accessToken" | "full_name" | "email" | "id">;
   pricing: ProgramPricing;
 };
-
-// type PaymentQuery = {
-//   failed: "paymentFailed",
-//   success: "paymentSuccess"
-// }
 
 export const getServerSideProps: GetServerSideProps<
   ProgramPaymentProps

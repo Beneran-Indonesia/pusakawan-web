@@ -13,7 +13,8 @@ import { useState } from "react";
 import AgreementModal from "./AgreementsModal";
 
 export default function Footer() {
-  const [TCModalOpen, setTCModalOpen] = useState(false);
+  const [TNCModalOpen, setTNCModalOpen] = useState(false);
+  const [PPModalOpen, setPPModalOpen] = useState(false);
   const t = useTranslations("footer");
   const isDesktopRatio = useDesktopRatio();
   return (
@@ -76,14 +77,30 @@ export default function Footer() {
               variant="h5"
               title={t("tnc")}
               aria-label="terms and conditions modal action"
-              onClick={() => setTCModalOpen(!TCModalOpen)}
+              onClick={() => setTNCModalOpen(!TNCModalOpen)}
             >
               {t("tnc")}
             </Typography>
+            <Typography
+              sx={{ cursor: "pointer", my: 1 }}
+              fontWeight={500}
+              component="h4"
+              variant="h5"
+              title={t("pp")}
+              aria-label="privacy policy modal action"
+              onClick={() => setPPModalOpen(!PPModalOpen)}
+            >
+              {t("pp")}
+            </Typography>
             <AgreementModal
               type="T&C"
-              open={TCModalOpen}
-              handleClose={() => setTCModalOpen(false)}
+              open={TNCModalOpen}
+              handleClose={() => setTNCModalOpen(false)}
+            />
+            <AgreementModal
+              type="PP"
+              open={PPModalOpen}
+              handleClose={() => setPPModalOpen(false)}
             />
             <ChangeLanguageButtons
               sx={{ m: 0, my: isDesktopRatio ? 0 : "0.5rem" }}
